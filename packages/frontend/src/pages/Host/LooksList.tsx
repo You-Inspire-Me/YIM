@@ -19,7 +19,7 @@ export default function LooksList() {
         <div className="grid grid-cols-3 gap-4">
           {looks.map((look: any) => (
             <Link key={look._id} to={`/looks/${look._id}`} className="block">
-              <img src={look.images[0]} className="w-full h-48 object-cover" />
+              <img src={look.images[0] || 'https://via.placeholder.com/300'} className="w-full h-48 object-cover" />
               <h3 className="font-bold">{look.title}</h3>
             </Link>
           ))}

@@ -95,7 +95,7 @@ const LooksPage = (): JSX.Element => {
             >
               <div className="relative aspect-[4/5] overflow-hidden">
                 <img
-                  src={look.images[0]}
+src={look.images[0] || 'https://via.placeholder.com/300'}
                   alt={look.title}
                   className="h-full w-full object-cover transition-transform group-hover:scale-105"
                 />

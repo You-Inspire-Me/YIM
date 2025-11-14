@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useParams } from 'react-router-dom';
 import { ArrowLeft, ArrowRight, Save } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
@@ -37,12 +36,18 @@ const LookCreator = (): JSX.Element => {
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
   const queryClient = useQueryClient();
+
   const [step, setStep] = useState(1);
   const [images, setImages] = useState<string[]>([]);
   const [imageProducts, setImageProducts] = useState<Record<number, TaggedProduct[]>>({});
   const [tags, setTags] = useState<string[]>([]);
 
-  const { register, handleSubmit, formState: { errors }, setValue, watch } = useForm<LookFormData>({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    setValue
+  } = useForm<LookFormData>({
     defaultValues: {
       title: '',
       description: '',
@@ -51,95 +56,81 @@ const LookCreator = (): JSX.Element => {
     }
   });
 
-  const { data: existingLook, isLoading: isLoadingLook } = useQuery({
+  // -------------------------------------------------
+  // 🔍 Fetch existing look
+  // -------------------------------------------------
+  const lookQuery = useQuery({
     queryKey: ['host-look', id],
     queryFn: async () => {
       if (!id) return null;
       const response = await endpoints.creator.looks.detail(id);
       return response.data.look;
     },
-    enabled: !!id,
-    onSuccess: (data) => {
-      if (data) {
-        setValue('title', data.title || '');
-        setValue('description', data.description || '');
-        setValue('published', data.published || false);
-        setValue('category', data.category || 'all');
-        setImages(data.images || []);
-        setTags(data.tags || []);
-
-        // Reset imageProducts
-        const productsByImage: Record<number, TaggedProduct[]> = {};
-        if (data.products && data.products.length > 0) {
-          data.products.forEach((p: any, index: number) => {
-            const imgIndex = p.imageIndex || 0;
-            if (!productsByImage[imgIndex]) productsByImage[imgIndex] = [];
-            productsByImage[imgIndex].push({
-              productId: p.productId,
-              variantId: p.variantId,
-              sku: p.variantId || p.productId,
-              title: p.title || 'Product',
-              price: p.price || 0,
-              image: p.image || '',
-              positionX: p.positionX,
-              positionY: p.positionY
-            });
-          });
-        }
-        setImageProducts(productsByImage);
-      }
-    }
+    enabled: !!id
   });
 
+  const existingLook = lookQuery.data;
+
+  // -------------------------------------------------
+  // 🛠 Sync fetched look into form + state
+  // -------------------------------------------------
   useEffect(() => {
-    if (existingLook) {
-      setValue('title', existingLook.title);
-      setValue('description', existingLook.description);
-      setValue('published', existingLook.published);
-      setValue('category', existingLook.category || 'all');
-      setImages(existingLook.images || []);
-      setTags(existingLook.tags || []);
-      
-      // Group products by image index (simplified - assign all to first image for now)
-      // Note: We need to fetch full product details to convert to TaggedProduct format
-      // For now, we'll create a simplified version
-      const productsByImage: Record<number, TaggedProduct[]> = {};
-      if (existingLook.products && existingLook.products.length > 0) {
-        productsByImage[0] = existingLook.products.map((p: any) => ({
+    if (!existingLook) return;
+  
+    // ✅ Veilig instellen van strings met fallback
+    setValue('title', existingLook.title ?? '');
+    setValue('description', existingLook.description ?? '');
+    setValue('published', existingLook.published ?? false);
+  
+    // ✅ Category: altijd geldige string
+    const validCategories = ['dames', 'heren', 'kinderen', 'all'] as const;
+    const category = (existingLook.category ?? 'all') as 'dames' | 'heren' | 'kinderen' | 'all';
+    setValue('category', validCategories.includes(category) ? category : 'all');
+  
+    // Afbeeldingen en tags
+    setImages(existingLook.images ?? []);
+    setTags(existingLook.tags ?? []);
+  
+    // Producten per afbeelding
+    const productsByImage: Record<number, TaggedProduct[]> = {};
+  
+    if (existingLook.products?.length) {
+      existingLook.products.forEach((p: any) => {
+        const idx = p.imageIndex ?? 0;
+        if (!productsByImage[idx]) productsByImage[idx] = [];
+        productsByImage[idx].push({
           productId: p.productId,
           variantId: p.variantId,
-          sku: p.variantId || p.productId,
-          title: 'Product', // Will be populated from product data
-          price: 0,
-          image: '',
+          sku: p.variantId ?? p.productId,
+          title: p.title ?? 'Product',
+          price: p.price ?? 0,
+          image: p.image ?? '',
           positionX: p.positionX,
           positionY: p.positionY
-        }));
-      }
-      setImageProducts(productsByImage);
+        });
+      });
     }
+  
+    setImageProducts(productsByImage);
   }, [existingLook, setValue]);
-
+  
+  // -------------------------------------------------
+  // 📌 Mutations
+  // -------------------------------------------------
   const createMutation = useMutation({
     mutationFn: (data: LookInput) => endpoints.creator.looks.create(data),
     onSuccess: () => {
       toast.success('Look aangemaakt!');
-      // Invalidate alle look queries om cache te updaten
-      void queryClient.invalidateQueries({ queryKey: ['host-looks'] });
-      void queryClient.invalidateQueries({ queryKey: ['public-looks'] });
-      void queryClient.invalidateQueries({ queryKey: ['host-look'] });
+      queryClient.invalidateQueries({ queryKey: ['host-looks'] });
+      queryClient.invalidateQueries({ queryKey: ['public-looks'] });
       navigate('/creator/looks');
     },
     onError: (error: any) => {
-      const errorMessage = error?.response?.data?.message || error?.message || 'Aanmaken mislukt';
-      const validationErrors = error?.response?.data?.errors;
-      if (validationErrors && Array.isArray(validationErrors)) {
-        const errorDetails = validationErrors.map((e: any) => `${e.path.join('.')}: ${e.message}`).join(', ');
-        toast.error(`Validatiefout: ${errorDetails}`);
-      } else {
-        toast.error(errorMessage);
-      }
-      console.error('Create look error:', error);
+      const msg =
+        error?.response?.data?.message ||
+        error?.message ||
+        'Aanmaken mislukt';
+      toast.error(msg);
     }
   });
 
@@ -147,26 +138,23 @@ const LookCreator = (): JSX.Element => {
     mutationFn: (data: LookInput) => endpoints.creator.looks.update(id!, data),
     onSuccess: () => {
       toast.success('Look bijgewerkt!');
-      // Invalidate alle look queries om cache te updaten
-      void queryClient.invalidateQueries({ queryKey: ['host-looks'] });
-      void queryClient.invalidateQueries({ queryKey: ['public-looks'] });
-      void queryClient.invalidateQueries({ queryKey: ['host-look'] });
-      void queryClient.invalidateQueries({ queryKey: ['public-look', id] });
+      queryClient.invalidateQueries({ queryKey: ['host-looks'] });
+      queryClient.invalidateQueries({ queryKey: ['public-looks'] });
+      queryClient.invalidateQueries({ queryKey: ['public-look', id] });
       navigate('/creator/looks');
     },
     onError: (error: any) => {
-      const errorMessage = error?.response?.data?.message || error?.message || 'Bijwerken mislukt';
-      const validationErrors = error?.response?.data?.errors;
-      if (validationErrors && Array.isArray(validationErrors)) {
-        const errorDetails = validationErrors.map((e: any) => `${e.path.join('.')}: ${e.message}`).join(', ');
-        toast.error(`Validatiefout: ${errorDetails}`);
-      } else {
-        toast.error(errorMessage);
-      }
-      console.error('Update look error:', error);
+      const msg =
+        error?.response?.data?.message ||
+        error?.message ||
+        'Bijwerken mislukt';
+      toast.error(msg);
     }
   });
 
+  // -------------------------------------------------
+  // 📤 Submit
+  // -------------------------------------------------
   const onSubmit = (formData: LookFormData): void => {
     if (images.length === 0) {
       toast.error('Upload minimaal één afbeelding');
@@ -174,16 +162,17 @@ const LookCreator = (): JSX.Element => {
       return;
     }
 
-    // Combine all products from all images and convert TaggedProduct to LookInput format
     const allProducts: LookInput['products'] = [];
-    Object.values(imageProducts).forEach((taggedProducts) => {
-      taggedProducts.forEach((tagged) => {
-        if (tagged.variantId) {
+
+    Object.values(imageProducts).forEach((taggedList) => {
+      taggedList.forEach((p) => {
+        // Only include products with a variantId (required by API)
+        if (p.variantId) {
           allProducts.push({
-            productId: tagged.productId,
-            variantId: tagged.variantId,
-            positionX: tagged.positionX,
-            positionY: tagged.positionY
+            productId: p.productId,
+            variantId: p.variantId,
+            positionX: p.positionX,
+            positionY: p.positionY
           });
         }
       });
@@ -199,36 +188,41 @@ const LookCreator = (): JSX.Element => {
       category: formData.category
     };
 
-    if (id) {
-      updateMutation.mutate(lookData);
-    } else {
-      createMutation.mutate(lookData);
-    }
+    if (id) updateMutation.mutate(lookData);
+    else createMutation.mutate(lookData);
   };
 
-  const handleProductAdd = (imageIndex: number, product: TaggedProduct): void => {
+  // -------------------------------------------------
+  // UI helpers
+  // -------------------------------------------------
+  const handleProductAdd = (imgIndex: number, product: TaggedProduct): void => {
     setImageProducts((prev) => ({
       ...prev,
-      [imageIndex]: [...(prev[imageIndex] || []), product]
+      [imgIndex]: [...(prev[imgIndex] || []), product]
     }));
   };
 
-  const handleProductRemove = (imageIndex: number, productIndex: number): void => {
+  const handleProductRemove = (imgIndex: number, productIndex: number): void => {
     setImageProducts((prev) => ({
       ...prev,
-      [imageIndex]: (prev[imageIndex] || []).filter((_, i) => i !== productIndex)
+      [imgIndex]: (prev[imgIndex] || []).filter((_, i) => i !== productIndex)
     }));
   };
 
-  if (isLoadingLook) {
+  if (lookQuery.isLoading) {
     return <div className="flex items-center justify-center p-12">Loading...</div>;
   }
 
+  // -------------------------------------------------
+  // Render
+  // -------------------------------------------------
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-extrabold">{id ? 'Look bewerken' : 'Nieuwe Look'}</h1>
+          <h1 className="text-3xl font-extrabold">
+            {id ? 'Look bewerken' : 'Nieuwe Look'}
+          </h1>
           <p className="mt-2 text-sm text-muted dark:text-muted">
             Stap {step} van {images.length > 0 ? 2 + images.length : 2}
           </p>
@@ -240,49 +234,47 @@ const LookCreator = (): JSX.Element => {
       </div>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-        {/* Step 1: Basic Info & Images */}
         {step === 1 && (
           <div className="space-y-6">
             <div>
-              <label className="block text-sm font-medium text-black dark:text-secondary">Titel *</label>
+              <label className="block text-sm font-medium">Titel *</label>
               <Input
                 {...register('title', { required: 'Titel is verplicht' })}
-                className="mt-1"
                 placeholder="Bijv. Zomer Outfit 2024"
               />
-              {errors.title && <p className="mt-1 text-sm text-red-500">{errors.title.message}</p>}
+              {errors.title && (
+                <p className="mt-1 text-sm text-red-500">{errors.title.message}</p>
+              )}
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-black dark:text-secondary">Beschrijving *</label>
+              <label className="block text-sm font-medium">Beschrijving *</label>
               <Textarea
                 {...register('description', { required: 'Beschrijving is verplicht' })}
-                className="mt-1"
                 rows={4}
                 placeholder="Beschrijf deze look..."
               />
-              {errors.description && <p className="mt-1 text-sm text-red-500">{errors.description.message}</p>}
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-black dark:text-secondary">Afbeeldingen *</label>
-              <ImageUploaderWithReorder images={images} onImagesChange={setImages} maxImages={10} />
+              <label className="block text-sm font-medium">Afbeeldingen *</label>
+              <ImageUploaderWithReorder
+                images={images}
+                onImagesChange={setImages}
+                maxImages={10}
+              />
             </div>
 
             <TagSelector tags={tags} onTagsChange={setTags} />
 
             <div>
-              <label className="block text-sm font-medium text-black dark:text-secondary mb-2">Categorie *</label>
-              <Select
-                {...register('category', { required: 'Categorie is verplicht' })}
-                className="mt-1"
-              >
+              <label className="block text-sm font-medium mb-2">Categorie *</label>
+              <Select {...register('category', { required: 'Categorie is verplicht' })}>
                 <option value="all">Alle categorieën</option>
                 <option value="dames">Dames</option>
                 <option value="heren">Heren</option>
                 <option value="kinderen">Kinderen</option>
               </Select>
-              {errors.category && <p className="mt-1 text-sm text-red-500">{errors.category.message}</p>}
             </div>
 
             <div className="flex justify-end">
@@ -298,28 +290,25 @@ const LookCreator = (): JSX.Element => {
           </div>
         )}
 
-        {/* Step 2+: Tag products for each image */}
         {step > 1 && step <= 1 + images.length && (
           <div className="space-y-6">
-            <div>
-              <h2 className="text-xl font-bold">Tag producten in afbeelding {step - 1}</h2>
-              <p className="mt-1 text-sm text-muted dark:text-muted">
-                Klik op de afbeelding om producten toe te voegen
-              </p>
-            </div>
+            <h2 className="text-xl font-bold">
+              Tag producten in afbeelding {step - 1}
+            </h2>
 
             <ProductTagger
               imageUrl={images[step - 2]}
               taggedProducts={imageProducts[step - 2] || []}
-              onProductAdd={(product) => handleProductAdd(step - 2, product)}
-              onProductRemove={(index) => handleProductRemove(step - 2, index)}
+              onProductAdd={(p) => handleProductAdd(step - 2, p)}
+              onProductRemove={(i) => handleProductRemove(step - 2, i)}
             />
 
             <div className="flex justify-between">
-              <Button type="button" variant="secondary" onClick={() => setStep(step - 1)}>
+              <Button variant="secondary" type="button" onClick={() => setStep(step - 1)}>
                 <ArrowLeft className="mr-2 h-4 w-4" />
                 Vorige
               </Button>
+
               {step < 1 + images.length ? (
                 <Button type="button" onClick={() => setStep(step + 1)}>
                   Volgende afbeelding
@@ -332,19 +321,18 @@ const LookCreator = (): JSX.Element => {
                     variant="secondary"
                     onClick={() => {
                       setValue('published', false);
-                      void handleSubmit(onSubmit)();
+                      handleSubmit(onSubmit)();
                     }}
-                    disabled={createMutation.isPending || updateMutation.isPending}
                   >
                     Opslaan als concept
                   </Button>
+
                   <Button
                     type="button"
                     onClick={() => {
                       setValue('published', true);
-                      void handleSubmit(onSubmit)();
+                      handleSubmit(onSubmit)();
                     }}
-                    disabled={createMutation.isPending || updateMutation.isPending}
                   >
                     <Save className="mr-2 h-4 w-4" />
                     Publiceren
@@ -360,4 +348,3 @@ const LookCreator = (): JSX.Element => {
 };
 
 export default LookCreator;
-
