@@ -5,7 +5,7 @@ interface SkeletonProps {
 }
 
 const Skeleton = ({ className }: SkeletonProps): JSX.Element => {
-  return <div className={clsx('animate-pulse rounded-md bg-gray-200 dark:bg-gray-800', className)} />;
+  return <div className={clsx('animate-pulse rounded-md bg-accent dark:bg-primary', className)} />;
 };
 
 export default Skeleton;

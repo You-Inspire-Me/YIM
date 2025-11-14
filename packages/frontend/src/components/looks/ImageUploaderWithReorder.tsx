@@ -62,7 +62,7 @@ const ImageUploaderWithReorder = ({
   return (
     <div className="space-y-4">
       <div
-        className="relative flex cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed border-gray-300 bg-gray-50 p-8 transition hover:border-teal-500 hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-900 dark:hover:border-teal-500"
+        className="relative flex cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed border-border bg-accent p-8 transition hover:border-teal-500 hover:bg-accent dark:border-border dark:bg-primary dark:hover:border-teal-500"
         onClick={() => fileInputRef.current?.click()}
       >
         <input
@@ -78,11 +78,11 @@ const ImageUploaderWithReorder = ({
           <Loader2 className="h-12 w-12 animate-spin text-teal-600" />
         ) : (
           <>
-            <Upload className="h-12 w-12 text-gray-400" />
-            <p className="mt-4 text-sm font-medium text-gray-700 dark:text-gray-300">
+            <Upload className="h-12 w-12 text-muted" />
+            <p className="mt-4 text-sm font-medium text-black dark:text-secondary">
               Klik om afbeeldingen te uploaden
             </p>
-            <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
+            <p className="mt-1 text-xs text-muted dark:text-muted">
               {images.length}/{maxImages} afbeeldingen
             </p>
           </>
@@ -92,9 +92,9 @@ const ImageUploaderWithReorder = ({
       {images.length > 0 && (
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {images.map((url, index) => (
-            <div key={index} className="group relative aspect-square overflow-hidden rounded-lg border border-gray-200 dark:border-gray-800">
+            <div key={index} className="group relative aspect-square overflow-hidden rounded-lg border border-border dark:border-border">
               <img src={url} alt={`Upload ${index + 1}`} className="h-full w-full object-cover" />
-              <div className="absolute inset-0 flex items-center justify-center gap-2 bg-black/60 opacity-0 transition-opacity group-hover:opacity-100">
+              <div className="absolute inset-0 flex items-center justify-center gap-2 bg-primary/60 opacity-0 transition-opacity group-hover:opacity-100">
                 <button
                   type="button"
                   onClick={(e) => {
@@ -125,13 +125,13 @@ const ImageUploaderWithReorder = ({
                     e.stopPropagation();
                     handleRemove(index);
                   }}
-                  className="rounded-full bg-red-500/90 p-2 text-white"
+                  className="rounded-full bg-red-500/90 p-2 text-secondary"
                   aria-label="Remove"
                 >
                   <X className="h-4 w-4" />
                 </button>
               </div>
-              <div className="absolute left-2 top-2 rounded-full bg-black/70 px-2 py-1 text-xs font-semibold text-white">
+              <div className="absolute left-2 top-2 rounded-full bg-primary/70 px-2 py-1 text-xs font-semibold text-secondary">
                 {index + 1}
               </div>
             </div>

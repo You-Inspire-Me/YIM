@@ -17,7 +17,8 @@ import AnalyticsPage from './pages/Creator/Analytics';
 import DashboardHome from './pages/Creator/DashboardHome';
 import InventoryPage from './pages/Creator/Inventory';
 import LookCreator from './pages/Creator/LookCreator';
-import LooksPage from './pages/Creator/Looks';
+import LooksPage from './pages/Looks';
+import CreatorLooksPage from './pages/Creator/Looks';
 import CreatorOrdersPage from './pages/Creator/Orders';
 import ProductsPage from './pages/Creator/Products';
 import CreatorProfilePage from './pages/Creator/Profile';
@@ -35,6 +36,7 @@ const App = (): JSX.Element => {
       <Route element={<CustomerLayout />}>
         <Route path="/" element={<HomePage />} />
         <Route path="/shop" element={<ShopPage />} />
+        <Route path="/looks" element={<LooksPage />} />
         <Route path="/looks/:id" element={<LookDetail />} />
         <Route path="/products/:id" element={<ProductDetailPage />} />
         <Route path="/cart" element={<CartPage />} />
@@ -94,7 +96,7 @@ const App = (): JSX.Element => {
         }
       >
         <Route index element={<DashboardHome />} />
-        <Route path="looks" element={<LooksPage />} />
+        <Route path="looks" element={<CreatorLooksPage />} />
         <Route path="looks/create" element={<LookCreator />} />
         <Route path="looks/edit/:id" element={<LookCreator />} />
         <Route path="inventory" element={<InventoryPage />} />

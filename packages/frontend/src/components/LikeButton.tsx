@@ -82,8 +82,8 @@ const LikeButton = ({ type, id, className = '', size = 'md' }: LikeButtonProps):
       onClick={handleClick}
       className={`rounded-full p-2 transition-all hover:scale-110 ${
         isLiked
-          ? 'bg-[#0EA5E9]/10 text-[#0EA5E9]'
-          : 'bg-white/90 text-[#64748B] hover:bg-white hover:text-[#0EA5E9]'
+          ? 'bg-primary/10 text-primary'
+          : 'bg-white/90 text-muted hover:bg-white hover:text-primary'
       } ${className}`}
       aria-label={isLiked ? 'Verwijder uit verlanglijst' : 'Voeg toe aan verlanglijst'}
     >

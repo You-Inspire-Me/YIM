@@ -48,11 +48,11 @@ const RegisterPage = (): JSX.Element => {
 
   return (
     <section className="mx-auto flex min-h-[70vh] max-w-4xl items-center justify-between gap-12 px-4 py-12">
-      <div className="flex-1 rounded-3xl border border-gray-200 bg-white p-8 shadow-lg dark:border-gray-800 dark:bg-gray-900">
+      <div className="flex-1 rounded-3xl border border-border bg-white p-8 shadow-lg dark:border-border dark:bg-primary">
         <h1 className="text-2xl font-bold">Maak een account</h1>
-        <p className="mt-2 text-sm text-gray-500">
+        <p className="mt-2 text-sm text-muted">
           Al een account?{' '}
-          <Link to="/auth/login" className="font-semibold text-[#0EA5E9]">
+          <Link to="/auth/login" className="font-semibold text-primary">
             Log in
           </Link>
         </p>
@@ -105,9 +105,9 @@ const RegisterPage = (): JSX.Element => {
           </Button>
         </form>
       </div>
-      <div className="hidden flex-1 rounded-3xl bg-gradient-to-br from-gray-900 to-primary-600 p-10 text-white shadow-elevated md:block">
+      <div className="hidden flex-1 rounded-3xl bg-gradient-to-br from-gray-900 to-primary-600 p-10 text-secondary shadow-elevated md:block">
         <h2 className="text-3xl font-extrabold">Verkoop of koop met vertrouwen</h2>
-        <p className="mt-4 text-sm text-white/80">
+        <p className="mt-4 text-sm text-secondary/80">
           Word onderdeel van onze community en beheer eenvoudig je collectie of je favoriete items.
         </p>
       </div>

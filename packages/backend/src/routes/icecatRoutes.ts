@@ -5,10 +5,8 @@ import { requireAuth, requireRole } from '../middleware/authMiddleware.js';
 
 const router = Router();
 
-// Creator-only routes
-router.use(requireAuth, requireRole('creator'));
-
-router.get('/lookup', lookupEAN);
+// Public route for both creator and host
+router.get('/lookup', requireAuth, lookupEAN);
 
 export default router;
 

@@ -3,7 +3,7 @@
 Een moderne, schaalbare e-commerce toepassing geïnspireerd op Zalando. Deze monorepo bevat een React-frontend en een Node.js/Express-backend met MongoDB, Redis-caching, Cloudinary uploads en Stripe betalingen. Alles draait lokaal met één `docker-compose up`.
 
 ## ✨ Belangrijkste features
-- JWT-authenticatie met rollen (`customer` & `host`) en httpOnly cookies
+- JWT-authenticatie met rollen (`customer`, `host`, `creator`) en httpOnly cookies
 - **Volledig Host Dashboard** met:
   - Dashboard home met statistieken, omzetgrafieken en recente bestellingen
   - Productbeheer met bulk acties en lage voorraad waarschuwingen
@@ -11,6 +11,10 @@ Een moderne, schaalbare e-commerce toepassing geïnspireerd op Zalando. Deze mon
   - Analytics met omzet- en verkoopgrafieken (Chart.js)
   - Winkelprofiel beheer (banner, logo, sociale media)
   - Instellingen (wachtwoord wijzigen, notificaties, CSV export)
+- **Icecat EAN Auto-Fill**: Automatisch productgegevens ophalen via EAN (gratis, 1000x/dag)
+- **Bulk CSV Import**: Stock updates via CSV (sku, stock kolommen)
+- **Look System**: Styled outfits met hotspots en product links
+- **Multi-Vendor Checkout**: Ondersteuning voor meerdere hosts in één bestelling
 - Klant-shop met zoeken, filteren, winkelwagen en Stripe Checkout
 - Redis-caching voor productoverzicht en production-ready security middleware
 - Tailwind CSS met dark mode, skeleton states, toasts en mobile-first ontwerp
@@ -118,6 +122,11 @@ Voor de frontend kun je Vercel of een andere static host gebruiken met de build 
 | GET     | `/api/host/orders` | Bestellingen lijst (host) |
 | GET     | `/api/host/orders/:id` | Bestelling details (host) |
 | PATCH   | `/api/host/orders/:id/status` | Update bestelling status (host) |
+| GET     | `/api/icecat/lookup?ean=...` | Icecat EAN lookup (protected) |
+| POST    | `/api/host/inventory/stock/csv` | Bulk stock CSV import (protected, host) |
+| GET     | `/api/public/looks` | Published looks (public) |
+| GET     | `/api/public/looks/:id` | Look details (public) |
+| POST    | `/api/payments/checkout` | Multi-vendor checkout (protected) |
 
 ## 🧪 Testing & linting
 - Frontend lint: `npm run lint:frontend`

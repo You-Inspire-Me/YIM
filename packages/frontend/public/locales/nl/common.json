@@ -2,9 +2,9 @@
   "nav": {
     "discover": "Discover",
     "new": "New",
-    "dames": "Dames",
-    "heren": "Heren",
-    "kinderen": "Kinderen"
+    "dames": "Women",
+    "heren": "Men",
+    "kinderen": "Kids"
   },
   "header": {
     "search": "Zoek outfits, stijlen, merken… bijv. halloween in blauw",
@@ -48,4 +48,3 @@
     "close": "Sluiten"
   }
 }
-

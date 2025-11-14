@@ -53,12 +53,12 @@ const SettingsPage = (): JSX.Element => {
     <div className="space-y-6">
       <div>
         <h1 className="text-3xl font-extrabold">Instellingen</h1>
-        <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
+        <p className="mt-2 text-sm text-muted dark:text-muted">
           Beheer je accountinstellingen en voorkeuren
         </p>
       </div>
 
-      <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900">
+      <div className="rounded-xl border border-border bg-white p-6 shadow-sm dark:border-border dark:bg-primary">
         <h2 className="mb-4 text-lg font-semibold">Wachtwoord wijzigen</h2>
         <form className="space-y-4" onSubmit={handleSubmit(onSubmitPassword)}>
           <div>
@@ -94,13 +94,13 @@ const SettingsPage = (): JSX.Element => {
         </form>
       </div>
 
-      <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900">
+      <div className="rounded-xl border border-border bg-white p-6 shadow-sm dark:border-border dark:bg-primary">
         <h2 className="mb-4 text-lg font-semibold">Notificaties</h2>
         <div className="space-y-4">
           <label className="flex items-center justify-between">
             <div>
               <p className="font-medium">E-mail notificaties</p>
-              <p className="text-sm text-gray-500 dark:text-gray-400">
+              <p className="text-sm text-muted dark:text-muted">
                 Ontvang updates via e-mail
               </p>
             </div>
@@ -108,13 +108,13 @@ const SettingsPage = (): JSX.Element => {
               type="checkbox"
               checked={emailNotifications}
               onChange={(e) => setEmailNotifications(e.target.checked)}
-              className="h-5 w-5 rounded border-gray-300 text-[#0EA5E9] focus:ring-[#0EA5E9]"
+              className="h-5 w-5 rounded border-border text-primary focus:ring-primary"
             />
           </label>
           <label className="flex items-center justify-between">
             <div>
               <p className="font-medium">Nieuwe bestelling notificaties</p>
-              <p className="text-sm text-gray-500 dark:text-gray-400">
+              <p className="text-sm text-muted dark:text-muted">
                 Krijg een melding bij nieuwe bestellingen
               </p>
             </div>
@@ -122,15 +122,15 @@ const SettingsPage = (): JSX.Element => {
               type="checkbox"
               checked={orderNotifications}
               onChange={(e) => setOrderNotifications(e.target.checked)}
-              className="h-5 w-5 rounded border-gray-300 text-[#0EA5E9] focus:ring-[#0EA5E9]"
+              className="h-5 w-5 rounded border-border text-primary focus:ring-primary"
             />
           </label>
         </div>
       </div>
 
-      <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900">
+      <div className="rounded-xl border border-border bg-white p-6 shadow-sm dark:border-border dark:bg-primary">
         <h2 className="mb-4 text-lg font-semibold">Data export</h2>
-        <p className="mb-4 text-sm text-gray-500 dark:text-gray-400">
+        <p className="mb-4 text-sm text-muted dark:text-muted">
           Exporteer je producten als CSV-bestand
         </p>
         <Button variant="secondary" onClick={handleExportCSV} className="inline-flex items-center gap-2">

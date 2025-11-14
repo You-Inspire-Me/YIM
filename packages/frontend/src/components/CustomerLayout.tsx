@@ -12,7 +12,7 @@ const CustomerLayout = (): JSX.Element => {
   }, [location.pathname]);
 
   return (
-    <div className="flex min-h-screen flex-col bg-white transition-colors duration-200 dark:bg-gray-950">
+    <div className="flex min-h-screen flex-col bg-white transition-colors duration-200 dark:bg-primary">
       <Header />
       <main className="flex-1" key={location.pathname}>
         <Outlet />

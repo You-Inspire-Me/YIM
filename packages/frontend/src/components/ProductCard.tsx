@@ -25,7 +25,7 @@ const ProductCard = ({ product }: ProductCardProps): JSX.Element => {
   };
 
   return (
-    <article className="group flex h-full flex-col overflow-hidden rounded-2xl border border-[#E2E8F0] bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-lg dark:border-gray-800 dark:bg-gray-900">
+    <article className="group flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-lg dark:border-border dark:bg-primary">
       <Link to={`/products/${product._id}`} className="relative block aspect-[4/5] overflow-hidden">
         <img
           src={product.images[0]}
@@ -41,14 +41,14 @@ const ProductCard = ({ product }: ProductCardProps): JSX.Element => {
         <div>
           <Link
             to={`/products/${product._id}`}
-            className="text-lg font-semibold text-[#1E293B] transition hover:text-[#0EA5E9] dark:text-white"
+            className="text-lg font-semibold text-black transition hover:text-primary dark:text-secondary"
           >
             {product.title}
           </Link>
-          <p className="mt-1 text-sm text-[#64748B] dark:text-gray-400 line-clamp-2">{product.description}</p>
+          <p className="mt-1 text-sm text-muted dark:text-muted line-clamp-2">{product.description}</p>
         </div>
         <div className="mt-auto flex items-center justify-between">
-          <span className="text-lg font-semibold text-[#0EA5E9]">€ {product.price.toFixed(2)}</span>
+          <span className="text-lg font-semibold text-primary">€ {product.price.toFixed(2)}</span>
           <Button size="sm" onClick={handleAddToCart} aria-label={`Voeg ${product.title} toe aan winkelwagen`}>
             <ShoppingCart className="mr-2 h-4 w-4" />
             Voeg toe

@@ -106,23 +106,23 @@ const ProductsPage = (): JSX.Element => {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-extrabold text-[#1E293B] dark:text-white">Producten</h1>
-          <p className="mt-2 text-sm text-[#64748B] dark:text-gray-400">
+          <h1 className="text-3xl font-extrabold text-black dark:text-secondary">Producten</h1>
+          <p className="mt-2 text-sm text-muted dark:text-muted">
             Beheer globale producten (PIM) en je eigen voorraad & prijzen
           </p>
         </div>
       </div>
 
       {/* Tabs */}
-      <div className="border-b border-[#E2E8F0] dark:border-gray-800">
+      <div className="border-b border-border dark:border-border">
         <nav className="-mb-px flex space-x-8">
           <button
             type="button"
             onClick={() => setActiveTab('listings')}
             className={`whitespace-nowrap border-b-2 py-4 px-1 text-sm font-semibold transition ${
               activeTab === 'listings'
-                ? 'border-[#0EA5E9] text-[#0EA5E9]'
-                : 'border-transparent text-[#64748B] hover:border-[#E2E8F0] hover:text-[#1E293B] dark:text-gray-400'
+                ? 'border-primary text-primary'
+                : 'border-transparent text-muted hover:border-border hover:text-black dark:text-muted'
             }`}
           >
             Mijn voorraad & prijzen
@@ -132,8 +132,8 @@ const ProductsPage = (): JSX.Element => {
             onClick={() => setActiveTab('pim')}
             className={`whitespace-nowrap border-b-2 py-4 px-1 text-sm font-semibold transition ${
               activeTab === 'pim'
-                ? 'border-[#0EA5E9] text-[#0EA5E9]'
-                : 'border-transparent text-[#64748B] hover:border-[#E2E8F0] hover:text-[#1E293B] dark:text-gray-400'
+                ? 'border-primary text-primary'
+                : 'border-transparent text-muted hover:border-border hover:text-black dark:text-muted'
             }`}
           >
             Producten beheren (PIM)
@@ -147,7 +147,7 @@ const ProductsPage = (): JSX.Element => {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="relative flex-1 max-w-md">
-                <Search className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-[#64748B]" />
+                <Search className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-muted" />
                 <Input
                   type="text"
                   placeholder="Zoek op product, SKU..."
@@ -212,46 +212,46 @@ const ProductsPage = (): JSX.Element => {
               ))}
             </div>
           ) : listings.length === 0 ? (
-            <div className="rounded-xl border border-[#E2E8F0] bg-white p-12 text-center dark:border-gray-800 dark:bg-gray-900">
-              <Package className="mx-auto h-12 w-12 text-[#64748B]" />
-              <p className="mt-4 text-lg font-semibold text-[#1E293B] dark:text-white">
+            <div className="rounded-xl border border-border bg-white p-12 text-center dark:border-border dark:bg-primary">
+              <Package className="mx-auto h-12 w-12 text-muted" />
+              <p className="mt-4 text-lg font-semibold text-black dark:text-secondary">
                 Geen listings gevonden
               </p>
-              <p className="mt-2 text-sm text-[#64748B] dark:text-gray-400">
+              <p className="mt-2 text-sm text-muted dark:text-muted">
                 Voeg eerst een product toe in PIM, of importeer via CSV.
               </p>
             </div>
           ) : (
-            <div className="overflow-hidden rounded-xl border border-[#E2E8F0] bg-white dark:border-gray-800 dark:bg-gray-900">
+            <div className="overflow-hidden rounded-xl border border-border bg-white dark:border-border dark:bg-primary">
               <div className="overflow-x-auto">
-                <table className="min-w-full divide-y divide-[#E2E8F0] dark:divide-gray-800">
-                  <thead className="bg-[#F8FAFC] dark:bg-gray-900">
+                <table className="min-w-full divide-y divide-[border] dark:divide-gray-800">
+                  <thead className="bg-accent dark:bg-primary">
                     <tr>
-                      <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-[#64748B]">
+                      <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-muted">
                         Product
                       </th>
-                      <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-[#64748B]">
+                      <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-muted">
                         Variant
                       </th>
-                      <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-[#64748B]">
+                      <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-muted">
                         SKU
                       </th>
-                      <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-[#64748B]">
+                      <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-muted">
                         Prijs
                       </th>
-                      <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-[#64748B]">
+                      <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-muted">
                         Voorraad
                       </th>
-                      <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-[#64748B]">
+                      <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-muted">
                         POS
                       </th>
-                      <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-[#64748B]">
+                      <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-muted">
                         Status
                       </th>
                       <th className="px-6 py-3" />
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-[#E2E8F0] bg-white dark:divide-gray-800 dark:bg-gray-900">
+                  <tbody className="divide-y divide-[border] bg-white dark:divide-gray-800 dark:bg-primary">
                     {listings
                       .filter((listing) => {
                         if (!searchQuery) return true;
@@ -263,7 +263,7 @@ const ProductsPage = (): JSX.Element => {
                         );
                       })
                       .map((listing) => (
-                        <tr key={listing._id} className="hover:bg-[#F8FAFC] dark:hover:bg-gray-900">
+                        <tr key={listing._id} className="hover:bg-accent dark:hover:bg-gray-900">
                           <td className="px-6 py-4">
                             <div className="flex items-center gap-4">
                               {listing.productId.images?.[0] && (
@@ -274,24 +274,24 @@ const ProductsPage = (): JSX.Element => {
                                 />
                               )}
                               <div>
-                                <p className="font-semibold text-[#1E293B] dark:text-white">
+                                <p className="font-semibold text-black dark:text-secondary">
                                   {listing.productId.title}
                                 </p>
-                                <p className="text-xs text-[#64748B] dark:text-gray-400">
+                                <p className="text-xs text-muted dark:text-muted">
                                   SKU: {listing.productId.sku}
                                 </p>
                               </div>
                             </div>
                           </td>
-                          <td className="px-6 py-4 text-sm text-[#64748B] dark:text-gray-400">
+                          <td className="px-6 py-4 text-sm text-muted dark:text-muted">
                             {listing.variantId.size} / {listing.variantId.color}
                           </td>
-                          <td className="px-6 py-4 font-mono text-sm text-[#1E293B] dark:text-white">
+                          <td className="px-6 py-4 font-mono text-sm text-black dark:text-secondary">
                             {listing.sku}
                           </td>
-                          <td className="px-6 py-4 font-semibold text-[#1E293B] dark:text-white">
+                          <td className="px-6 py-4 font-semibold text-black dark:text-secondary">
                             € {listing.priceInclVat.toFixed(2)}
-                            <span className="ml-1 text-xs font-normal text-[#64748B]">
+                            <span className="ml-1 text-xs font-normal text-muted">
                               (excl. €{listing.priceExclVat.toFixed(2)})
                             </span>
                           </td>
@@ -300,7 +300,7 @@ const ProductsPage = (): JSX.Element => {
                               className={
                                 listing.stock < 10
                                   ? 'font-semibold text-red-600 dark:text-red-400'
-                                  : 'text-[#1E293B] dark:text-white'
+                                  : 'text-black dark:text-secondary'
                               }
                             >
                               {listing.stock}
@@ -314,11 +314,11 @@ const ProductsPage = (): JSX.Element => {
                           <td className="px-6 py-4">
                             {listing.posSystem !== 'none' ? (
                               <div className="flex items-center gap-2">
-                                <span className="text-xs font-medium text-[#0EA5E9]">
+                                <span className="text-xs font-medium text-primary">
                                   {listing.posSystem}
                                 </span>
                                 {listing.posSync && (
-                                  <span className="rounded-full bg-[#E0F2FE] px-2 py-0.5 text-xs text-[#0EA5E9]">
+                                  <span className="rounded-full bg-accent px-2 py-0.5 text-xs text-primary">
                                     Sync
                                   </span>
                                 )}
@@ -330,7 +330,7 @@ const ProductsPage = (): JSX.Element => {
                                   setEditingListing(listing);
                                   setIsPosModalOpen(true);
                                 }}
-                                className="text-xs text-[#0EA5E9] hover:underline"
+                                className="text-xs text-primary hover:underline"
                               >
                                 Koppel POS
                               </button>
@@ -340,8 +340,8 @@ const ProductsPage = (): JSX.Element => {
                             <span
                               className={`inline-flex rounded-full px-2 py-1 text-xs font-semibold ${
                                 listing.active
-                                  ? 'bg-[#E0F2FE] text-[#0EA5E9] dark:bg-blue-900/30 dark:text-blue-400'
-                                  : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400'
+                                  ? 'bg-accent text-primary dark:bg-primary/30 dark:text-secondary'
+                                  : 'bg-accent text-muted dark:bg-primary dark:text-muted'
                               }`}
                             >
                               {listing.active ? 'Actief' : 'Inactief'}
@@ -351,7 +351,7 @@ const ProductsPage = (): JSX.Element => {
                             <div className="flex gap-2">
                               <button
                                 type="button"
-                                className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-[#E2E8F0] text-[#64748B] transition hover:bg-[#F8FAFC] dark:border-gray-700 dark:text-gray-300 dark:hover:bg-gray-800"
+                                className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-border text-muted transition hover:bg-accent dark:border-border dark:text-secondary dark:hover:bg-primary/90"
                                 onClick={() => handleEditListing(listing)}
                                 aria-label="Bewerk listing"
                               >
@@ -374,7 +374,7 @@ const ProductsPage = (): JSX.Element => {
         <div className="space-y-4">
           <div className="flex items-center justify-between">
             <div className="relative flex-1 max-w-md">
-              <Search className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-[#64748B]" />
+              <Search className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-muted" />
               <Input
                 type="text"
                 placeholder="Zoek producten op titel, SKU, EAN..."
@@ -396,12 +396,12 @@ const ProductsPage = (): JSX.Element => {
               ))}
             </div>
           ) : products.length === 0 ? (
-            <div className="rounded-xl border border-[#E2E8F0] bg-white p-12 text-center dark:border-gray-800 dark:bg-gray-900">
-              <Package className="mx-auto h-12 w-12 text-[#64748B]" />
-              <p className="mt-4 text-lg font-semibold text-[#1E293B] dark:text-white">
+            <div className="rounded-xl border border-border bg-white p-12 text-center dark:border-border dark:bg-primary">
+              <Package className="mx-auto h-12 w-12 text-muted" />
+              <p className="mt-4 text-lg font-semibold text-black dark:text-secondary">
                 Geen producten gevonden
               </p>
-              <p className="mt-2 text-sm text-[#64748B] dark:text-gray-400">
+              <p className="mt-2 text-sm text-muted dark:text-muted">
                 Voeg een nieuw product toe om te beginnen.
               </p>
             </div>
@@ -410,7 +410,7 @@ const ProductsPage = (): JSX.Element => {
               {products.map((product) => (
                 <div
                   key={product._id}
-                  className="rounded-xl border border-[#E2E8F0] bg-white p-4 dark:border-gray-800 dark:bg-gray-900"
+                  className="rounded-xl border border-border bg-white p-4 dark:border-border dark:bg-primary"
                 >
                   {product.images?.[0] && (
                     <img
@@ -419,11 +419,11 @@ const ProductsPage = (): JSX.Element => {
                       className="mb-3 h-48 w-full rounded-lg object-cover"
                     />
                   )}
-                  <h3 className="font-semibold text-[#1E293B] dark:text-white">{product.title}</h3>
-                  <p className="mt-1 text-xs text-[#64748B] dark:text-gray-400">
+                  <h3 className="font-semibold text-black dark:text-secondary">{product.title}</h3>
+                  <p className="mt-1 text-xs text-muted dark:text-muted">
                     SKU: {product.sku} {product.ean && `• EAN: ${product.ean}`}
                   </p>
-                  <p className="mt-2 text-sm text-[#64748B] dark:text-gray-400">
+                  <p className="mt-2 text-sm text-muted dark:text-muted">
                     {product.variants?.length || 0} varianten
                   </p>
                   <div className="mt-4 flex gap-2">
@@ -605,20 +605,20 @@ const CreateListingForm = ({ product, listing, onSuccess }: CreateListingFormPro
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       {product && (
-        <div className="rounded-lg border border-[#E2E8F0] bg-[#F8FAFC] p-4 dark:border-gray-800 dark:bg-gray-900">
-          <p className="font-semibold text-[#1E293B] dark:text-white">{product.title}</p>
-          <p className="text-sm text-[#64748B] dark:text-gray-400">SKU: {product.sku}</p>
+        <div className="rounded-lg border border-border bg-accent p-4 dark:border-border dark:bg-primary">
+          <p className="font-semibold text-black dark:text-secondary">{product.title}</p>
+          <p className="text-sm text-muted dark:text-muted">SKU: {product.sku}</p>
         </div>
       )}
 
       <div>
-        <label className="block text-sm font-medium text-[#1E293B] dark:text-white">
+        <label className="block text-sm font-medium text-black dark:text-secondary">
           Variant *
         </label>
         <select
           value={variantId}
           onChange={(e) => setVariantId(e.target.value)}
-          className="mt-1 block w-full rounded-lg border border-[#E2E8F0] px-3 py-2 dark:border-gray-700 dark:bg-gray-900"
+          className="mt-1 block w-full rounded-lg border border-border px-3 py-2 dark:border-border dark:bg-primary"
           required
         >
           <option value="">Selecteer variant</option>
@@ -632,7 +632,7 @@ const CreateListingForm = ({ product, listing, onSuccess }: CreateListingFormPro
 
       <div className="grid grid-cols-2 gap-4">
         <div>
-          <label className="block text-sm font-medium text-[#1E293B] dark:text-white">
+          <label className="block text-sm font-medium text-black dark:text-secondary">
             Prijs excl. BTW *
           </label>
           <Input
@@ -645,13 +645,13 @@ const CreateListingForm = ({ product, listing, onSuccess }: CreateListingFormPro
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-[#1E293B] dark:text-white">
+          <label className="block text-sm font-medium text-black dark:text-secondary">
             BTW %
           </label>
           <select
             value={vatRate}
             onChange={(e) => setVatRate(e.target.value)}
-            className="mt-1 block w-full rounded-lg border border-[#E2E8F0] px-3 py-2 dark:border-gray-700 dark:bg-gray-900"
+            className="mt-1 block w-full rounded-lg border border-border px-3 py-2 dark:border-border dark:bg-primary"
           >
             <option value="0">0%</option>
             <option value="9">9%</option>
@@ -660,15 +660,15 @@ const CreateListingForm = ({ product, listing, onSuccess }: CreateListingFormPro
         </div>
       </div>
 
-      <div className="rounded-lg bg-[#E0F2FE] p-3 dark:bg-blue-900/30">
-        <p className="text-sm text-[#0EA5E9] dark:text-blue-400">
+      <div className="rounded-lg bg-accent p-3 dark:bg-primary/30">
+        <p className="text-sm text-primary dark:text-secondary">
           Prijs incl. BTW: € {priceInclVat}
         </p>
       </div>
 
       <div className="grid grid-cols-2 gap-4">
         <div>
-          <label className="block text-sm font-medium text-[#1E293B] dark:text-white">
+          <label className="block text-sm font-medium text-black dark:text-secondary">
             Voorraad *
           </label>
           <Input
@@ -680,7 +680,7 @@ const CreateListingForm = ({ product, listing, onSuccess }: CreateListingFormPro
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-[#1E293B] dark:text-white">
+          <label className="block text-sm font-medium text-black dark:text-secondary">
             Inkoopprijs
           </label>
           <Input
@@ -694,7 +694,7 @@ const CreateListingForm = ({ product, listing, onSuccess }: CreateListingFormPro
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-[#1E293B] dark:text-white">
+        <label className="block text-sm font-medium text-black dark:text-secondary">
           Leverancier
         </label>
         <Input
@@ -710,9 +710,9 @@ const CreateListingForm = ({ product, listing, onSuccess }: CreateListingFormPro
           id="active"
           checked={active}
           onChange={(e) => setActive(e.target.checked)}
-          className="h-4 w-4 rounded border-[#E2E8F0] text-[#0EA5E9] focus:ring-[#0EA5E9]"
+          className="h-4 w-4 rounded border-border text-primary focus:ring-primary"
         />
-        <label htmlFor="active" className="text-sm font-medium text-[#1E293B] dark:text-white">
+        <label htmlFor="active" className="text-sm font-medium text-black dark:text-secondary">
           Actief (zichtbaar voor klanten)
         </label>
       </div>
@@ -774,28 +774,28 @@ const CsvImportForm = ({ onSuccess }: CsvImportFormProps): JSX.Element => {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-      <div className="rounded-lg border-2 border-dashed border-[#E2E8F0] p-8 text-center dark:border-gray-700">
-        <Upload className="mx-auto h-12 w-12 text-[#64748B]" />
-        <p className="mt-4 text-sm font-medium text-[#1E293B] dark:text-white">
+      <div className="rounded-lg border-2 border-dashed border-border p-8 text-center dark:border-border">
+        <Upload className="mx-auto h-12 w-12 text-muted" />
+        <p className="mt-4 text-sm font-medium text-black dark:text-secondary">
           Upload CSV bestand
         </p>
         <div className="mt-4 space-y-2 text-left">
-          <p className="text-sm font-semibold text-[#1E293B] dark:text-white">
+          <p className="text-sm font-semibold text-black dark:text-secondary">
             ⚠️ Let op: Deze import is voor LISTINGS (met prijs)
           </p>
-          <p className="text-xs text-[#64748B] dark:text-gray-400">
+          <p className="text-xs text-muted dark:text-muted">
             Voor alleen voorraad import, ga naar de <strong>Voorraad</strong> pagina.
           </p>
-          <p className="text-xs font-semibold text-[#1E293B] dark:text-white mt-2">
+          <p className="text-xs font-semibold text-black dark:text-secondary mt-2">
             Vereiste kolommen voor listings:
           </p>
-          <code className="block rounded bg-[#F8FAFC] p-2 text-xs text-[#1E293B] dark:bg-gray-800 dark:text-white">
+          <code className="block rounded bg-accent p-2 text-xs text-black dark:bg-primary dark:text-secondary">
             sku,variant_size,variant_color,price_excl_vat,stock
           </code>
-          <p className="text-xs text-[#64748B] dark:text-gray-400">
+          <p className="text-xs text-muted dark:text-muted">
             Optioneel: <strong>ean</strong> (voor automatische Icecat lookup), price_incl_vat, vat_rate, cost_price, supplier, active, pos_system, pos_external_id
           </p>
-          <p className="text-xs text-blue-600 dark:text-blue-400 mt-2">
+          <p className="text-xs text-blue-600 dark:text-secondary mt-2">
             💡 <strong>Tip:</strong> Voeg een <code className="px-1 py-0.5 bg-blue-100 rounded">ean</code> kolom toe voor automatische productgegevens via Icecat!
           </p>
         </div>
@@ -889,7 +889,7 @@ const PosConnectionForm = ({ listing, onSuccess }: PosConnectionFormProps): JSX.
   if (!listing) {
     return (
       <div className="space-y-4">
-        <p className="text-sm text-[#64748B] dark:text-gray-400">
+        <p className="text-sm text-muted dark:text-muted">
           Selecteer eerst een listing om POS te koppelen.
         </p>
         <Button variant="secondary" onClick={onSuccess}>
@@ -901,23 +901,23 @@ const PosConnectionForm = ({ listing, onSuccess }: PosConnectionFormProps): JSX.
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-      <div className="rounded-lg border border-[#E2E8F0] bg-[#F8FAFC] p-4 dark:border-gray-800 dark:bg-gray-900">
-        <p className="font-semibold text-[#1E293B] dark:text-white">
+      <div className="rounded-lg border border-border bg-accent p-4 dark:border-border dark:bg-primary">
+        <p className="font-semibold text-black dark:text-secondary">
           {listing.productId.title}
         </p>
-        <p className="text-sm text-[#64748B] dark:text-gray-400">
+        <p className="text-sm text-muted dark:text-muted">
           {listing.variantId.size} / {listing.variantId.color}
         </p>
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-[#1E293B] dark:text-white">
+        <label className="block text-sm font-medium text-black dark:text-secondary">
           POS Systeem
         </label>
         <select
           value={posSystem}
           onChange={(e) => setPosSystem(e.target.value as 'lightspeed' | 'vend' | 'shopify' | 'none')}
-          className="mt-1 block w-full rounded-lg border border-[#E2E8F0] px-3 py-2 dark:border-gray-700 dark:bg-gray-900"
+          className="mt-1 block w-full rounded-lg border border-border px-3 py-2 dark:border-border dark:bg-primary"
         >
           <option value="none">Geen</option>
           <option value="lightspeed">Lightspeed</option>
@@ -929,7 +929,7 @@ const PosConnectionForm = ({ listing, onSuccess }: PosConnectionFormProps): JSX.
       {posSystem !== 'none' && (
         <>
           <div>
-            <label className="block text-sm font-medium text-[#1E293B] dark:text-white">
+            <label className="block text-sm font-medium text-black dark:text-secondary">
               External ID (bijv. Lightspeed item ID)
             </label>
             <Input
@@ -946,23 +946,23 @@ const PosConnectionForm = ({ listing, onSuccess }: PosConnectionFormProps): JSX.
               id="posSync"
               checked={posSync}
               onChange={(e) => setPosSync(e.target.checked)}
-              className="h-4 w-4 rounded border-[#E2E8F0] text-[#0EA5E9] focus:ring-[#0EA5E9]"
+              className="h-4 w-4 rounded border-border text-primary focus:ring-primary"
             />
-            <label htmlFor="posSync" className="text-sm font-medium text-[#1E293B] dark:text-white">
+            <label htmlFor="posSync" className="text-sm font-medium text-black dark:text-secondary">
               Automatisch synchroniseren (elke 15 minuten)
             </label>
           </div>
 
-          <div className="rounded-lg border border-[#E2E8F0] bg-[#F8FAFC] p-4 dark:border-gray-800 dark:bg-gray-900">
-            <p className="text-sm font-semibold text-[#1E293B] dark:text-white">
+          <div className="rounded-lg border border-border bg-accent p-4 dark:border-border dark:bg-primary">
+            <p className="text-sm font-semibold text-black dark:text-secondary">
               API Configuratie
             </p>
-            <p className="mt-2 text-xs text-[#64748B] dark:text-gray-400">
+            <p className="mt-2 text-xs text-muted dark:text-muted">
               Voer je API credentials in om automatisch voorraad te synchroniseren.
             </p>
             <div className="mt-4 space-y-3">
               <div>
-                <label className="block text-xs font-medium text-[#1E293B] dark:text-white">
+                <label className="block text-xs font-medium text-black dark:text-secondary">
                   API Key
                 </label>
                 <Input
@@ -973,7 +973,7 @@ const PosConnectionForm = ({ listing, onSuccess }: PosConnectionFormProps): JSX.
                 />
               </div>
               <div>
-                <label className="block text-xs font-medium text-[#1E293B] dark:text-white">
+                <label className="block text-xs font-medium text-black dark:text-secondary">
                   Store ID
                 </label>
                 <Input
@@ -987,7 +987,7 @@ const PosConnectionForm = ({ listing, onSuccess }: PosConnectionFormProps): JSX.
           </div>
 
           {listing.lastPosSync && (
-            <div className="text-xs text-[#64748B] dark:text-gray-400">
+            <div className="text-xs text-muted dark:text-muted">
               Laatste sync: {new Date(listing.lastPosSync).toLocaleString('nl-NL')}
             </div>
           )}
@@ -1145,7 +1145,7 @@ const CreateProductForm = ({ onSuccess }: CreateProductFormProps): JSX.Element =
       <form onSubmit={handleSubmit} className="space-y-4">
         {/* EAN Lookup */}
         <div className="rounded-lg border border-blue-200 bg-blue-50 p-4 dark:border-blue-800 dark:bg-blue-900/20">
-          <label className="block text-sm font-medium text-gray-900 dark:text-white mb-2">
+          <label className="block text-sm font-medium text-black dark:text-secondary mb-2">
             <Barcode className="inline mr-2 h-4 w-4" />
             Gratis EAN opzoeken
           </label>
@@ -1171,7 +1171,7 @@ const CreateProductForm = ({ onSuccess }: CreateProductFormProps): JSX.Element =
               {isSearching ? 'Zoeken...' : 'Zoeken'}
             </Button>
           </div>
-          <p className="mt-2 text-xs text-gray-600 dark:text-gray-400">
+          <p className="mt-2 text-xs text-muted dark:text-muted">
             Automatisch productgegevens ophalen via Icecat (gratis, 1000x/dag)
           </p>
         </div>
@@ -1180,7 +1180,7 @@ const CreateProductForm = ({ onSuccess }: CreateProductFormProps): JSX.Element =
         <div className="space-y-4">
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-900 dark:text-white">
+              <label className="block text-sm font-medium text-black dark:text-secondary">
                 SKU *
               </label>
               <Input
@@ -1191,7 +1191,7 @@ const CreateProductForm = ({ onSuccess }: CreateProductFormProps): JSX.Element =
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-900 dark:text-white">
+              <label className="block text-sm font-medium text-black dark:text-secondary">
                 EAN
               </label>
               <Input
@@ -1203,7 +1203,7 @@ const CreateProductForm = ({ onSuccess }: CreateProductFormProps): JSX.Element =
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-900 dark:text-white">
+            <label className="block text-sm font-medium text-black dark:text-secondary">
               Titel *
             </label>
             <Input
@@ -1215,7 +1215,7 @@ const CreateProductForm = ({ onSuccess }: CreateProductFormProps): JSX.Element =
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-900 dark:text-white">
+            <label className="block text-sm font-medium text-black dark:text-secondary">
               Merk
             </label>
             <Input
@@ -1226,25 +1226,25 @@ const CreateProductForm = ({ onSuccess }: CreateProductFormProps): JSX.Element =
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-900 dark:text-white">
+            <label className="block text-sm font-medium text-black dark:text-secondary">
               Beschrijving
             </label>
             <textarea
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               rows={4}
-              className="w-full rounded-lg border border-gray-300 px-3 py-2 dark:border-gray-700 dark:bg-gray-900"
+              className="w-full rounded-lg border border-border px-3 py-2 dark:border-border dark:bg-primary"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-900 dark:text-white">
+            <label className="block text-sm font-medium text-black dark:text-secondary">
               Categorie
             </label>
             <select
               value={category}
               onChange={(e) => setCategory(e.target.value)}
-              className="w-full rounded-lg border border-gray-300 px-3 py-2 dark:border-gray-700 dark:bg-gray-900"
+              className="w-full rounded-lg border border-border px-3 py-2 dark:border-border dark:bg-primary"
             >
               <option value="all">Alle</option>
               <option value="dames">Dames</option>
@@ -1255,7 +1255,7 @@ const CreateProductForm = ({ onSuccess }: CreateProductFormProps): JSX.Element =
 
           {/* Variants */}
           <div>
-            <label className="block text-sm font-medium text-gray-900 dark:text-white mb-2">
+            <label className="block text-sm font-medium text-black dark:text-secondary mb-2">
               Varianten
             </label>
             {variants.map((variant, idx) => (
@@ -1302,7 +1302,7 @@ const CreateProductForm = ({ onSuccess }: CreateProductFormProps): JSX.Element =
           </div>
         </div>
 
-        <div className="flex justify-end gap-3 pt-4 border-t border-gray-200 dark:border-gray-700">
+        <div className="flex justify-end gap-3 pt-4 border-t border-border dark:border-border">
           <Button
             type="button"
             variant="secondary"

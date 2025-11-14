@@ -17,10 +17,10 @@ const sizeClasses: Record<ButtonSize, string> = {
 };
 
 const variantClasses: Record<ButtonVariant, string> = {
-  primary: 'bg-[#0EA5E9] text-white hover:bg-[#0284C7]',
+  primary: 'bg-primary text-secondary hover:bg-primary/90',
   secondary:
-    'border border-[#E2E8F0] bg-white text-[#1E293B] hover:bg-[#F8FAFC] dark:border-gray-700 dark:bg-gray-900 dark:text-white dark:hover:bg-gray-800',
-  ghost: 'text-[#64748B] hover:text-[#1E293B] dark:text-gray-300 dark:hover:text-white'
+    'border border-border bg-secondary text-black hover:bg-accent dark:border-border dark:bg-primary dark:text-secondary dark:hover:bg-primary/90',
+  ghost: 'text-muted hover:text-black dark:text-secondary dark:hover:text-secondary'
 };
 
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(
@@ -28,7 +28,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     <button
       ref={ref}
       className={clsx(
-        'inline-flex items-center justify-center rounded-full font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-[#0EA5E9] focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-70',
+        'inline-flex items-center justify-center rounded-full font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-70',
         sizeClasses[size],
         variantClasses[variant],
         className
@@ -37,7 +37,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       {...props}
     >
       {isLoading && (
-        <span className="mr-2 inline-block h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
+        <span className="mr-2 inline-block h-4 w-4 animate-spin rounded-full border-2 border-secondary border-t-transparent" />
       )}
       {children}
     </button>

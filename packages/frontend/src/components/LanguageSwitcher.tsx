@@ -30,7 +30,7 @@ const LanguageSwitcher = (): JSX.Element => {
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-medium text-[#64748B] transition hover:bg-[#F8FAFC] hover:text-[#0EA5E9]"
+        className="flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-medium text-muted transition hover:bg-accent hover:text-primary"
         aria-label="Change language"
       >
         <Globe className="h-4 w-4" />
@@ -38,15 +38,15 @@ const LanguageSwitcher = (): JSX.Element => {
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-32 rounded-lg border border-[#E2E8F0] bg-white shadow-lg">
+        <div className="absolute right-0 mt-2 w-32 rounded-lg border border-border bg-white shadow-lg">
           <div className="p-1">
             <button
               type="button"
               onClick={() => changeLanguage('nl')}
               className={`flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm transition ${
                 i18n.language === 'nl'
-                  ? 'bg-[#F0F9FF] text-[#0EA5E9]'
-                  : 'text-[#1E293B] hover:bg-[#F8FAFC]'
+                  ? 'bg-accent text-primary'
+                  : 'text-black hover:bg-accent'
               }`}
             >
               <span className="text-lg">🇳🇱</span>
@@ -57,8 +57,8 @@ const LanguageSwitcher = (): JSX.Element => {
               onClick={() => changeLanguage('en')}
               className={`flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm transition ${
                 i18n.language === 'en'
-                  ? 'bg-[#F0F9FF] text-[#0EA5E9]'
-                  : 'text-[#1E293B] hover:bg-[#F8FAFC]'
+                  ? 'bg-accent text-primary'
+                  : 'text-black hover:bg-accent'
               }`}
             >
               <span className="text-lg">🇬🇧</span>

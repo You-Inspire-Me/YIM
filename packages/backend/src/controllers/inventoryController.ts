@@ -16,6 +16,101 @@ const upload = multer({ storage: multer.memoryStorage() });
 
 export const uploadMiddleware = upload.single('csv');
 
+/**
+ * Simple stock-only CSV import for Host inventory
+ * Expected columns: sku, stock
+ * Updates CreatorListing.stock via bulkWrite
+ */
+export const importStockCsv = async (req: AuthRequest, res: Response): Promise<void> => {
+  if (!req.user) {
+    res.status(StatusCodes.UNAUTHORIZED).json({ message: 'Not authenticated' });
+    return;
+  }
+
+  if (!req.file) {
+    res.status(StatusCodes.BAD_REQUEST).json({ message: 'No CSV file provided' });
+    return;
+  }
+
+  try {
+    const csvContent = req.file.buffer.toString('utf-8');
+    
+    const parseResult = Papa.parse<Record<string, string>>(csvContent, {
+      header: true,
+      skipEmptyLines: true,
+      transform: (value: string) => value ? value.trim() : ''
+    });
+
+    if (parseResult.errors.length > 0) {
+      res.status(StatusCodes.BAD_REQUEST).json({
+        message: 'CSV parsing errors',
+        errors: parseResult.errors
+      });
+      return;
+    }
+
+    const updates: Array<{ updateOne: { filter: any; update: any } }> = [];
+    const errors: Array<{ row: number; sku: string; error: string }> = [];
+    let successCount = 0;
+
+    for (let i = 0; i < parseResult.data.length; i++) {
+      const row = parseResult.data[i];
+      const sku = row.sku || row.SKU || '';
+      const stockStr = row.stock || row.Stock || row.voorraad || '0';
+
+      if (!sku) {
+        errors.push({ row: i + 2, sku: '', error: 'Missing SKU' });
+        continue;
+      }
+
+      const stock = parseInt(stockStr, 10);
+      if (isNaN(stock) || stock < 0) {
+        errors.push({ row: i + 2, sku, error: `Invalid stock value: ${stockStr}` });
+        continue;
+      }
+
+      // Find CreatorListing by SKU and creatorId
+      updates.push({
+        updateOne: {
+          filter: {
+            sku: sku.trim(),
+            creatorId: req.user._id
+          },
+          update: {
+            $set: { stock }
+          }
+        }
+      });
+      successCount++;
+    }
+
+    if (updates.length === 0) {
+      res.status(StatusCodes.BAD_REQUEST).json({
+        message: 'No valid rows to update',
+        errors
+      });
+      return;
+    }
+
+    // Bulk update using bulkWrite
+    const result = await CreatorListingModel.bulkWrite(updates, { ordered: false });
+
+    res.status(StatusCodes.OK).json({
+      message: `Stock updated: ${successCount} items`,
+      success: successCount,
+      matched: result.matchedCount,
+      modified: result.modifiedCount,
+      errors: errors.length > 0 ? errors : undefined
+    });
+  } catch (error) {
+    console.error('Stock CSV import error:', error);
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      message: 'Failed to import stock CSV',
+      error: error instanceof Error ? error.message : 'Unknown error'
+    });
+  }
+};
+
 interface CsvRow {
   sku: string;
   variant_size?: string;

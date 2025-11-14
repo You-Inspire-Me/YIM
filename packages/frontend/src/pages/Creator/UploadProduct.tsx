@@ -145,7 +145,7 @@ const UploadProductPage = (): JSX.Element => {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-extrabold">{productId ? 'Product bewerken' : 'Nieuw product uploaden'}</h1>
-          <p className="mt-2 text-sm text-gray-500">
+          <p className="mt-2 text-sm text-muted">
             Vul de productdetails in en upload hoogwaardige foto’s.
           </p>
         </div>
@@ -215,7 +215,7 @@ const UploadProductPage = (): JSX.Element => {
             type="file"
             accept="image/*"
             multiple
-            className="mt-2 w-full rounded-lg border border-dashed border-gray-300 bg-gray-50 p-6 text-sm text-gray-500 focus:border-[#0EA5E9] focus:outline-none focus:ring-2 focus:ring-[#0EA5E9] dark:border-gray-700 dark:bg-gray-900"
+            className="mt-2 w-full rounded-lg border border-dashed border-border bg-accent p-6 text-sm text-muted focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary dark:border-border dark:bg-primary"
             {...imagesRegister}
             onChange={(event) => {
               imagesRegister.onChange(event);

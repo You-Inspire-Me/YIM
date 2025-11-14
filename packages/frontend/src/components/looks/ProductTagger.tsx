@@ -85,7 +85,7 @@ const ProductTagger = ({ imageUrl, taggedProducts, onProductAdd, onProductRemove
 
   return (
     <div className="relative">
-      <div className="relative aspect-square overflow-hidden rounded-lg border-2 border-gray-200 dark:border-gray-800">
+      <div className="relative aspect-square overflow-hidden rounded-lg border-2 border-border dark:border-border">
         <img
           ref={imageRef}
           src={imageUrl}
@@ -112,10 +112,10 @@ const ProductTagger = ({ imageUrl, taggedProducts, onProductAdd, onProductRemove
       </div>
 
       {showSearch && (
-        <div className="absolute left-0 top-0 z-10 w-full rounded-lg border border-gray-200 bg-white shadow-xl dark:border-gray-700 dark:bg-gray-900">
+        <div className="absolute left-0 top-0 z-10 w-full rounded-lg border border-border bg-white shadow-xl dark:border-border dark:bg-primary">
           <div className="p-4">
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400" />
+              <Search className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-muted" />
               <Input
                 ref={searchInputRef}
                 type="text"
@@ -133,7 +133,7 @@ const ProductTagger = ({ imageUrl, taggedProducts, onProductAdd, onProductRemove
                 }}
                 className="absolute right-3 top-1/2 -translate-y-1/2"
               >
-                <X className="h-5 w-5 text-gray-400" />
+                <X className="h-5 w-5 text-muted" />
               </button>
             </div>
 
@@ -149,7 +149,7 @@ const ProductTagger = ({ imageUrl, taggedProducts, onProductAdd, onProductRemove
                     <button
                       type="button"
                       onClick={() => handleProductSelect(product)}
-                      className="flex w-full items-center gap-3 rounded-lg border border-gray-200 p-3 text-left transition hover:bg-gray-50 dark:border-gray-700 dark:hover:bg-gray-800"
+                      className="flex w-full items-center gap-3 rounded-lg border border-border p-3 text-left transition hover:bg-accent dark:border-border dark:hover:bg-primary/90"
                     >
                       <img
                         src={product.images?.[0] || ''}
@@ -157,8 +157,8 @@ const ProductTagger = ({ imageUrl, taggedProducts, onProductAdd, onProductRemove
                         className="h-12 w-12 rounded object-cover"
                       />
                       <div className="flex-1">
-                        <p className="font-medium text-gray-900 dark:text-white">{product.title}</p>
-                        <p className="text-sm text-gray-500 dark:text-gray-400">
+                        <p className="font-medium text-black dark:text-secondary">{product.title}</p>
+                        <p className="text-sm text-muted dark:text-muted">
                           €{product.price.toFixed(2)} • {product.inventory} op voorraad
                         </p>
                       </div>
@@ -170,7 +170,7 @@ const ProductTagger = ({ imageUrl, taggedProducts, onProductAdd, onProductRemove
                             key={size}
                             type="button"
                             onClick={() => handleProductSelect(product, size)}
-                            className="rounded border border-gray-200 px-2 py-1 text-xs transition hover:bg-gray-50 dark:border-gray-700 dark:hover:bg-gray-800"
+                            className="rounded border border-border px-2 py-1 text-xs transition hover:bg-accent dark:border-border dark:hover:bg-primary/90"
                           >
                             {size}
                           </button>
@@ -181,7 +181,7 @@ const ProductTagger = ({ imageUrl, taggedProducts, onProductAdd, onProductRemove
                 ))}
               </div>
             ) : searchQuery && (
-              <p className="mt-4 text-center text-sm text-gray-500 dark:text-gray-400">Geen producten gevonden</p>
+              <p className="mt-4 text-center text-sm text-muted dark:text-muted">Geen producten gevonden</p>
             )}
           </div>
         </div>
@@ -192,14 +192,14 @@ const ProductTagger = ({ imageUrl, taggedProducts, onProductAdd, onProductRemove
           {taggedProducts.map((product, index) => (
             <div
               key={index}
-              className="flex items-center gap-2 rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 dark:border-gray-700 dark:bg-gray-800"
+              className="flex items-center gap-2 rounded-lg border border-border bg-accent px-3 py-2 dark:border-border dark:bg-primary"
             >
               <img src={product.image} alt={product.title} className="h-8 w-8 rounded object-cover" />
-              <span className="text-sm font-medium text-gray-900 dark:text-white">{product.title}</span>
+              <span className="text-sm font-medium text-black dark:text-secondary">{product.title}</span>
               <button
                 type="button"
                 onClick={() => onProductRemove(index)}
-                className="text-gray-400 hover:text-red-500"
+                className="text-muted hover:text-red-500"
               >
                 <X className="h-4 w-4" />
               </button>

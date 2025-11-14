@@ -49,9 +49,10 @@ export const createCheckoutSession = async (req: AuthRequest, res: Response): Pr
   try {
     const { items, discountCode, shippingAddress } = checkoutSchema.parse(req.body);
 
-    // Find best available listings for each item
+    // Find best available listings for each item and group by host/creator
     const lineItems: Stripe.Checkout.SessionCreateParams.LineItem[] = [];
-    const selectedListings: Array<{ listingId: string; quantity: number; price: number }> = [];
+    const selectedListings: Array<{ listingId: string; quantity: number; price: number; creatorId: string }> = [];
+    const hostGroups: Map<string, Array<{ listingId: string; quantity: number; price: number }>> = new Map();
 
     for (const item of items) {
       // Find available listings for this product variant
@@ -78,8 +79,9 @@ export const createCheckoutSession = async (req: AuthRequest, res: Response): Pr
       const listing = listings[0] as any;
       const product = listing.productId;
       const variant = listing.variantId;
+      const creatorId = listing.creatorId._id.toString();
 
-      // Add to Stripe line items
+      // Add to Stripe line items (all items in one session)
       lineItems.push({
         price_data: {
           currency: 'eur',
@@ -93,11 +95,22 @@ export const createCheckoutSession = async (req: AuthRequest, res: Response): Pr
         quantity: item.quantity
       });
 
-      selectedListings.push({
+      const listingData = {
         listingId: listing._id.toString(),
         quantity: item.quantity,
         price: listing.priceInclVat
+      };
+
+      selectedListings.push({
+        ...listingData,
+        creatorId
       });
+
+      // Group by host/creator
+      if (!hostGroups.has(creatorId)) {
+        hostGroups.set(creatorId, []);
+      }
+      hostGroups.get(creatorId)!.push(listingData);
     }
 
     // Calculate totals
@@ -159,7 +172,7 @@ export const createCheckoutSession = async (req: AuthRequest, res: Response): Pr
       }
     });
 
-    // Create draft order (will be updated to 'paid' after webhook)
+    // Create draft order with host split (will be updated to 'paid' after webhook)
     const order = await OrderModel.create({
       userId: req.user._id as any,
       items: selectedListings.map((item) => ({
@@ -177,7 +190,17 @@ export const createCheckoutSession = async (req: AuthRequest, res: Response): Pr
       currency: 'EUR',
       tags: [],
       market: shippingAddress?.country || 'NL',
-      discountCode: discountCode?.toUpperCase()
+      discountCode: discountCode?.toUpperCase(),
+      // Store host split for multi-vendor orders
+      hostSplit: Array.from(hostGroups.entries()).map(([creatorId, items]) => ({
+        creatorId: creatorId as any,
+        items: items.map((item) => ({
+          listingId: item.listingId as any,
+          quantity: item.quantity,
+          priceAtPurchase: item.price
+        })),
+        subtotal: items.reduce((sum, item) => sum + item.price * item.quantity, 0)
+      }))
     });
 
     res.status(StatusCodes.OK).json({

@@ -70,7 +70,7 @@ const ProductsPage = (): JSX.Element => {
       <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <div>
           <h1 className="text-3xl font-extrabold">Producten</h1>
-          <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
+          <p className="mt-2 text-sm text-muted dark:text-muted">
             Beheer al je producten op één plek
           </p>
         </div>
@@ -81,7 +81,7 @@ const ProductsPage = (): JSX.Element => {
       </div>
 
       {selectedIds.size > 0 && (
-        <div className="rounded-lg border border-gray-200 bg-white p-4 dark:border-gray-800 dark:bg-gray-900">
+        <div className="rounded-lg border border-border bg-white p-4 dark:border-border dark:bg-primary">
           <div className="flex items-center justify-between">
             <span className="text-sm font-medium">
               {selectedIds.size} product(en) geselecteerd
@@ -103,15 +103,15 @@ const ProductsPage = (): JSX.Element => {
         </div>
       )}
 
-      <div className="overflow-hidden rounded-xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-900">
+      <div className="overflow-hidden rounded-xl border border-border bg-white dark:border-border dark:bg-primary">
         <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-800">
-          <thead className="bg-gray-50 dark:bg-gray-900">
+          <thead className="bg-accent dark:bg-primary">
             <tr>
               <th className="w-12 px-6 py-4">
                 <button
                   type="button"
                   onClick={toggleSelectAll}
-                  className="text-gray-400 hover:text-gray-600"
+                  className="text-muted hover:text-muted"
                 >
                   {selectedIds.size === products.length && products.length > 0 ? (
                     <CheckSquare className="h-5 w-5" />
@@ -120,22 +120,22 @@ const ProductsPage = (): JSX.Element => {
                   )}
                 </button>
               </th>
-              <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wide text-gray-500">
+              <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wide text-muted">
                 Product
               </th>
-              <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wide text-gray-500">
+              <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wide text-muted">
                 Prijs
               </th>
-              <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wide text-gray-500">
+              <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wide text-muted">
                 Voorraad
               </th>
-              <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wide text-gray-500">
+              <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wide text-muted">
                 Status
               </th>
               <th className="px-6 py-4" />
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-100 bg-white dark:divide-gray-800 dark:bg-gray-950">
+          <tbody className="divide-y divide-gray-100 bg-white dark:divide-gray-800 dark:bg-primary">
             {isLoading &&
               Array.from({ length: 4 }).map((_, index) => (
                 <tr key={index}>
@@ -161,10 +161,10 @@ const ProductsPage = (): JSX.Element => {
               ))}
             {!isLoading && products.length === 0 && (
               <tr>
-                <td colSpan={6} className="px-6 py-12 text-center text-sm text-gray-500 dark:text-gray-400">
+                <td colSpan={6} className="px-6 py-12 text-center text-sm text-muted dark:text-muted">
                   Je hebt nog geen producten.{' '}
                   <button
-                    className="font-medium text-[#0EA5E9] underline"
+                    className="font-medium text-primary underline"
                     onClick={() => navigate('/host/upload')}
                   >
                     Upload het eerste product.
@@ -176,7 +176,7 @@ const ProductsPage = (): JSX.Element => {
               products.map((product) => (
                 <tr
                   key={product._id}
-                  className={`hover:bg-gray-50 dark:hover:bg-gray-900 ${
+                  className={`hover:bg-accent dark:hover:bg-gray-900 ${
                     product.inventory < 10 ? 'bg-red-50/50 dark:bg-red-900/10' : ''
                   }`}
                 >
@@ -184,10 +184,10 @@ const ProductsPage = (): JSX.Element => {
                     <button
                       type="button"
                       onClick={() => toggleSelect(product._id)}
-                      className="text-gray-400 hover:text-gray-600"
+                      className="text-muted hover:text-muted"
                     >
                       {selectedIds.has(product._id) ? (
-                        <CheckSquare className="h-5 w-5 text-[#0EA5E9]" />
+                        <CheckSquare className="h-5 w-5 text-primary" />
                       ) : (
                         <Square className="h-5 w-5" />
                       )}
@@ -202,7 +202,7 @@ const ProductsPage = (): JSX.Element => {
                       />
                       <div>
                         <p className="font-semibold">{product.title}</p>
-                        <p className="text-xs text-gray-500">{product.category}</p>
+                        <p className="text-xs text-muted">{product.category}</p>
                       </div>
                     </div>
                   </td>
@@ -219,7 +219,7 @@ const ProductsPage = (): JSX.Element => {
                       className={`inline-flex rounded-full px-2 py-1 text-xs font-semibold ${
                         product.isPublished
                           ? 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400'
-                          : 'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-400'
+                          : 'bg-accent text-black dark:bg-primary dark:text-muted'
                       }`}
                     >
                       {product.isPublished ? 'Gepubliceerd' : 'Concept'}
@@ -229,7 +229,7 @@ const ProductsPage = (): JSX.Element => {
                     <div className="flex gap-3">
                       <button
                         type="button"
-                        className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-gray-200 text-gray-600 transition hover:bg-gray-100 dark:border-gray-700 dark:text-gray-300 dark:hover:bg-gray-800"
+                        className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-border text-muted transition hover:bg-accent dark:border-border dark:text-secondary dark:hover:bg-primary/90"
                         onClick={() => navigate(`/host/upload?id=${product._id}`)}
                         aria-label="Bewerk product"
                       >
@@ -237,7 +237,7 @@ const ProductsPage = (): JSX.Element => {
                       </button>
                       <button
                         type="button"
-                        className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-gray-200 text-red-500 transition hover:bg-red-50 dark:border-gray-700 dark:hover:bg-gray-900"
+                        className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-border text-red-500 transition hover:bg-red-50 dark:border-border dark:hover:bg-gray-900"
                         onClick={() => {
                           if (confirm('Weet je zeker dat je dit product wilt verwijderen?')) {
                             deleteMutation.mutate(product._id);

@@ -33,17 +33,17 @@ const CreatorLayout = (): JSX.Element => {
   ];
 
   return (
-    <div className="flex h-screen overflow-hidden bg-[#F8FAFC] dark:bg-gray-950">
+    <div className="flex h-screen overflow-hidden bg-accent dark:bg-primary">
       {/* Sidebar */}
       <aside
-        className={`fixed inset-y-0 left-0 z-50 w-64 transform border-r border-[#E2E8F0] bg-white transition-transform duration-200 dark:border-gray-800 dark:bg-gray-900 lg:translate-x-0 ${
+        className={`fixed inset-y-0 left-0 z-50 w-64 transform border-r border-border bg-white transition-transform duration-200 dark:border-border dark:bg-primary lg:translate-x-0 ${
           sidebarOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
         <div className="flex h-full flex-col">
-          <div className="flex h-16 items-center justify-between border-b border-[#E2E8F0] px-6 dark:border-gray-800">
-            <Link to="/creator" className="flex items-center gap-2 text-lg font-semibold text-[#1E293B]">
-              <Store className="h-6 w-6 text-[#0EA5E9]" />
+          <div className="flex h-16 items-center justify-between border-b border-border px-6 dark:border-border">
+            <Link to="/creator" className="flex items-center gap-2 text-lg font-semibold text-black">
+              <Store className="h-6 w-6 text-primary" />
               Creator Studio
             </Link>
             <button
@@ -68,8 +68,8 @@ const CreatorLayout = (): JSX.Element => {
                   className={({ isActive }) =>
                     `flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
                       isActive
-                        ? 'border-l-4 border-[#0EA5E9] bg-[#F0F9FF] text-[#0EA5E9]'
-                        : 'text-[#64748B] hover:bg-[#F8FAFC] dark:text-gray-300 dark:hover:bg-gray-800'
+                        ? 'border-l-4 border-primary bg-accent text-primary'
+                        : 'text-muted hover:bg-accent dark:text-secondary dark:hover:bg-primary/90'
                     }`
                   }
                 >
@@ -80,14 +80,14 @@ const CreatorLayout = (): JSX.Element => {
             })}
           </nav>
 
-          <div className="border-t border-[#E2E8F0] p-4 dark:border-gray-800">
+          <div className="border-t border-border p-4 dark:border-border">
             <div className="flex items-center gap-2">
-              <div className="h-8 w-8 rounded-full bg-[#0EA5E9] flex items-center justify-center text-white text-xs font-semibold">
+              <div className="h-8 w-8 rounded-full bg-primary flex items-center justify-center text-secondary text-xs font-semibold">
                 {(user?.name || user?.email || 'U').charAt(0).toUpperCase()}
               </div>
               <div className="flex-1">
-                <p className="text-xs font-semibold text-[#1E293B] dark:text-white">{user?.name || 'User'}</p>
-                <p className="text-xs text-[#64748B] dark:text-gray-400">{user?.email}</p>
+                <p className="text-xs font-semibold text-black dark:text-secondary">{user?.name || 'User'}</p>
+                <p className="text-xs text-muted dark:text-muted">{user?.email}</p>
               </div>
             </div>
           </div>
@@ -97,7 +97,7 @@ const CreatorLayout = (): JSX.Element => {
       {/* Main Content */}
       <div className="flex flex-1 flex-col overflow-hidden lg:pl-64">
         {/* Desktop Header - Right Top */}
-        <header className="hidden h-16 items-center justify-between border-b border-[#E2E8F0] bg-white px-6 dark:border-gray-800 dark:bg-gray-900 lg:flex">
+        <header className="hidden h-16 items-center justify-between border-b border-border bg-white px-6 dark:border-border dark:bg-primary lg:flex">
           <div className="flex-1" />
           <div className="flex items-center gap-4">
             <ThemeToggle />
@@ -106,16 +106,16 @@ const CreatorLayout = (): JSX.Element => {
         </header>
 
         {/* Mobile Header */}
-        <header className="flex h-16 items-center justify-between border-b border-[#E2E8F0] bg-white px-4 dark:border-gray-800 dark:bg-gray-900 lg:hidden">
+        <header className="flex h-16 items-center justify-between border-b border-border bg-white px-4 dark:border-border dark:bg-primary lg:hidden">
           <button
             type="button"
             onClick={() => setSidebarOpen(true)}
-            className="text-[#1E293B] dark:text-white"
+            className="text-black dark:text-secondary"
             aria-label="Open sidebar"
           >
             <Menu className="h-6 w-6" />
           </button>
-          <Link to="/creator" className="text-lg font-semibold text-[#1E293B] dark:text-white">
+          <Link to="/creator" className="text-lg font-semibold text-black dark:text-secondary">
             Creator Studio
           </Link>
           <div className="flex items-center gap-2">
@@ -125,7 +125,7 @@ const CreatorLayout = (): JSX.Element => {
         </header>
 
         {/* Page Content with consistent padding */}
-        <main className="flex-1 overflow-y-auto bg-[#F8FAFC] dark:bg-gray-950 px-6 py-6">
+        <main className="flex-1 overflow-y-auto bg-accent dark:bg-primary px-6 py-6">
           <Outlet />
         </main>
       </div>
@@ -133,7 +133,7 @@ const CreatorLayout = (): JSX.Element => {
       {/* Overlay for mobile */}
       {sidebarOpen && (
         <div
-          className="fixed inset-0 z-40 bg-black/50 lg:hidden"
+          className="fixed inset-0 z-40 bg-primary/50 lg:hidden"
           onClick={() => setSidebarOpen(false)}
         />
       )}

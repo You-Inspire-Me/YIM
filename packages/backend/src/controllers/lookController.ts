@@ -68,7 +68,7 @@ export const createLook = async (req: AuthRequest, res: Response): Promise<void>
         ...product,
         image: product.image || 'https://via.placeholder.com/400x600?text=No+Image'
       })),
-      host: req.user._id
+      creatorId: req.user._id
     };
     
     const look = await LookModel.create(processedData);
@@ -113,7 +113,7 @@ export const updateLook = async (req: AuthRequest, res: Response): Promise<void>
       : data;
     
     const look = await LookModel.findOneAndUpdate(
-      { _id: id, host: req.user._id },
+      { _id: id, creatorId: req.user._id },
       processedData,
       { new: true, runValidators: true }
     );
@@ -152,7 +152,7 @@ export const getPublicLooks = async (req: Request, res: Response): Promise<void>
     }
 
     const looks = await LookModel.find(filters)
-      .populate('host', 'name avatarUrl')
+      .populate('creatorId', 'name avatar')
       .sort({ createdAt: -1 })
       .limit(50)
       .lean();
@@ -193,8 +193,8 @@ export const getLook = async (req: AuthRequest, res: Response): Promise<void> =>
 
   try {
     const { id } = req.params;
-    const look = await LookModel.findOne({ _id: id, host: req.user._id })
-      .populate('host', 'name avatarUrl')
+    const look = await LookModel.findOne({ _id: id, creatorId: req.user._id })
+      .populate('creatorId', 'name avatar')
       .lean();
 
     if (!look) {
@@ -217,7 +217,7 @@ export const deleteLook = async (req: AuthRequest, res: Response): Promise<void>
 
   try {
     const { id } = req.params;
-    const look = await LookModel.findOneAndDelete({ _id: id, host: req.user._id });
+    const look = await LookModel.findOneAndDelete({ _id: id, creatorId: req.user._id });
 
     if (!look) {
       res.status(StatusCodes.NOT_FOUND).json({ message: 'Look not found' });
@@ -239,7 +239,7 @@ export const togglePublished = async (req: AuthRequest, res: Response): Promise<
 
   try {
     const { id } = req.params;
-    const look = await LookModel.findOne({ _id: id, host: req.user._id });
+    const look = await LookModel.findOne({ _id: id, creatorId: req.user._id });
 
     if (!look) {
       res.status(StatusCodes.NOT_FOUND).json({ message: 'Look not found' });
@@ -261,7 +261,7 @@ export const getPublicLook = async (req: Request, res: Response): Promise<void> 
 
   try {
     const look = await LookModel.findOne({ _id: id, published: true })
-      .populate('host', 'name avatarUrl email')
+      .populate('creatorId', 'name avatar email')
       .lean();
 
     if (!look) {

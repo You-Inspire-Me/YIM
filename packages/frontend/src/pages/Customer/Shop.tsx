@@ -41,13 +41,13 @@ const ShopPage = (): JSX.Element => {
       <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
         <div>
           <h1 className="text-3xl font-semibold">Shop</h1>
-          <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
+          <p className="mt-2 text-sm text-muted dark:text-muted">
             Zoek op categorie of trefwoord om je volgende favoriete item te vinden.
           </p>
         </div>
         <div className="flex w-full flex-col gap-3 md:w-auto md:flex-row">
           <div className="relative w-full md:w-72">
-            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted" />
             <Input
               value={search}
               onChange={(event) => {
@@ -60,7 +60,7 @@ const ShopPage = (): JSX.Element => {
             />
           </div>
           <select
-            className="w-full rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm transition focus:border-[#0EA5E9] focus:outline-none focus:ring-2 focus:ring-[#0EA5E9] dark:border-gray-700 dark:bg-gray-900 md:w-48"
+            className="w-full rounded-lg border border-border bg-white px-4 py-2 text-sm transition focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary dark:border-border dark:bg-primary md:w-48"
             value={category}
             onChange={(event) => {
               setPage(1);
@@ -80,7 +80,7 @@ const ShopPage = (): JSX.Element => {
         {isLoading &&
           Array.from({ length: 6 }).map((_, index) => <ProductCardSkeleton key={index} />)}
         {!isLoading && data?.items.length === 0 && (
-          <div className="col-span-full rounded-2xl border border-dashed border-gray-200 p-12 text-center text-sm text-gray-500 dark:border-gray-700 dark:text-gray-400">
+          <div className="col-span-full rounded-2xl border border-dashed border-border p-12 text-center text-sm text-muted dark:border-border dark:text-muted">
             Geen producten gevonden. Probeer een andere zoekopdracht.
           </div>
         )}
@@ -93,18 +93,18 @@ const ShopPage = (): JSX.Element => {
             type="button"
             onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
             disabled={page === 1}
-            className="rounded-full border border-gray-200 px-4 py-2 text-sm font-medium disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-700"
+            className="rounded-full border border-border px-4 py-2 text-sm font-medium disabled:cursor-not-allowed disabled:opacity-50 dark:border-border"
           >
             Vorige
           </button>
-          <span className="text-sm text-gray-500 dark:text-gray-400">
+          <span className="text-sm text-muted dark:text-muted">
             Pagina {page} van {totalPages}
           </span>
           <button
             type="button"
             onClick={() => setPage((prev) => Math.min(prev + 1, totalPages))}
             disabled={page === totalPages}
-            className="rounded-full border border-gray-200 px-4 py-2 text-sm font-medium disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-700"
+            className="rounded-full border border-border px-4 py-2 text-sm font-medium disabled:cursor-not-allowed disabled:opacity-50 dark:border-border"
           >
             Volgende
           </button>

@@ -1,0 +1,4 @@
+git status
+git add .
+git commit -m "Add Icecat EAN, CSV stock import, Look system, multi-vendor checkout"
+git push

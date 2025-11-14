@@ -31,15 +31,15 @@ const HostLayout = (): JSX.Element => {
   ];
 
   return (
-    <div className="flex h-screen overflow-hidden bg-gray-50 dark:bg-gray-950">
+    <div className="flex h-screen overflow-hidden bg-accent dark:bg-primary">
       {/* Sidebar */}
       <aside
-        className={`fixed inset-y-0 left-0 z-50 w-64 transform border-r border-gray-200 bg-white transition-transform duration-200 dark:border-gray-800 dark:bg-gray-900 lg:translate-x-0 ${
+        className={`fixed inset-y-0 left-0 z-50 w-64 transform border-r border-border bg-white transition-transform duration-200 dark:border-border dark:bg-primary lg:translate-x-0 ${
           sidebarOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
         <div className="flex h-full flex-col">
-          <div className="flex h-16 items-center justify-between border-b border-gray-200 px-6 dark:border-gray-800">
+          <div className="flex h-16 items-center justify-between border-b border-border px-6 dark:border-border">
             <Link to="/creator" className="flex items-center gap-2 text-lg font-semibold">
               <Store className="h-6 w-6 text-teal-600 dark:text-teal-500" />
               Creator Studio
@@ -66,8 +66,8 @@ const HostLayout = (): JSX.Element => {
                   className={({ isActive }) =>
                     `flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
                       isActive
-                        ? 'bg-teal-600 text-white dark:bg-teal-500'
-                        : 'text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800'
+                        ? 'bg-teal-600 text-secondary dark:bg-teal-500'
+                        : 'text-black hover:bg-accent dark:text-secondary dark:hover:bg-primary/90'
                     }`
                   }
                 >
@@ -78,14 +78,14 @@ const HostLayout = (): JSX.Element => {
             })}
           </nav>
 
-          <div className="border-t border-gray-200 p-4 dark:border-gray-800">
+          <div className="border-t border-border p-4 dark:border-border">
             <div className="flex items-center gap-3 px-3">
-              <div className="h-8 w-8 rounded-full bg-teal-600 dark:bg-teal-500 flex items-center justify-center text-white text-sm font-semibold">
+              <div className="h-8 w-8 rounded-full bg-teal-600 dark:bg-teal-500 flex items-center justify-center text-secondary text-sm font-semibold">
                 {(user?.name || user?.email || 'U').charAt(0).toUpperCase()}
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-gray-900 dark:text-white truncate">{user?.name || user?.email || 'User'}</p>
-                <p className="text-xs text-gray-500 dark:text-gray-400 truncate">{user?.email}</p>
+                <p className="text-sm font-medium text-black dark:text-secondary truncate">{user?.name || user?.email || 'User'}</p>
+                <p className="text-xs text-muted dark:text-muted truncate">{user?.email}</p>
               </div>
             </div>
           </div>
@@ -95,14 +95,14 @@ const HostLayout = (): JSX.Element => {
       {/* Overlay for mobile */}
       {sidebarOpen && (
         <div
-          className="fixed inset-0 z-40 bg-black/50 lg:hidden"
+          className="fixed inset-0 z-40 bg-primary/50 lg:hidden"
           onClick={() => setSidebarOpen(false)}
         />
       )}
 
       {/* Main content */}
       <div className="flex flex-1 flex-col overflow-hidden lg:pl-64">
-        <header className="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-gray-200 bg-white px-4 shadow-sm dark:border-gray-800 dark:bg-gray-900">
+        <header className="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-border bg-white px-4 shadow-sm dark:border-border dark:bg-primary">
           <div className="flex items-center gap-4">
             <button
               type="button"
@@ -123,7 +123,7 @@ const HostLayout = (): JSX.Element => {
           </div>
         </header>
 
-        <main className="flex-1 overflow-y-auto bg-gray-50 p-6 dark:bg-gray-950">
+        <main className="flex-1 overflow-y-auto bg-accent p-6 dark:bg-primary">
           <Outlet />
         </main>
       </div>

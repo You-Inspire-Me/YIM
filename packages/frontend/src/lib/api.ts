@@ -176,7 +176,7 @@ export const endpoints = {
       api.get('/creator/listings/available', { params })
   },
   icecat: {
-    lookup: (ean: string) => api.get('/creator/icecat/lookup', { params: { ean } })
+    lookup: (ean: string) => api.get('/icecat/lookup', { params: { ean } })
   },
   merchantOffers: {
     list: (params?: { status?: string; variantId?: string }) =>
@@ -276,8 +276,19 @@ export const endpoints = {
     },
     inventory: {
       list: (params?: { search?: string; category?: string }) => api.get('/host/inventory', { params }),
-      exportCsv: () => api.get('/merchant/inventory/export', { responseType: 'blob' })
+      exportCsv: () => api.get('/merchant/inventory/export', { responseType: 'blob' }),
+      importStockCsv: (file: File) => {
+        const formData = new FormData();
+        formData.append('csv', file);
+        return api.post('/host/inventory/stock/csv', formData, {
+          headers: { 'Content-Type': 'multipart/form-data' }
+        });
+      }
     }
+  },
+  looks: {
+    list: (params?: { category?: string }) => api.get('/public/looks', { params }),
+    detail: (id: string) => api.get(`/public/looks/${id}`)
   },
   user: {
     wishlist: {

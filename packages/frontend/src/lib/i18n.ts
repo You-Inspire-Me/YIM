@@ -11,10 +11,16 @@ i18n
     backend: {
       loadPath: '/locales/{{lng}}/{{ns}}.json'
     },
-    fallbackLng: 'nl',
+    fallbackLng: 'en',
+    supportedLngs: ['en', 'nl'],
+    ns: ['common'],
     defaultNS: 'common',
     interpolation: {
       escapeValue: false
+    },
+    detection: {
+      order: ['navigator'],
+      caches: []
     }
   });
 

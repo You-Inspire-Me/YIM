@@ -52,13 +52,13 @@ const ProfilePage = (): JSX.Element => {
     <div className="space-y-6">
       <div>
         <h1 className="text-3xl font-extrabold">Winkelprofiel</h1>
-        <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
+        <p className="mt-2 text-sm text-muted dark:text-muted">
           Pas je winkelgegevens en branding aan
         </p>
       </div>
 
       <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
-        <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900">
+        <div className="rounded-xl border border-border bg-white p-6 shadow-sm dark:border-border dark:bg-primary">
           <h2 className="mb-4 text-lg font-semibold">Banner & Logo</h2>
           <div className="grid gap-6 md:grid-cols-2">
             <div>
@@ -66,7 +66,7 @@ const ProfilePage = (): JSX.Element => {
               <input
                 type="file"
                 accept="image/*"
-                className="w-full rounded-lg border border-gray-200 p-2 text-sm dark:border-gray-700"
+                className="w-full rounded-lg border border-border p-2 text-sm dark:border-border"
                 onChange={(e) => {
                   const file = e.target.files?.[0];
                   if (file) {
@@ -83,7 +83,7 @@ const ProfilePage = (): JSX.Element => {
               <input
                 type="file"
                 accept="image/*"
-                className="w-full rounded-lg border border-gray-200 p-2 text-sm dark:border-gray-700"
+                className="w-full rounded-lg border border-border p-2 text-sm dark:border-border"
                 onChange={(e) => {
                   const file = e.target.files?.[0];
                   if (file) {
@@ -98,7 +98,7 @@ const ProfilePage = (): JSX.Element => {
           </div>
         </div>
 
-        <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900">
+        <div className="rounded-xl border border-border bg-white p-6 shadow-sm dark:border-border dark:bg-primary">
           <h2 className="mb-4 text-lg font-semibold">Basisinformatie</h2>
           <div className="space-y-4">
             <div>
@@ -128,7 +128,7 @@ const ProfilePage = (): JSX.Element => {
           </div>
         </div>
 
-        <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900">
+        <div className="rounded-xl border border-border bg-white p-6 shadow-sm dark:border-border dark:bg-primary">
           <h2 className="mb-4 text-lg font-semibold">Sociale media</h2>
           <div className="space-y-4">
             <div>

@@ -389,8 +389,8 @@ SKU-003,L,groen,20,warehouse,lightspeed,LS-12345`;
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-extrabold text-[#1E293B] dark:text-white">Voorraad</h1>
-          <p className="mt-2 text-sm text-[#64748B] dark:text-gray-400">
+          <h1 className="text-3xl font-extrabold text-black dark:text-secondary">Voorraad</h1>
+          <p className="mt-2 text-sm text-muted dark:text-muted">
             Beheer je voorraad per locatie (Zalando-grade)
           </p>
         </div>
@@ -409,7 +409,7 @@ SKU-003,L,groen,20,warehouse,lightspeed,LS-12345`;
       {/* Search and filters */}
       <div className="flex items-center gap-4">
         <div className="relative flex-1 max-w-md">
-          <Search className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-[#64748B]" />
+          <Search className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-muted" />
           <Input
             type="text"
             placeholder="Zoek op product, SKU, model..."
@@ -444,73 +444,73 @@ SKU-003,L,groen,20,warehouse,lightspeed,LS-12345`;
           ))}
         </div>
       ) : sortedOffers.length === 0 ? (
-        <div className="rounded-xl border border-[#E2E8F0] bg-white p-12 text-center dark:border-gray-800 dark:bg-gray-900">
-          <Package className="mx-auto h-12 w-12 text-[#64748B]" />
-          <p className="mt-4 text-lg font-semibold text-[#1E293B] dark:text-white">
+        <div className="rounded-xl border border-border bg-white p-12 text-center dark:border-border dark:bg-primary">
+          <Package className="mx-auto h-12 w-12 text-muted" />
+          <p className="mt-4 text-lg font-semibold text-black dark:text-secondary">
             Geen voorraad gevonden
           </p>
-          <p className="mt-2 text-sm text-[#64748B] dark:text-gray-400">
+          <p className="mt-2 text-sm text-muted dark:text-muted">
             Begin met het importeren van je voorraad via CSV of maak een listing aan in Producten.
           </p>
         </div>
       ) : (
-        <div className="overflow-hidden rounded-xl border border-[#E2E8F0] bg-white dark:border-gray-800 dark:bg-gray-900">
+        <div className="overflow-hidden rounded-xl border border-border bg-white dark:border-border dark:bg-primary">
           <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-[#E2E8F0] dark:divide-gray-800">
-              <thead className="bg-[#F8FAFC] dark:bg-gray-900">
+            <table className="min-w-full divide-y divide-[border] dark:divide-gray-800">
+              <thead className="bg-accent dark:bg-primary">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-[#64748B]">
+                  <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-muted">
                     Product
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-[#64748B]">
+                  <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-muted">
                     Variant
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-[#64748B]">
+                  <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-muted">
                     Merchant SKU
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-[#64748B]">
+                  <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-muted">
                     Prijs
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-[#64748B]">
+                  <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-muted">
                     Voorraad
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-[#64748B]">
+                  <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-muted">
                     Status
                   </th>
                   <th className="px-6 py-3" />
                 </tr>
               </thead>
-              <tbody className="divide-y divide-[#E2E8F0] bg-white dark:divide-gray-800 dark:bg-gray-900">
+              <tbody className="divide-y divide-[border] bg-white dark:divide-gray-800 dark:bg-primary">
                 {sortedOffers.map((offer) => (
-                  <tr key={offer._id} className="hover:bg-[#F8FAFC] dark:hover:bg-gray-900">
+                  <tr key={offer._id} className="hover:bg-accent dark:hover:bg-gray-900">
                     <td className="px-6 py-4">
                       <div>
-                        <p className="font-semibold text-[#1E293B] dark:text-white">
+                        <p className="font-semibold text-black dark:text-secondary">
                           {offer.variantId.masterId.title}
                         </p>
-                        <p className="text-xs text-[#64748B] dark:text-gray-400">
+                        <p className="text-xs text-muted dark:text-muted">
                           {offer.variantId.masterId.brandId} • {offer.variantId.masterId.modelId}
                         </p>
                       </div>
                     </td>
-                    <td className="px-6 py-4 text-sm text-[#64748B] dark:text-gray-400">
+                    <td className="px-6 py-4 text-sm text-muted dark:text-muted">
                       {offer.variantId.size} / {offer.variantId.colorCode}
                     </td>
-                    <td className="px-6 py-4 font-mono text-sm text-[#1E293B] dark:text-white">
+                    <td className="px-6 py-4 font-mono text-sm text-black dark:text-secondary">
                       {offer.merchantSku}
                     </td>
-                    <td className="px-6 py-4 font-semibold text-[#1E293B] dark:text-white">
+                    <td className="px-6 py-4 font-semibold text-black dark:text-secondary">
                       {offer.price ? (
                         <>
                           € {offer.price.effectivePrice.toFixed(2)}
                           {offer.price.salePrice && (
-                            <span className="ml-2 text-xs font-normal text-[#64748B] line-through">
+                            <span className="ml-2 text-xs font-normal text-muted line-through">
                               € {offer.price.basePrice.toFixed(2)}
                             </span>
                           )}
                         </>
                       ) : (
-                        <span className="text-[#64748B]">Geen prijs</span>
+                        <span className="text-muted">Geen prijs</span>
                       )}
                     </td>
                     <td className="px-6 py-4">
@@ -522,12 +522,12 @@ SKU-003,L,groen,20,warehouse,lightspeed,LS-12345`;
                                 className={
                                   stock.availableQty < 10
                                     ? 'font-semibold text-red-600 dark:text-red-400'
-                                    : 'text-[#1E293B] dark:text-white'
+                                    : 'text-black dark:text-secondary'
                                 }
                               >
                                 {stock.availableQty}
                               </span>
-                              <span className="text-xs text-[#64748B]">
+                              <span className="text-xs text-muted">
                                 ({stock.locationId.name})
                               </span>
                               {stock.status === 'out_of_stock' && (
@@ -537,20 +537,20 @@ SKU-003,L,groen,20,warehouse,lightspeed,LS-12345`;
                               )}
                             </div>
                           ))}
-                          <div className="mt-1 text-xs font-semibold text-[#1E293B] dark:text-white">
+                          <div className="mt-1 text-xs font-semibold text-black dark:text-secondary">
                             Totaal: {offer.totalStock}
                           </div>
                         </div>
                       ) : (
-                        <span className="text-[#64748B]">Geen voorraad</span>
+                        <span className="text-muted">Geen voorraad</span>
                       )}
                     </td>
                     <td className="px-6 py-4">
                       <span
                         className={`inline-flex rounded-full px-2 py-1 text-xs font-semibold ${
                           offer.status === 'active'
-                            ? 'bg-[#E0F2FE] text-[#0EA5E9] dark:bg-blue-900/30 dark:text-blue-400'
-                            : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400'
+                            ? 'bg-accent text-primary dark:bg-primary/30 dark:text-secondary'
+                            : 'bg-accent text-muted dark:bg-primary dark:text-muted'
                         }`}
                       >
                         {offer.status === 'active' ? 'Actief' : 'Gepauzeerd'}
@@ -588,26 +588,26 @@ SKU-003,L,groen,20,warehouse,lightspeed,LS-12345`;
         title="CSV importeren (voorraad alleen)"
       >
         <div className="space-y-4">
-          <div className="rounded-lg border-2 border-dashed border-[#E2E8F0] p-8 text-center dark:border-gray-700">
-            <Upload className="mx-auto h-12 w-12 text-[#64748B]" />
-            <p className="mt-4 text-sm font-medium text-[#1E293B] dark:text-white">
+          <div className="rounded-lg border-2 border-dashed border-border p-8 text-center dark:border-border">
+            <Upload className="mx-auto h-12 w-12 text-muted" />
+            <p className="mt-4 text-sm font-medium text-black dark:text-secondary">
               Upload CSV bestand
             </p>
             <div className="mt-4 space-y-2 text-left">
-              <p className="text-sm font-semibold text-[#1E293B] dark:text-white">
+              <p className="text-sm font-semibold text-black dark:text-secondary">
                 Vereiste kolommen (nieuwe formaat):
               </p>
-              <code className="block rounded bg-[#F8FAFC] p-2 text-xs text-[#1E293B] dark:bg-gray-800 dark:text-white">
+              <code className="block rounded bg-accent p-2 text-xs text-black dark:bg-primary dark:text-secondary">
                 merchantSku,variant_size,variant_color,stock
               </code>
-              <p className="text-xs text-[#64748B] dark:text-gray-400">
+              <p className="text-xs text-muted dark:text-muted">
                 Optioneel: location_type, pos_system, pos_external_id
               </p>
-              <p className="mt-2 text-xs font-semibold text-[#0EA5E9]">
+              <p className="mt-2 text-xs font-semibold text-primary">
                 ⚠️ Let op: CSV bevat alleen voorraad, geen prijs! Prijs wordt in de UI ingesteld.
               </p>
-              <p className="text-xs text-[#64748B] dark:text-gray-400">
-                Gebruik <code className="px-1 py-0.5 bg-[#F8FAFC] rounded">location_type</code> om voorraad op te geven voor fysieke winkel (store), magazijn (warehouse) of 3PL (3pl).
+              <p className="text-xs text-muted dark:text-muted">
+                Gebruik <code className="px-1 py-0.5 bg-accent rounded">location_type</code> om voorraad op te geven voor fysieke winkel (store), magazijn (warehouse) of 3PL (3pl).
               </p>
               <Button
                 size="sm"
@@ -630,7 +630,7 @@ SKU-003,L,groen,20,warehouse,lightspeed,LS-12345`;
               />
               <label
                 htmlFor="csv-file-input"
-                className="flex cursor-pointer items-center justify-center gap-2 rounded-lg border border-[#E2E8F0] bg-white px-4 py-2.5 text-sm font-medium text-[#64748B] transition-colors hover:border-[#0EA5E9] hover:bg-[#F0F9FF] hover:text-[#0EA5E9] dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 dark:hover:border-[#0EA5E9] dark:hover:bg-gray-800"
+                className="flex cursor-pointer items-center justify-center gap-2 rounded-lg border border-border bg-secondary px-4 py-2.5 text-sm font-medium text-muted transition-colors hover:border-primary hover:bg-accent hover:text-primary dark:border-border dark:bg-primary dark:text-secondary dark:hover:border-primary dark:hover:bg-primary/90"
               >
                 <Upload className="h-4 w-4" />
                 {csvFile ? csvFile.name : 'Selecteer CSV bestand'}
@@ -639,31 +639,31 @@ SKU-003,L,groen,20,warehouse,lightspeed,LS-12345`;
           </div>
 
           {csvPreview.length > 0 && (
-            <div className="overflow-auto rounded-lg border border-[#E2E8F0] dark:border-gray-700 max-h-96">
-              <table className="min-w-full divide-y divide-[#E2E8F0] dark:divide-gray-700 text-xs">
-                <thead className="bg-[#F8FAFC] dark:bg-gray-800 sticky top-0">
+            <div className="overflow-auto rounded-lg border border-border dark:border-border max-h-96">
+              <table className="min-w-full divide-y divide-[border] dark:divide-gray-700 text-xs">
+                <thead className="bg-accent dark:bg-primary sticky top-0">
                   <tr>
-                    <th className="px-2 py-2 text-left text-xs font-semibold text-[#64748B]">Merchant SKU</th>
-                    <th className="px-2 py-2 text-left text-xs font-semibold text-[#64748B]">Maat</th>
-                    <th className="px-2 py-2 text-left text-xs font-semibold text-[#64748B]">Kleur</th>
-                    <th className="px-2 py-2 text-right text-xs font-semibold text-[#64748B]">Voorraad</th>
-                    <th className="px-2 py-2 text-left text-xs font-semibold text-[#64748B]">Locatie</th>
-                    <th className="px-2 py-2 text-left text-xs font-semibold text-[#64748B]">Status</th>
+                    <th className="px-2 py-2 text-left text-xs font-semibold text-muted">Merchant SKU</th>
+                    <th className="px-2 py-2 text-left text-xs font-semibold text-muted">Maat</th>
+                    <th className="px-2 py-2 text-left text-xs font-semibold text-muted">Kleur</th>
+                    <th className="px-2 py-2 text-right text-xs font-semibold text-muted">Voorraad</th>
+                    <th className="px-2 py-2 text-left text-xs font-semibold text-muted">Locatie</th>
+                    <th className="px-2 py-2 text-left text-xs font-semibold text-muted">Status</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-[#E2E8F0] bg-white dark:divide-gray-700 dark:bg-gray-900">
+                <tbody className="divide-y divide-[border] bg-white dark:divide-gray-700 dark:bg-primary">
                   {csvPreview.map((row, index) => (
                     <tr key={index} className={row.error ? 'bg-red-50 dark:bg-red-900/10' : ''}>
-                      <td className="px-2 py-2 text-[#1E293B] dark:text-white font-mono text-xs">{row.merchantSku}</td>
-                      <td className="px-2 py-2 text-[#64748B] text-xs">{row.variant_size || ''}</td>
-                      <td className="px-2 py-2 text-[#64748B] text-xs">{row.variant_color || ''}</td>
-                      <td className="px-2 py-2 text-right text-[#1E293B] dark:text-white text-xs">{row.stock}</td>
-                      <td className="px-2 py-2 text-[#64748B] text-xs">{row.location_type || 'warehouse'}</td>
+                      <td className="px-2 py-2 text-black dark:text-secondary font-mono text-xs">{row.merchantSku}</td>
+                      <td className="px-2 py-2 text-muted text-xs">{row.variant_size || ''}</td>
+                      <td className="px-2 py-2 text-muted text-xs">{row.variant_color || ''}</td>
+                      <td className="px-2 py-2 text-right text-black dark:text-secondary text-xs">{row.stock}</td>
+                      <td className="px-2 py-2 text-muted text-xs">{row.location_type || 'warehouse'}</td>
                       <td className="px-2 py-2">
                         {row.error ? (
                           <span className="text-red-600 text-xs">{row.error}</span>
                         ) : (
-                          <span className="text-[#10B981] text-xs">✓ OK</span>
+                          <span className="text-black text-xs">✓ OK</span>
                         )}
                       </td>
                     </tr>

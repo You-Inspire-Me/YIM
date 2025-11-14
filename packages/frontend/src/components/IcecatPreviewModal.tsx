@@ -43,7 +43,7 @@ export const IcecatPreviewModal = ({
                 key={idx}
                 src={img}
                 alt={product.title}
-                className="h-32 w-32 flex-shrink-0 rounded-lg object-cover border border-gray-200"
+                className="h-32 w-32 flex-shrink-0 rounded-lg object-cover border border-border"
               />
             ))}
           </div>
@@ -52,21 +52,21 @@ export const IcecatPreviewModal = ({
         {/* Product Info */}
         <div className="space-y-2">
           <div>
-            <p className="text-sm font-medium text-gray-500">Titel</p>
-            <p className="text-lg font-semibold text-gray-900 dark:text-white">{product.title}</p>
+            <p className="text-sm font-medium text-muted">Titel</p>
+            <p className="text-lg font-semibold text-black dark:text-secondary">{product.title}</p>
           </div>
 
           {product.brand && (
             <div>
-              <p className="text-sm font-medium text-gray-500">Merk</p>
-              <p className="text-gray-900 dark:text-white">{product.brand}</p>
+              <p className="text-sm font-medium text-muted">Merk</p>
+              <p className="text-black dark:text-secondary">{product.brand}</p>
             </div>
           )}
 
           {product.description && (
             <div>
-              <p className="text-sm font-medium text-gray-500">Beschrijving</p>
-              <p className="text-sm text-gray-700 dark:text-gray-300 line-clamp-3">
+              <p className="text-sm font-medium text-muted">Beschrijving</p>
+              <p className="text-sm text-black dark:text-secondary line-clamp-3">
                 {product.description}
               </p>
             </div>
@@ -75,12 +75,12 @@ export const IcecatPreviewModal = ({
           {/* Specs */}
           {Object.keys(product.specs).length > 0 && (
             <div>
-              <p className="text-sm font-medium text-gray-500 mb-2">Specificaties</p>
+              <p className="text-sm font-medium text-muted mb-2">Specificaties</p>
               <div className="grid grid-cols-2 gap-2">
                 {Object.entries(product.specs).map(([key, value]) => (
                   <div key={key} className="text-sm">
-                    <span className="font-medium text-gray-600 dark:text-gray-400">{key}:</span>{' '}
-                    <span className="text-gray-900 dark:text-white">{value}</span>
+                    <span className="font-medium text-muted dark:text-muted">{key}:</span>{' '}
+                    <span className="text-black dark:text-secondary">{value}</span>
                   </div>
                 ))}
               </div>
@@ -88,13 +88,13 @@ export const IcecatPreviewModal = ({
           )}
 
           <div>
-            <p className="text-sm font-medium text-gray-500">EAN</p>
-            <p className="text-gray-900 dark:text-white">{product.ean}</p>
+            <p className="text-sm font-medium text-muted">EAN</p>
+            <p className="text-black dark:text-secondary">{product.ean}</p>
           </div>
         </div>
 
         {/* Actions */}
-        <div className="flex gap-3 pt-4 border-t border-gray-200 dark:border-gray-700">
+        <div className="flex gap-3 pt-4 border-t border-border dark:border-border">
           <Button
             variant="secondary"
             onClick={onClose}

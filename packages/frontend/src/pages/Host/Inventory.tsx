@@ -1,6 +1,6 @@
-import { useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
-import { Download, Search, ChevronDown, ChevronRight } from 'lucide-react';
+import { useState, useRef } from 'react';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { Download, Search, ChevronDown, ChevronRight, Upload } from 'lucide-react';
 import toast from 'react-hot-toast';
 
 import Button from '../../components/ui/Button';
@@ -29,6 +29,8 @@ interface InventoryItem {
 }
 
 const InventoryPage = (): JSX.Element => {
+  const queryClient = useQueryClient();
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const [search, setSearch] = useState('');
   const [category, setCategory] = useState('all');
   const [expandedProducts, setExpandedProducts] = useState<Set<string>>(new Set());
@@ -58,6 +60,27 @@ const InventoryPage = (): JSX.Element => {
     }
   };
 
+  const importStockCsvMutation = useMutation({
+    mutationFn: (file: File) => endpoints.host.inventory.importStockCsv(file),
+    onSuccess: (data) => {
+      toast.success(data.data.message || `Stock updated: ${data.data.success} items`);
+      void queryClient.invalidateQueries({ queryKey: ['host-inventory'] });
+      if (fileInputRef.current) {
+        fileInputRef.current.value = '';
+      }
+    },
+    onError: (error: any) => {
+      toast.error(error?.response?.data?.message || 'Import mislukt');
+    }
+  });
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    const file = e.target.files?.[0];
+    if (file) {
+      importStockCsvMutation.mutate(file);
+    }
+  };
+
   const toggleExpand = (id: string): void => {
     setExpandedProducts((prev) => {
       const next = new Set(prev);
@@ -75,19 +98,40 @@ const InventoryPage = (): JSX.Element => {
       <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <div>
           <h1 className="text-3xl font-extrabold">Voorraad</h1>
-          <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
+          <p className="mt-2 text-sm text-muted dark:text-muted">
             Overzicht van alle producten en varianten
           </p>
         </div>
-        <Button onClick={exportCsv} variant="secondary" className="inline-flex items-center gap-2">
-          <Download className="h-4 w-4" />
-          Export CSV
-        </Button>
+        <div className="flex gap-2">
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept=".csv"
+            onChange={handleFileChange}
+            className="hidden"
+            id="csv-upload"
+          />
+          <label htmlFor="csv-upload" className="cursor-pointer">
+            <Button
+              variant="secondary"
+              className="inline-flex items-center gap-2"
+              disabled={importStockCsvMutation.isPending}
+              type="button"
+            >
+              <Upload className="h-4 w-4" />
+              {importStockCsvMutation.isPending ? 'Importeren...' : 'Import CSV'}
+            </Button>
+          </label>
+          <Button onClick={exportCsv} variant="secondary" className="inline-flex items-center gap-2">
+            <Download className="h-4 w-4" />
+            Export CSV
+          </Button>
+        </div>
       </div>
 
       <div className="flex flex-col gap-4 md:flex-row">
         <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400" />
+          <Search className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-muted" />
           <Input
             type="text"
             placeholder="Zoek op product, SKU..."
@@ -111,32 +155,32 @@ const InventoryPage = (): JSX.Element => {
           ))}
         </div>
       ) : data && data.inventory.length > 0 ? (
-        <div className="overflow-hidden rounded-xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-900">
+        <div className="overflow-hidden rounded-xl border border-border bg-white dark:border-border dark:bg-primary">
           <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-800">
-              <thead className="bg-gray-50 dark:bg-gray-900">
+              <thead className="bg-accent dark:bg-primary">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">
+                  <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-muted">
                     Product
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">
+                  <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-muted">
                     SKU
                   </th>
-                  <th className="px-6 py-3 text-right text-xs font-semibold uppercase tracking-wider text-gray-500">
+                  <th className="px-6 py-3 text-right text-xs font-semibold uppercase tracking-wider text-muted">
                     Niet beschikbaar
                   </th>
-                  <th className="px-6 py-3 text-right text-xs font-semibold uppercase tracking-wider text-gray-500">
+                  <th className="px-6 py-3 text-right text-xs font-semibold uppercase tracking-wider text-muted">
                     Gereserveerd
                   </th>
-                  <th className="px-6 py-3 text-right text-xs font-semibold uppercase tracking-wider text-gray-500">
+                  <th className="px-6 py-3 text-right text-xs font-semibold uppercase tracking-wider text-muted">
                     Beschikbaar
                   </th>
-                  <th className="px-6 py-3 text-right text-xs font-semibold uppercase tracking-wider text-gray-500">
+                  <th className="px-6 py-3 text-right text-xs font-semibold uppercase tracking-wider text-muted">
                     Op voorraad
                   </th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-100 bg-white dark:divide-gray-800 dark:bg-gray-950">
+              <tbody className="divide-y divide-gray-100 bg-white dark:divide-gray-800 dark:bg-primary">
                 {data.inventory.map((item) => {
                   const isExpanded = expandedProducts.has(item._id);
                   const hasVariants = item.variants.length > 1;
@@ -145,13 +189,13 @@ const InventoryPage = (): JSX.Element => {
                     <>
                       <tr
                         key={item._id}
-                        className="cursor-pointer transition hover:bg-gray-50 dark:hover:bg-gray-900"
+                        className="cursor-pointer transition hover:bg-accent dark:hover:bg-gray-900"
                         onClick={() => hasVariants && toggleExpand(item._id)}
                       >
                         <td className="whitespace-nowrap px-6 py-4">
                           <div className="flex items-center gap-4">
                             {hasVariants && (
-                              <button type="button" className="text-gray-400">
+                              <button type="button" className="text-muted">
                                 {isExpanded ? (
                                   <ChevronDown className="h-5 w-5" />
                                 ) : (
@@ -165,44 +209,44 @@ const InventoryPage = (): JSX.Element => {
                               className="h-12 w-12 rounded-lg object-cover"
                             />
                             <div>
-                              <p className="font-medium text-gray-900 dark:text-white">{item.title}</p>
-                              <p className="text-sm text-gray-500 dark:text-gray-400">{item.category}</p>
+                              <p className="font-medium text-black dark:text-secondary">{item.title}</p>
+                              <p className="text-sm text-muted dark:text-muted">{item.category}</p>
                             </div>
                           </div>
                         </td>
-                        <td className="whitespace-nowrap px-6 py-4 text-sm text-gray-500 dark:text-gray-400">
+                        <td className="whitespace-nowrap px-6 py-4 text-sm text-muted dark:text-muted">
                           {item.sku}
                         </td>
-                        <td className="whitespace-nowrap px-6 py-4 text-right text-sm text-gray-500 dark:text-gray-400">
+                        <td className="whitespace-nowrap px-6 py-4 text-right text-sm text-muted dark:text-muted">
                           {item.variants.reduce((sum, v) => sum + v.unavailable, 0)}
                         </td>
-                        <td className="whitespace-nowrap px-6 py-4 text-right text-sm text-gray-500 dark:text-gray-400">
+                        <td className="whitespace-nowrap px-6 py-4 text-right text-sm text-muted dark:text-muted">
                           {item.variants.reduce((sum, v) => sum + v.reserved, 0)}
                         </td>
-                        <td className="whitespace-nowrap px-6 py-4 text-right text-sm text-gray-500 dark:text-gray-400">
+                        <td className="whitespace-nowrap px-6 py-4 text-right text-sm text-muted dark:text-muted">
                           {item.variants.reduce((sum, v) => sum + v.available, 0)}
                         </td>
-                        <td className="whitespace-nowrap px-6 py-4 text-right text-sm font-semibold text-gray-900 dark:text-white">
+                        <td className="whitespace-nowrap px-6 py-4 text-right text-sm font-semibold text-black dark:text-secondary">
                           {item.totalAvailable}
                         </td>
                       </tr>
                       {isExpanded &&
                         item.variants.map((variant, idx) => (
-                          <tr key={`${item._id}-${idx}`} className="bg-gray-50/50 dark:bg-gray-900/50">
+                          <tr key={`${item._id}-${idx}`} className="bg-accent/50 dark:bg-primary/50">
                             <td className="px-6 py-3 pl-20">
-                              <span className="text-sm text-gray-600 dark:text-gray-400">Maat: {variant.size}</span>
+                              <span className="text-sm text-muted dark:text-muted">Maat: {variant.size}</span>
                             </td>
-                            <td className="px-6 py-3 text-sm text-gray-500 dark:text-gray-400">{variant.sku}</td>
-                            <td className="px-6 py-3 text-right text-sm text-gray-500 dark:text-gray-400">
+                            <td className="px-6 py-3 text-sm text-muted dark:text-muted">{variant.sku}</td>
+                            <td className="px-6 py-3 text-right text-sm text-muted dark:text-muted">
                               {variant.unavailable}
                             </td>
-                            <td className="px-6 py-3 text-right text-sm text-gray-500 dark:text-gray-400">
+                            <td className="px-6 py-3 text-right text-sm text-muted dark:text-muted">
                               {variant.reserved}
                             </td>
-                            <td className="px-6 py-3 text-right text-sm text-gray-500 dark:text-gray-400">
+                            <td className="px-6 py-3 text-right text-sm text-muted dark:text-muted">
                               {variant.available}
                             </td>
-                            <td className="px-6 py-3 text-right text-sm font-medium text-gray-700 dark:text-gray-300">
+                            <td className="px-6 py-3 text-right text-sm font-medium text-black dark:text-secondary">
                               {variant.available}
                             </td>
                           </tr>
@@ -215,8 +259,8 @@ const InventoryPage = (): JSX.Element => {
           </div>
         </div>
       ) : (
-        <div className="rounded-xl border border-gray-200 bg-white p-12 text-center dark:border-gray-800 dark:bg-gray-900">
-          <p className="text-gray-500 dark:text-gray-400">Geen producten gevonden.</p>
+        <div className="rounded-xl border border-border bg-white p-12 text-center dark:border-border dark:bg-primary">
+          <p className="text-muted dark:text-muted">Geen producten gevonden.</p>
         </div>
       )}
     </div>

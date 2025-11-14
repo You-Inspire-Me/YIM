@@ -41,7 +41,7 @@ const RelatedLooksSection = ({
 
   return (
     <div className="mt-16">
-      <h2 className="mb-6 text-2xl font-bold text-[#1E293B] dark:text-white">
+      <h2 className="mb-6 text-2xl font-bold text-black dark:text-secondary">
         Vergelijkbare looks
       </h2>
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
@@ -49,7 +49,7 @@ const RelatedLooksSection = ({
           <Link
             key={look._id}
             to={`/looks/${look._id}`}
-            className="group relative overflow-hidden rounded-2xl bg-[#F8FAFC] dark:bg-gray-800 shadow-sm"
+            className="group relative overflow-hidden rounded-2xl bg-accent dark:bg-primary shadow-sm"
           >
             <div className="aspect-[3/4] w-full">
               <img
@@ -59,7 +59,7 @@ const RelatedLooksSection = ({
               />
             </div>
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
-            <div className="absolute bottom-0 left-0 right-0 p-4 text-white opacity-0 transition-opacity group-hover:opacity-100">
+            <div className="absolute bottom-0 left-0 right-0 p-4 text-secondary opacity-0 transition-opacity group-hover:opacity-100">
               <p className="font-semibold">{look.title}</p>
               <p className="text-sm opacity-90">{look.products?.length || 0} items</p>
             </div>
@@ -193,7 +193,7 @@ const LookDetail = (): JSX.Element => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-white dark:bg-gray-950">
+      <div className="min-h-screen bg-white dark:bg-primary">
         <div className="mx-auto max-w-7xl px-4 py-8">
           <div className="grid gap-8 lg:grid-cols-3">
             <div className="lg:col-span-2">
@@ -210,9 +210,9 @@ const LookDetail = (): JSX.Element => {
 
   if (error || !data?.look) {
     return (
-      <div className="min-h-screen bg-white dark:bg-gray-950">
+      <div className="min-h-screen bg-white dark:bg-primary">
         <div className="mx-auto max-w-7xl px-4 py-12 text-center">
-          <h1 className="text-2xl font-bold text-[#1E293B] dark:text-white">
+          <h1 className="text-2xl font-bold text-black dark:text-secondary">
             Look niet gevonden
           </h1>
           <Button onClick={() => navigate('/')} className="mt-4">
@@ -228,14 +228,14 @@ const LookDetail = (): JSX.Element => {
   const thumbnails = look.images.slice(0, 6); // Max 6 thumbnails
 
   return (
-    <div className="min-h-screen bg-white dark:bg-gray-950">
+    <div className="min-h-screen bg-white dark:bg-primary">
       <div className="mx-auto max-w-7xl px-4 py-8 lg:px-8">
         {/* Desktop: 2-column layout, Mobile: stacked */}
         <div className="grid gap-8 lg:grid-cols-3">
           {/* Left Column: Images (65% on desktop) */}
           <div className="lg:col-span-2">
             {/* Main Image */}
-            <div className="relative mb-4 overflow-hidden rounded-lg bg-[#F8FAFC]">
+            <div className="relative mb-4 overflow-hidden rounded-lg bg-accent">
               <div className="relative aspect-[3/4] max-h-[800px] w-full">
                 <img
                   src={mainImage}
@@ -252,7 +252,7 @@ const LookDetail = (): JSX.Element => {
                     className="rounded-full bg-white/90 p-3 shadow-lg transition hover:bg-white"
                     aria-label="Deel"
                   >
-                    <Share2 className="h-5 w-5 text-[#1E293B]" />
+                    <Share2 className="h-5 w-5 text-black" />
                   </button>
                 </div>
               </div>
@@ -268,8 +268,8 @@ const LookDetail = (): JSX.Element => {
                     onClick={() => setSelectedImageIndex(index)}
                     className={`flex-shrink-0 overflow-hidden rounded-lg border-2 transition ${
                       selectedImageIndex === index
-                        ? 'border-[#0EA5E9]'
-                        : 'border-transparent hover:border-[#E2E8F0]'
+                        ? 'border-primary'
+                        : 'border-transparent hover:border-border'
                     }`}
                     aria-label={`Bekijk afbeelding ${index + 1}`}
                   >
@@ -289,13 +289,13 @@ const LookDetail = (): JSX.Element => {
             <div className="lg:sticky lg:top-20">
               {/* Title & Creator */}
               <div className="mb-6">
-                <h1 className="mb-4 text-3xl font-extrabold text-[#1E293B] dark:text-white lg:text-4xl">
+                <h1 className="mb-4 text-3xl font-extrabold text-black dark:text-secondary lg:text-4xl">
                   Get the look
                 </h1>
                 
                 <div className="mb-4 flex items-center justify-between">
                   <div className="flex items-center gap-3">
-                    <div className="h-10 w-10 overflow-hidden rounded-full bg-[#F8FAFC]">
+                    <div className="h-10 w-10 overflow-hidden rounded-full bg-accent">
                       {look.host.avatarUrl ? (
                         <img
                           src={look.host.avatarUrl}
@@ -303,16 +303,16 @@ const LookDetail = (): JSX.Element => {
                           className="h-full w-full object-cover"
                         />
                       ) : (
-                        <div className="flex h-full w-full items-center justify-center bg-[#0EA5E9] text-white text-sm font-semibold">
+                        <div className="flex h-full w-full items-center justify-center bg-primary text-secondary text-sm font-semibold">
                           {look.host.name.charAt(0).toUpperCase()}
                         </div>
                       )}
                     </div>
                     <div>
-                      <p className="font-semibold text-[#1E293B] dark:text-white">
+                      <p className="font-semibold text-black dark:text-secondary">
                         {look.host.name}
                       </p>
-                      <p className="text-xs text-[#64748B]">Creator</p>
+                      <p className="text-xs text-muted">Creator</p>
                     </div>
                   </div>
                   {user && user._id !== look.host._id && (
@@ -330,7 +330,7 @@ const LookDetail = (): JSX.Element => {
 
                 {/* Description */}
                 {look.description && (
-                  <p className="text-sm text-[#64748B] dark:text-gray-400">
+                  <p className="text-sm text-muted dark:text-muted">
                     {look.description}
                   </p>
                 )}
@@ -339,7 +339,7 @@ const LookDetail = (): JSX.Element => {
               {/* Product List */}
               {look.products && look.products.length > 0 && (
                 <div className="mb-6">
-                  <h2 className="mb-4 text-lg font-bold text-[#1E293B] dark:text-white">
+                  <h2 className="mb-4 text-lg font-bold text-black dark:text-secondary">
                     Shop de look ({look.products.length})
                   </h2>
                   
@@ -361,10 +361,10 @@ const LookDetail = (): JSX.Element => {
                           key={index}
                           type="button"
                           onClick={() => handleProductClick(product)}
-                          className="group flex w-full gap-3 rounded-lg border border-[#E2E8F0] bg-white p-3 text-left transition hover:border-[#0EA5E9] hover:shadow-md dark:border-gray-800 dark:bg-gray-900"
+                          className="group flex w-full gap-3 rounded-lg border border-border bg-white p-3 text-left transition hover:border-primary hover:shadow-md dark:border-border dark:bg-primary"
                         >
                           {/* Product Thumbnail */}
-                          <div className="h-20 w-20 flex-shrink-0 overflow-hidden rounded-lg bg-[#F8FAFC]">
+                          <div className="h-20 w-20 flex-shrink-0 overflow-hidden rounded-lg bg-accent">
                             <img
                               src={product.image || fullProduct?.images?.[0] || ''}
                               alt={product.title}
@@ -375,25 +375,25 @@ const LookDetail = (): JSX.Element => {
                           {/* Product Info */}
                           <div className="flex-1 min-w-0">
                             {fullProduct?.brand && (
-                              <p className="mb-1 text-xs font-semibold uppercase text-[#64748B]">
+                              <p className="mb-1 text-xs font-semibold uppercase text-muted">
                                 {fullProduct.brand}
                               </p>
                             )}
-                            <p className="mb-1 line-clamp-2 text-sm font-medium text-[#1E293B] dark:text-white">
+                            <p className="mb-1 line-clamp-2 text-sm font-medium text-black dark:text-secondary">
                               {product.title}
                             </p>
                             <div className="flex items-center gap-2">
-                              <span className="font-bold text-[#0EA5E9]">
+                              <span className="font-bold text-primary">
                                 € {product.price.toFixed(2)}
                               </span>
                               {fullProduct?.originalPrice &&
                                 fullProduct.originalPrice > product.price && (
                                   <>
-                                    <span className="text-xs text-[#64748B] line-through">
+                                    <span className="text-xs text-muted line-through">
                                       € {fullProduct.originalPrice.toFixed(2)}
                                     </span>
                                     {hasDiscount && (
-                                      <span className="rounded-full bg-[#E0F2FE] px-2 py-0.5 text-xs font-semibold text-[#0EA5E9]">
+                                      <span className="rounded-full bg-accent px-2 py-0.5 text-xs font-semibold text-primary">
                                         -{discount}%
                                       </span>
                                     )}
@@ -402,7 +402,7 @@ const LookDetail = (): JSX.Element => {
                             </div>
                             {fullProduct?.originalPrice &&
                               fullProduct.originalPrice > product.price && (
-                                <p className="mt-1 text-xs text-[#64748B]">
+                                <p className="mt-1 text-xs text-muted">
                                   Meest getoonde prijs
                                 </p>
                               )}

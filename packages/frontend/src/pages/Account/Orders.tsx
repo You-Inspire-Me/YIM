@@ -64,23 +64,23 @@ const OrdersPage = (): JSX.Element => {
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-12">
-      <h1 className="text-3xl font-extrabold text-[#1E293B] mb-8">{t('account.orders')}</h1>
+      <h1 className="text-3xl font-extrabold text-black mb-8">{t('account.orders')}</h1>
       
       {!orders || orders.length === 0 ? (
         <div className="text-center py-12">
-          <Package className="h-16 w-16 text-[#64748B] mx-auto mb-4" />
-          <p className="text-[#64748B]">Geen bestellingen gevonden</p>
+          <Package className="h-16 w-16 text-muted mx-auto mb-4" />
+          <p className="text-muted">Geen bestellingen gevonden</p>
         </div>
       ) : (
         <div className="space-y-6">
           {orders.map((order: any) => (
-            <div key={order._id} className="border border-[#E2E8F0] rounded-lg p-6 bg-white">
+            <div key={order._id} className="border border-border rounded-lg p-6 bg-white">
               <div className="flex justify-between items-start mb-4">
                 <div>
-                  <p className="font-semibold text-[#1E293B]">Bestelling #{order._id.slice(-8)}</p>
-                  <p className="text-sm text-[#64748B]">{new Date(order.createdAt).toLocaleDateString()}</p>
+                  <p className="font-semibold text-black">Bestelling #{order._id.slice(-8)}</p>
+                  <p className="text-sm text-muted">{new Date(order.createdAt).toLocaleDateString()}</p>
                 </div>
-                <span className="px-3 py-1 rounded-full text-sm bg-[#E0F2FE] text-[#0EA5E9]">
+                <span className="px-3 py-1 rounded-full text-sm bg-accent text-primary">
                   {order.status}
                 </span>
               </div>
@@ -93,12 +93,12 @@ const OrdersPage = (): JSX.Element => {
                   const creator = listing?.creatorId;
                   
                   return (
-                    <div key={index} className="flex items-center gap-4 p-3 bg-[#F8FAFC] rounded-lg">
+                    <div key={index} className="flex items-center gap-4 p-3 bg-accent rounded-lg">
                       <input
                         type="checkbox"
                         checked={selectedItems[order._id]?.includes(String(index)) || false}
                         onChange={() => toggleItem(order._id, String(index))}
-                        className="h-5 w-5 text-[#0EA5E9] border-[#E2E8F0] rounded focus:ring-[#0EA5E9]"
+                        className="h-5 w-5 text-primary border-border rounded focus:ring-primary"
                       />
                       <img 
                         src={variant?.images?.[0] || product?.images?.[0] || 'https://via.placeholder.com/64'} 
@@ -106,18 +106,18 @@ const OrdersPage = (): JSX.Element => {
                         className="h-16 w-16 object-cover rounded" 
                       />
                       <div className="flex-1">
-                        <p className="font-medium text-[#1E293B]">{product?.title || 'Product'}</p>
-                        <p className="text-sm text-[#64748B]">
+                        <p className="font-medium text-black">{product?.title || 'Product'}</p>
+                        <p className="text-sm text-muted">
                           {variant?.size && variant?.color && `${variant.size} / ${variant.color} • `}
                           Aantal: {item.quantity}
                         </p>
                         {creator && (
-                          <p className="text-xs text-[#64748B] mt-1">
+                          <p className="text-xs text-muted mt-1">
                             Verkoper: {creator.name || 'Creator'}
                           </p>
                         )}
                       </div>
-                      <p className="font-semibold text-[#1E293B]">€ {item.priceAtPurchase?.toFixed(2) || '0.00'}</p>
+                      <p className="font-semibold text-black">€ {item.priceAtPurchase?.toFixed(2) || '0.00'}</p>
                     </div>
                   );
                 })}

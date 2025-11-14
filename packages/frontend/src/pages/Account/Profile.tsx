@@ -41,11 +41,11 @@ const ProfilePage = (): JSX.Element => {
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-12">
-      <h1 className="text-3xl font-extrabold text-[#1E293B] mb-8">{t('account.profile')}</h1>
+      <h1 className="text-3xl font-extrabold text-black mb-8">{t('account.profile')}</h1>
       
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         <div>
-          <label className="block text-sm font-medium text-[#1E293B] mb-2">Naam</label>
+          <label className="block text-sm font-medium text-black mb-2">Naam</label>
           <Input
             defaultValue={user.name}
             {...register('name', { required: true })}
@@ -53,7 +53,7 @@ const ProfilePage = (): JSX.Element => {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-[#1E293B] mb-2">Email</label>
+          <label className="block text-sm font-medium text-black mb-2">Email</label>
           <Input
             type="email"
             defaultValue={user.email}

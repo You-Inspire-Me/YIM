@@ -18,6 +18,7 @@ export interface Product {
     [key: string]: string | undefined; // Flexible specs
   };
   variants: Types.ObjectId[]; // References to Variant documents
+  published?: boolean; // Whether product is published (default: true for backwards compatibility)
   createdAt: Date;
 }
 
@@ -44,7 +45,8 @@ const productSchema = new Schema<ProductDocument, ProductModel>(
       type: Schema.Types.Mixed,
       default: {}
     },
-    variants: [{ type: Schema.Types.ObjectId, ref: 'Variant' }]
+    variants: [{ type: Schema.Types.ObjectId, ref: 'Variant' }],
+    published: { type: Boolean, default: true, index: true }
   },
   {
     timestamps: true

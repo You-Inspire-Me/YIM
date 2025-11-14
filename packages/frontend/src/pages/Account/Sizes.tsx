@@ -59,19 +59,19 @@ const SizesPage = (): JSX.Element => {
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-12">
-      <h1 className="text-3xl font-extrabold text-[#1E293B] mb-8">{t('account.sizes')}</h1>
+      <h1 className="text-3xl font-extrabold text-black mb-8">{t('account.sizes')}</h1>
       
       <div className="space-y-6">
         <form onSubmit={handleSubmit(addSize)} className="flex gap-4">
           <div className="flex-1">
-            <label className="block text-sm font-medium text-[#1E293B] mb-2">{t('account.brand')}</label>
+            <label className="block text-sm font-medium text-black mb-2">{t('account.brand')}</label>
             <Input
               {...register('brand', { required: true })}
               placeholder="Bijv. Nike"
             />
           </div>
           <div className="flex-1">
-            <label className="block text-sm font-medium text-[#1E293B] mb-2">{t('account.size')}</label>
+            <label className="block text-sm font-medium text-black mb-2">{t('account.size')}</label>
             <Input
               {...register('size', { required: true })}
               placeholder="Bijv. 41 of M"
@@ -88,15 +88,15 @@ const SizesPage = (): JSX.Element => {
         {sizes.length > 0 && (
           <div className="space-y-3">
             {sizes.map((size, index) => (
-              <div key={index} className="flex items-center justify-between p-4 bg-[#F8FAFC] rounded-lg border border-[#E2E8F0]">
+              <div key={index} className="flex items-center justify-between p-4 bg-accent rounded-lg border border-border">
                 <div>
-                  <p className="font-semibold text-[#1E293B]">{size.brand}</p>
-                  <p className="text-sm text-[#64748B]">{size.size}</p>
+                  <p className="font-semibold text-black">{size.brand}</p>
+                  <p className="text-sm text-muted">{size.size}</p>
                 </div>
                 <button
                   type="button"
                   onClick={() => removeSize(index)}
-                  className="p-2 text-[#64748B] hover:text-red-600 transition"
+                  className="p-2 text-muted hover:text-red-600 transition"
                 >
                   <Trash2 className="h-5 w-5" />
                 </button>

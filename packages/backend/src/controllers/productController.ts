@@ -8,12 +8,19 @@ import { VariantModel } from '../models/Variant.js';
 /**
  * Get all global products (PIM)
  * Public endpoint - anyone can browse products
+ * Hosts can see all products, others only see published products
  */
 export const getProducts = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
     const { category, search, limit = 50, skip = 0 } = req.query;
+    const isHost = req.user && req.user.role === 'creator';
 
     const filter: Record<string, unknown> = {};
+
+    // Only show published products to non-hosts
+    if (!isHost) {
+      filter.published = true;
+    }
 
     if (category && typeof category === 'string' && category !== 'all') {
       filter.category = category;
@@ -170,30 +177,73 @@ export const updateProduct = async (req: AuthRequest, res: Response): Promise<vo
 };
 
 /**
- * Search for existing product by SKU/EAN
- * Used when creator wants to "claim" an existing product
+ * Search for products
+ * Supports:
+ * - General search by title, SKU, EAN (for Look editor)
+ * - Specific search by SKU/EAN (for product claiming)
  */
 export const searchProduct = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
-    const { sku, ean } = req.query;
+    const { search, sku, ean, limit = 50 } = req.query;
+    const isHost = req.user && req.user.role === 'creator';
 
-    if (!sku && !ean) {
-      res.status(StatusCodes.BAD_REQUEST).json({ message: 'SKU or EAN required' });
+    // General search (for Look editor)
+    if (search && typeof search === 'string') {
+      const filter: Record<string, unknown> = {};
+      
+      // Only show published products to non-hosts
+      if (!isHost) {
+        filter.published = true;
+      }
+
+      // Search in title, SKU, or EAN
+      const searchRegex = new RegExp(search, 'i');
+      filter.$or = [
+        { title: searchRegex },
+        { sku: searchRegex },
+        { ean: searchRegex }
+      ];
+
+      const products = await ProductModel.find(filter)
+        .select('title sku images variants')
+        .populate('variants', 'size color')
+        .limit(Number(limit))
+        .sort({ createdAt: -1 })
+        .lean();
+
+      // Transform to match frontend expectations
+      const items = products.map((product) => ({
+        _id: product._id.toString(),
+        title: product.title,
+        sku: product.sku,
+        images: product.images || [],
+        price: 0, // Price is in MerchantOffer, not Product
+        inventory: 0, // Stock is in MerchantStock, not Product
+        sizes: (product.variants as any[] || []).map((v: any) => v.size || '').filter(Boolean)
+      }));
+
+      res.status(StatusCodes.OK).json({ items });
       return;
     }
 
-    const filter: Record<string, unknown> = {};
-    if (sku) filter.sku = sku;
-    if (ean) filter.ean = ean;
+    // Specific search by SKU/EAN (for product claiming)
+    if (sku || ean) {
+      const filter: Record<string, unknown> = {};
+      if (sku) filter.sku = sku;
+      if (ean) filter.ean = ean;
 
-    const product = await ProductModel.findOne(filter).populate('variants').lean();
+      const product = await ProductModel.findOne(filter).populate('variants').lean();
 
-    if (!product) {
-      res.status(StatusCodes.NOT_FOUND).json({ message: 'Product not found' });
+      if (!product) {
+        res.status(StatusCodes.NOT_FOUND).json({ message: 'Product not found' });
+        return;
+      }
+
+      res.status(StatusCodes.OK).json({ product });
       return;
     }
 
-    res.status(StatusCodes.OK).json({ product });
+    res.status(StatusCodes.BAD_REQUEST).json({ message: 'search, SKU, or EAN required' });
   } catch (error) {
     console.error('Search product error:', error);
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({

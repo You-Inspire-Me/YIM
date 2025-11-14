@@ -10,16 +10,16 @@ const TopBanner = (): JSX.Element | null => {
   }
 
   return (
-    <div className="bg-[#FEF3C7] border-b border-[#FDE68A] py-2">
+    <div className="bg-accent border-b border-accent py-2">
       <div className="mx-auto flex max-w-7xl items-center justify-center px-4">
-        <p className="text-sm font-medium text-[#92400E]">{message}</p>
+        <p className="text-sm font-medium text-black">{message}</p>
         <button
           type="button"
           onClick={() => setIsVisible(false)}
-          className="ml-4 rounded-full p-1 hover:bg-[#FDE68A] transition"
+          className="ml-4 rounded-full p-1 hover:bg-accent transition"
           aria-label="Close banner"
         >
-          <X className="h-4 w-4 text-[#92400E]" />
+          <X className="h-4 w-4 text-black" />
         </button>
       </div>
     </div>

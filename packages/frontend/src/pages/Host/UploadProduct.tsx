@@ -6,9 +6,11 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { z } from 'zod';
 import toast from 'react-hot-toast';
 
+import { Barcode } from 'lucide-react';
 import Button from '../../components/ui/Button';
 import Input from '../../components/ui/Input';
 import Textarea from '../../components/ui/Textarea';
+import { IcecatPreviewModal, IcecatProduct } from '../../components/IcecatPreviewModal';
 import { endpoints } from '../../lib/api';
 import { Product } from '../../types';
 
@@ -50,6 +52,10 @@ const UploadProductPage = (): JSX.Element => {
   });
 
   const [previews, setPreviews] = useState<string[]>([]);
+  const [ean, setEan] = useState('');
+  const [isSearching, setIsSearching] = useState(false);
+  const [icecatProduct, setIcecatProduct] = useState<IcecatProduct | null>(null);
+  const [showPreview, setShowPreview] = useState(false);
 
   const imagesRegister = register('images');
 
@@ -86,6 +92,46 @@ const UploadProductPage = (): JSX.Element => {
       toast.error('Bijwerken mislukt');
     }
   });
+
+  const icecatLookupMutation = useMutation({
+    mutationFn: async (eanValue: string) => {
+      const response = await endpoints.icecat.lookup(eanValue);
+      return response.data;
+    },
+    onSuccess: (data) => {
+      if (data.found && data.product) {
+        setIcecatProduct(data.product);
+        setShowPreview(true);
+      } else {
+        toast.error('Geen product gevonden – vul handmatig in');
+      }
+      setIsSearching(false);
+    },
+    onError: (error: any) => {
+      toast.error(error?.response?.data?.message || 'Fout bij opzoeken van product');
+      setIsSearching(false);
+    }
+  });
+
+  const handleEANLookup = (): void => {
+    if (!ean.trim()) {
+      toast.error('Voer een EAN in');
+      return;
+    }
+    setIsSearching(true);
+    icecatLookupMutation.mutate(ean.trim());
+  };
+
+  const handleUseProduct = (product: IcecatProduct): void => {
+    // Auto-fill form with Icecat data
+    setValue('title', product.title);
+    setValue('description', product.description);
+    if (product.images && product.images.length > 0) {
+      setPreviews(product.images);
+    }
+    setShowPreview(false);
+    toast.success('Productgegevens ingevuld. Controleer en pas aan indien nodig.');
+  };
 
   useEffect(() => {
     if (productQuery.data) {
@@ -145,7 +191,7 @@ const UploadProductPage = (): JSX.Element => {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-extrabold">{productId ? 'Product bewerken' : 'Nieuw product uploaden'}</h1>
-          <p className="mt-2 text-sm text-gray-500">
+          <p className="mt-2 text-sm text-muted">
             Vul de productdetails in en upload hoogwaardige foto’s.
           </p>
         </div>
@@ -155,6 +201,39 @@ const UploadProductPage = (): JSX.Element => {
       </div>
 
       <form className="mt-10 space-y-8" onSubmit={handleSubmit(onSubmit)}>
+        {/* EAN Lookup */}
+        <div className="rounded-lg border border-blue-200 bg-blue-50 p-4 dark:border-blue-800 dark:bg-blue-900/20">
+          <label className="block text-sm font-medium text-black dark:text-secondary mb-2">
+            <Barcode className="inline mr-2 h-4 w-4" />
+            Gratis EAN opzoeken
+          </label>
+          <div className="flex gap-2">
+            <Input
+              type="text"
+              placeholder="Voer EAN in (bijv. 1234567890123)"
+              value={ean}
+              onChange={(e) => setEan(e.target.value)}
+              onKeyPress={(e) => {
+                if (e.key === 'Enter') {
+                  e.preventDefault();
+                  handleEANLookup();
+                }
+              }}
+              className="flex-1"
+            />
+            <Button
+              type="button"
+              onClick={handleEANLookup}
+              disabled={isSearching || !ean.trim()}
+            >
+              {isSearching ? 'Zoeken...' : 'Zoek'}
+            </Button>
+          </div>
+          <p className="mt-2 text-xs text-muted dark:text-muted">
+            Automatisch productgegevens ophalen via Icecat (gratis, 1000x/dag)
+          </p>
+        </div>
+
         <div className="grid gap-6 md:grid-cols-2">
           <div>
             <label className="text-sm font-medium" htmlFor="title">
@@ -215,7 +294,7 @@ const UploadProductPage = (): JSX.Element => {
             type="file"
             accept="image/*"
             multiple
-            className="mt-2 w-full rounded-lg border border-dashed border-gray-300 bg-gray-50 p-6 text-sm text-gray-500 focus:border-[#0EA5E9] focus:outline-none focus:ring-2 focus:ring-[#0EA5E9] dark:border-gray-700 dark:bg-gray-900"
+            className="mt-2 w-full rounded-lg border border-dashed border-border bg-accent p-6 text-sm text-muted focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary dark:border-border dark:bg-primary"
             {...imagesRegister}
             onChange={(event) => {
               imagesRegister.onChange(event);
@@ -238,6 +317,17 @@ const UploadProductPage = (): JSX.Element => {
           {productId ? 'Product bijwerken' : 'Product uploaden'}
         </Button>
       </form>
+
+      {/* Icecat Preview Modal */}
+      {icecatProduct && (
+        <IcecatPreviewModal
+          isOpen={showPreview}
+          onClose={() => setShowPreview(false)}
+          product={icecatProduct}
+          onUse={handleUseProduct}
+          onEdit={handleUseProduct}
+        />
+      )}
     </section>
   );
 };

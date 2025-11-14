@@ -38,17 +38,17 @@ const LoginPage = (): JSX.Element => {
 
   return (
     <section className="mx-auto flex min-h-[70vh] max-w-4xl items-center justify-between gap-12 px-4 py-12">
-      <div className="hidden flex-1 rounded-3xl bg-gradient-to-br from-primary-500 to-primary-700 p-10 text-white shadow-elevated md:block">
+      <div className="hidden flex-1 rounded-3xl bg-gradient-to-br from-primary-500 to-primary-700 p-10 text-secondary shadow-elevated md:block">
         <h2 className="text-3xl font-extrabold">Welkom terug bij YIM</h2>
-        <p className="mt-4 text-sm text-white/80">
+        <p className="mt-4 text-sm text-secondary/80">
           Ontdek exclusieve collecties, beheer je bestellingen en blijf op de hoogte van de laatste trends.
         </p>
       </div>
-      <div className="flex-1 rounded-3xl border border-gray-200 bg-white p-8 shadow-lg dark:border-gray-800 dark:bg-gray-900">
+      <div className="flex-1 rounded-3xl border border-border bg-white p-8 shadow-lg dark:border-border dark:bg-primary">
         <h1 className="text-2xl font-bold">Log in</h1>
-        <p className="mt-2 text-sm text-gray-500">
+        <p className="mt-2 text-sm text-muted">
           Nog geen account?{' '}
-          <Link to="/auth/register" className="font-semibold text-[#0EA5E9]">
+          <Link to="/auth/register" className="font-semibold text-primary">
             Registreer je hier
           </Link>
         </p>

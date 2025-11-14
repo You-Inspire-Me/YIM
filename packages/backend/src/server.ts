@@ -71,6 +71,7 @@ app.use('/api/creator/products', creatorProductRoutes);
 app.use('/api/creator/listings', creatorListingRoutes);
 app.use('/api/creator/pos', posRoutes);
 app.use('/api/creator/icecat', icecatRoutes);
+app.use('/api/icecat', icecatRoutes); // Public route for host/creator
 // Legacy routes (for backwards compatibility during migration)
 app.use('/api/host/products', hostProductRoutes);
 app.use('/api/host/looks', lookRoutes);

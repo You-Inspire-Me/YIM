@@ -47,7 +47,7 @@ const OrdersPage = (): JSX.Element => {
 
   const statusColors: Record<string, string> = {
     pending: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-400',
-    processing: 'bg-blue-100 text-blue-800 dark:bg-blue-900/20 dark:text-blue-400',
+    processing: 'bg-blue-100 text-blue-800 dark:bg-blue-900/20 dark:text-secondary',
     shipped: 'bg-purple-100 text-purple-800 dark:bg-purple-900/20 dark:text-purple-400',
     delivered: 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400',
     cancelled: 'bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-400'
@@ -58,7 +58,7 @@ const OrdersPage = (): JSX.Element => {
       <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <div>
           <h1 className="text-3xl font-extrabold">Bestellingen</h1>
-          <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
+          <p className="mt-2 text-sm text-muted dark:text-muted">
             Beheer en volg alle bestellingen
           </p>
         </div>
@@ -81,31 +81,31 @@ const OrdersPage = (): JSX.Element => {
         </div>
       </div>
 
-      <div className="overflow-hidden rounded-xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-900">
+      <div className="overflow-hidden rounded-xl border border-border bg-white dark:border-border dark:bg-primary">
         <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-800">
-          <thead className="bg-gray-50 dark:bg-gray-900">
+          <thead className="bg-accent dark:bg-primary">
             <tr>
-              <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wide text-gray-500">
+              <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wide text-muted">
                 Bestelnummer
               </th>
-              <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wide text-gray-500">
+              <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wide text-muted">
                 Klant
               </th>
-              <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wide text-gray-500">
+              <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wide text-muted">
                 Totaal
               </th>
-              <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wide text-gray-500">
+              <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wide text-muted">
                 Status
               </th>
-              <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wide text-gray-500">
+              <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wide text-muted">
                 Datum
               </th>
-              <th className="px-6 py-4 text-right text-xs font-semibold uppercase tracking-wide text-gray-500">
+              <th className="px-6 py-4 text-right text-xs font-semibold uppercase tracking-wide text-muted">
                 Acties
               </th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-100 bg-white dark:divide-gray-800 dark:bg-gray-950">
+          <tbody className="divide-y divide-gray-100 bg-white dark:divide-gray-800 dark:bg-primary">
             {isLoading &&
               Array.from({ length: 5 }).map((_, index) => (
                 <tr key={index}>
@@ -131,21 +131,21 @@ const OrdersPage = (): JSX.Element => {
               ))}
             {!isLoading && orders.length === 0 && (
               <tr>
-                <td colSpan={6} className="px-6 py-12 text-center text-sm text-gray-500 dark:text-gray-400">
+                <td colSpan={6} className="px-6 py-12 text-center text-sm text-muted dark:text-muted">
                   Geen bestellingen gevonden
                 </td>
               </tr>
             )}
             {!isLoading &&
               orders.map((order: any) => (
-                <tr key={order._id} className="hover:bg-gray-50 dark:hover:bg-gray-900">
+                <tr key={order._id} className="hover:bg-accent dark:hover:bg-gray-900">
                   <td className="whitespace-nowrap px-6 py-4 text-sm font-medium">
                     {order.orderNumber}
                   </td>
                   <td className="whitespace-nowrap px-6 py-4 text-sm">
                     <div>
                       <div className="font-medium">{order.customer.name}</div>
-                      <div className="text-gray-500 dark:text-gray-400">{order.customer.email}</div>
+                      <div className="text-muted dark:text-muted">{order.customer.email}</div>
                     </div>
                   </td>
                   <td className="whitespace-nowrap px-6 py-4 text-sm font-semibold">
@@ -164,14 +164,14 @@ const OrdersPage = (): JSX.Element => {
                       <option value="cancelled">Cancelled</option>
                     </Select>
                   </td>
-                  <td className="whitespace-nowrap px-6 py-4 text-sm text-gray-500 dark:text-gray-400">
+                  <td className="whitespace-nowrap px-6 py-4 text-sm text-muted dark:text-muted">
                     {format(new Date(order.createdAt), 'd MMM yyyy', { locale: nl })}
                   </td>
                   <td className="whitespace-nowrap px-6 py-4 text-right text-sm">
                     <button
                       type="button"
                       onClick={() => setSelectedOrderId(order._id)}
-                      className="inline-flex items-center gap-2 font-medium text-[#0EA5E9] hover:underline"
+                      className="inline-flex items-center gap-2 font-medium text-primary hover:underline"
                     >
                       <Eye className="h-4 w-4" />
                       Bekijk
@@ -193,7 +193,7 @@ const OrdersPage = (): JSX.Element => {
           >
             Vorige
           </Button>
-          <span className="text-sm text-gray-500 dark:text-gray-400">
+          <span className="text-sm text-muted dark:text-muted">
             Pagina {page} van {totalPages}
           </span>
           <Button

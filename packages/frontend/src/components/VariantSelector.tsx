@@ -72,12 +72,12 @@ const VariantSelector = ({
       : 0;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-      <div className="relative w-full max-w-2xl rounded-2xl bg-white shadow-xl dark:bg-gray-900">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-primary/50 p-4">
+      <div className="relative w-full max-w-2xl rounded-2xl bg-white shadow-xl dark:bg-primary">
         <button
           type="button"
           onClick={onClose}
-          className="absolute right-4 top-4 rounded-full p-2 text-[#64748B] transition hover:bg-[#F8FAFC] hover:text-[#1E293B]"
+          className="absolute right-4 top-4 rounded-full p-2 text-muted transition hover:bg-accent hover:text-black"
         >
           <X className="h-5 w-5" />
         </button>
@@ -93,24 +93,24 @@ const VariantSelector = ({
 
           <div className="space-y-4">
             {product.brand && (
-              <p className="text-sm font-semibold uppercase text-[#64748B]">
+              <p className="text-sm font-semibold uppercase text-muted">
                 {product.brand}
               </p>
             )}
-            <h3 className="text-xl font-bold text-[#1E293B] dark:text-white">
+            <h3 className="text-xl font-bold text-black dark:text-secondary">
               {product.title}
             </h3>
 
             <div className="flex items-center gap-3">
-              <span className="text-2xl font-bold text-[#0EA5E9]">
+              <span className="text-2xl font-bold text-primary">
                 € {product.price.toFixed(2)}
               </span>
               {product.originalPrice && product.originalPrice > product.price && (
                 <>
-                  <span className="text-lg text-[#64748B] line-through">
+                  <span className="text-lg text-muted line-through">
                     € {product.originalPrice.toFixed(2)}
                   </span>
-                  <span className="rounded-full bg-[#E0F2FE] px-2 py-1 text-xs font-semibold text-[#0EA5E9]">
+                  <span className="rounded-full bg-accent px-2 py-1 text-xs font-semibold text-primary">
                     -{discount}%
                   </span>
                 </>
@@ -119,7 +119,7 @@ const VariantSelector = ({
 
             {product.sizes && product.sizes.length > 0 && (
               <div>
-                <label className="mb-2 block text-sm font-medium text-[#1E293B] dark:text-white">
+                <label className="mb-2 block text-sm font-medium text-black dark:text-secondary">
                   Maat
                 </label>
                 <div className="flex flex-wrap gap-2">
@@ -130,8 +130,8 @@ const VariantSelector = ({
                       onClick={() => setSelectedSize(size)}
                       className={`rounded-lg border-2 px-4 py-2 text-sm font-medium transition ${
                         selectedSize === size
-                          ? 'border-[#0EA5E9] bg-[#0EA5E9] text-white'
-                          : 'border-[#E2E8F0] text-[#1E293B] hover:border-[#0EA5E9] dark:border-gray-700 dark:text-white'
+                          ? 'border-primary bg-primary text-secondary'
+                          : 'border-border text-black hover:border-primary dark:border-border dark:text-secondary'
                       }`}
                     >
                       {size}
@@ -143,7 +143,7 @@ const VariantSelector = ({
 
             {product.colors && product.colors.length > 0 && (
               <div>
-                <label className="mb-2 block text-sm font-medium text-[#1E293B] dark:text-white">
+                <label className="mb-2 block text-sm font-medium text-black dark:text-secondary">
                   Kleur
                 </label>
                 <div className="flex flex-wrap gap-2">
@@ -154,8 +154,8 @@ const VariantSelector = ({
                       onClick={() => setSelectedColor(color)}
                       className={`rounded-lg border-2 px-4 py-2 text-sm font-medium transition ${
                         selectedColor === color
-                          ? 'border-[#0EA5E9] bg-[#0EA5E9] text-white'
-                          : 'border-[#E2E8F0] text-[#1E293B] hover:border-[#0EA5E9] dark:border-gray-700 dark:text-white'
+                          ? 'border-primary bg-primary text-secondary'
+                          : 'border-border text-black hover:border-primary dark:border-border dark:text-secondary'
                       }`}
                     >
                       {color}

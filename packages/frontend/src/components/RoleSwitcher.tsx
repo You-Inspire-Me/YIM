@@ -46,6 +46,12 @@ const RoleSwitcher = (): JSX.Element | null => {
   const handleSwitchToCustomer = (): void => {
     navigate('/');
     setIsOpen(false);
+    // Fallback als React Router niet refresht
+    setTimeout(() => {
+      if (window.location.pathname.startsWith('/creator')) {
+        window.location.href = '/';
+      }
+    }, 100);
   };
 
   const handleSwitchToCreator = (): void => {
@@ -58,30 +64,30 @@ const RoleSwitcher = (): JSX.Element | null => {
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-2 rounded-full border border-[#E2E8F0] bg-white px-3 py-2 text-sm font-medium transition hover:bg-[#F8FAFC] dark:border-gray-700 dark:bg-gray-900 dark:hover:bg-gray-800"
+        className="flex items-center gap-2 rounded-full border border-border bg-white px-3 py-2 text-sm font-medium transition hover:bg-accent dark:border-border dark:bg-primary dark:hover:bg-primary/90"
         aria-label="Account menu"
       >
-        <div className="h-8 w-8 rounded-full bg-[#0EA5E9] flex items-center justify-center text-white text-xs font-semibold">
+        <div className="h-8 w-8 rounded-full bg-primary flex items-center justify-center text-secondary text-xs font-semibold">
           {(user.name || user.email || 'U').charAt(0).toUpperCase()}
         </div>
-        <ChevronDown className={`h-4 w-4 text-[#64748B] transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+        <ChevronDown className={`h-4 w-4 text-muted transition-transform ${isOpen ? 'rotate-180' : ''}`} />
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-56 rounded-lg border border-[#E2E8F0] bg-white shadow-lg dark:border-gray-700 dark:bg-gray-900">
+        <div className="absolute right-0 mt-2 w-56 rounded-lg border border-border bg-white shadow-lg dark:border-border dark:bg-primary">
           <div className="p-2">
-            <div className="px-3 py-2 border-b border-[#E2E8F0] dark:border-gray-700">
-              <p className="text-sm font-semibold text-[#1E293B] dark:text-white">{user.name || user.email || 'User'}</p>
-              <p className="text-xs text-[#64748B] dark:text-gray-400">{user.email}</p>
+            <div className="px-3 py-2 border-b border-border dark:border-border">
+              <p className="text-sm font-semibold text-black dark:text-secondary">{user.name || user.email || 'User'}</p>
+              <p className="text-xs text-muted dark:text-muted">{user.email}</p>
             </div>
 
             {!isCreatorView && (
               <button
                 type="button"
                 onClick={handleSwitchToCreator}
-                className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-[#1E293B] transition hover:bg-[#F8FAFC] dark:text-gray-300 dark:hover:bg-gray-800"
+                className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-black transition hover:bg-accent dark:text-secondary dark:hover:bg-primary/90"
               >
-                <Store className="h-4 w-4 text-[#0EA5E9]" />
+                <Store className="h-4 w-4 text-primary" />
                 Creator Studio
               </button>
             )}
@@ -90,19 +96,19 @@ const RoleSwitcher = (): JSX.Element | null => {
               <button
                 type="button"
                 onClick={handleSwitchToCustomer}
-                className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-[#1E293B] transition hover:bg-[#F8FAFC] dark:text-gray-300 dark:hover:bg-gray-800"
+                className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-black transition hover:bg-accent dark:text-secondary dark:hover:bg-primary/90"
               >
-                <ShoppingBag className="h-4 w-4 text-[#0EA5E9]" />
+                <ShoppingBag className="h-4 w-4 text-primary" />
                 Back to shopping
               </button>
             )}
 
-            <div className="my-1 border-t border-[#E2E8F0] dark:border-gray-700" />
+            <div className="my-1 border-t border-border dark:border-border" />
 
             <button
               type="button"
               onClick={handleLogout}
-              className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-[#64748B] transition hover:bg-[#F8FAFC] hover:text-[#1E293B] dark:text-gray-400 dark:hover:bg-gray-800"
+              className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-muted transition hover:bg-accent hover:text-black dark:text-muted dark:hover:bg-primary/90"
             >
               <LogOut className="h-4 w-4" />
               Logout

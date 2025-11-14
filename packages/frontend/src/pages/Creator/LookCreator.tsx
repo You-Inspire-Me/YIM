@@ -93,7 +93,10 @@ const LookCreator = (): JSX.Element => {
     mutationFn: (data: LookInput) => endpoints.creator.looks.create(data),
     onSuccess: () => {
       toast.success('Look aangemaakt!');
+      // Invalidate alle look queries om cache te updaten
       void queryClient.invalidateQueries({ queryKey: ['host-looks'] });
+      void queryClient.invalidateQueries({ queryKey: ['public-looks'] });
+      void queryClient.invalidateQueries({ queryKey: ['host-look'] });
       navigate('/creator/looks');
     },
     onError: (error: any) => {
@@ -113,7 +116,11 @@ const LookCreator = (): JSX.Element => {
     mutationFn: (data: LookInput) => endpoints.creator.looks.update(id!, data),
     onSuccess: () => {
       toast.success('Look bijgewerkt!');
+      // Invalidate alle look queries om cache te updaten
       void queryClient.invalidateQueries({ queryKey: ['host-looks'] });
+      void queryClient.invalidateQueries({ queryKey: ['public-looks'] });
+      void queryClient.invalidateQueries({ queryKey: ['host-look'] });
+      void queryClient.invalidateQueries({ queryKey: ['public-look', id] });
       navigate('/creator/looks');
     },
     onError: (error: any) => {
@@ -191,7 +198,7 @@ const LookCreator = (): JSX.Element => {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-extrabold">{id ? 'Look bewerken' : 'Nieuwe Look'}</h1>
-          <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
+          <p className="mt-2 text-sm text-muted dark:text-muted">
             Stap {step} van {images.length > 0 ? 2 + images.length : 2}
           </p>
         </div>
@@ -206,7 +213,7 @@ const LookCreator = (): JSX.Element => {
         {step === 1 && (
           <div className="space-y-6">
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Titel *</label>
+              <label className="block text-sm font-medium text-black dark:text-secondary">Titel *</label>
               <Input
                 {...register('title', { required: 'Titel is verplicht' })}
                 className="mt-1"
@@ -216,7 +223,7 @@ const LookCreator = (): JSX.Element => {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Beschrijving *</label>
+              <label className="block text-sm font-medium text-black dark:text-secondary">Beschrijving *</label>
               <Textarea
                 {...register('description', { required: 'Beschrijving is verplicht' })}
                 className="mt-1"
@@ -227,14 +234,14 @@ const LookCreator = (): JSX.Element => {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Afbeeldingen *</label>
+              <label className="block text-sm font-medium text-black dark:text-secondary">Afbeeldingen *</label>
               <ImageUploaderWithReorder images={images} onImagesChange={setImages} maxImages={10} />
             </div>
 
             <TagSelector tags={tags} onTagsChange={setTags} />
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Categorie *</label>
+              <label className="block text-sm font-medium text-black dark:text-secondary mb-2">Categorie *</label>
               <Select
                 {...register('category', { required: 'Categorie is verplicht' })}
                 className="mt-1"
@@ -265,7 +272,7 @@ const LookCreator = (): JSX.Element => {
           <div className="space-y-6">
             <div>
               <h2 className="text-xl font-bold">Tag producten in afbeelding {step - 1}</h2>
-              <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
+              <p className="mt-1 text-sm text-muted dark:text-muted">
                 Klik op de afbeelding om producten toe te voegen
               </p>
             </div>

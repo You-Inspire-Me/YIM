@@ -75,39 +75,39 @@ const AnalyticsPage = (): JSX.Element => {
     <div className="space-y-6">
       <div>
         <h1 className="text-3xl font-extrabold">Analytics</h1>
-        <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
+        <p className="mt-2 text-sm text-muted dark:text-muted">
           Inzicht in je winkelprestaties
         </p>
       </div>
 
       <div className="grid gap-6 md:grid-cols-3">
-        <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900">
-          <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Totaal weergaven</p>
+        <div className="rounded-xl border border-border bg-white p-6 shadow-sm dark:border-border dark:bg-primary">
+          <p className="text-sm font-medium text-muted dark:text-muted">Totaal weergaven</p>
           <p className="mt-2 text-3xl font-semibold">{analytics?.totalViews || 0}</p>
         </div>
-        <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900">
-          <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Bestellingen (30d)</p>
+        <div className="rounded-xl border border-border bg-white p-6 shadow-sm dark:border-border dark:bg-primary">
+          <p className="text-sm font-medium text-muted dark:text-muted">Bestellingen (30d)</p>
           <p className="mt-2 text-3xl font-semibold">{analytics?.totalOrders || 0}</p>
         </div>
-        <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900">
-          <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Conversiepercentage</p>
+        <div className="rounded-xl border border-border bg-white p-6 shadow-sm dark:border-border dark:bg-primary">
+          <p className="text-sm font-medium text-muted dark:text-muted">Conversiepercentage</p>
           <p className="mt-2 text-3xl font-semibold">{analytics?.conversionRate?.toFixed(2) || 0}%</p>
         </div>
       </div>
 
-      <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900">
+      <div className="rounded-xl border border-border bg-white p-6 shadow-sm dark:border-border dark:bg-primary">
         <h2 className="mb-4 text-lg font-semibold">Omzet over tijd</h2>
         <RevenueChart />
       </div>
 
-      <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900">
+      <div className="rounded-xl border border-border bg-white p-6 shadow-sm dark:border-border dark:bg-primary">
         <h2 className="mb-4 text-lg font-semibold">Top verkochte producten</h2>
         {topProducts && topProducts.length > 0 ? (
           <div className="h-96">
             <Bar data={topProductsData} options={topProductsOptions} />
           </div>
         ) : (
-          <p className="text-sm text-gray-500 dark:text-gray-400">Nog geen verkoopdata beschikbaar</p>
+          <p className="text-sm text-muted dark:text-muted">Nog geen verkoopdata beschikbaar</p>
         )}
       </div>
     </div>

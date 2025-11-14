@@ -55,7 +55,7 @@ const Header = (): JSX.Element => {
   return (
     <>
       <TopBanner />
-      <header className="sticky top-0 z-40 border-b border-[#E2E8F0] bg-white/80 backdrop-blur dark:border-gray-800 dark:bg-gray-950/80">
+      <header className="sticky top-0 z-40 border-b border-border bg-white/80 backdrop-blur dark:border-border dark:bg-primary/80">
         <div className="mx-auto max-w-7xl px-4">
           {/* Main Navigation - Dames | Heren | Kinderen */}
           <div className="flex items-center justify-between py-4">
@@ -73,8 +73,8 @@ const Header = (): JSX.Element => {
                   }}
                   className={`text-lg font-extrabold transition-all duration-200 ${
                     currentCategory === 'dames'
-                      ? 'text-[#0EA5E9] border-b-2 border-[#0EA5E9] pb-1'
-                      : 'text-[#1E293B] hover:text-[#0EA5E9]'
+                      ? 'text-primary border-b-2 border-primary pb-1'
+                      : 'text-black hover:text-primary'
                   }`}
                 >
                   {t('nav.dames')}
@@ -90,8 +90,8 @@ const Header = (): JSX.Element => {
                   }}
                   className={`text-lg font-extrabold transition-all duration-200 ${
                     currentCategory === 'heren'
-                      ? 'text-[#0EA5E9] border-b-2 border-[#0EA5E9] pb-1'
-                      : 'text-[#1E293B] hover:text-[#0EA5E9]'
+                      ? 'text-primary border-b-2 border-primary pb-1'
+                      : 'text-black hover:text-primary'
                   }`}
                 >
                   {t('nav.heren')}
@@ -107,8 +107,8 @@ const Header = (): JSX.Element => {
                   }}
                   className={`text-lg font-extrabold transition-all duration-200 ${
                     currentCategory === 'kinderen'
-                      ? 'text-[#0EA5E9] border-b-2 border-[#0EA5E9] pb-1'
-                      : 'text-[#1E293B] hover:text-[#0EA5E9]'
+                      ? 'text-primary border-b-2 border-primary pb-1'
+                      : 'text-black hover:text-primary'
                   }`}
                 >
                   {t('nav.kinderen')}
@@ -124,21 +124,21 @@ const Header = (): JSX.Element => {
               {/* Wishlist */}
               <Link
                 to="/account/wishlist"
-                className="relative hidden items-center justify-center rounded-full p-2 transition hover:bg-[#F8FAFC] hover:text-[#0EA5E9] dark:hover:bg-gray-800 md:flex"
+                className="relative hidden items-center justify-center rounded-full p-2 transition hover:bg-accent hover:text-primary dark:hover:bg-primary/90 md:flex"
                 aria-label={t('header.wishlist')}
               >
-                <Heart className="h-5 w-5 text-[#64748B]" />
+                <Heart className="h-5 w-5 text-muted" />
               </Link>
 
               {/* Shopping Bag - far right, smaller */}
               <Link
                 to="/cart"
-                className="relative hidden items-center justify-center rounded-full p-2 transition hover:bg-[#F8FAFC] hover:text-[#0EA5E9] dark:hover:bg-gray-800 md:flex"
+                className="relative hidden items-center justify-center rounded-full p-2 transition hover:bg-accent hover:text-primary dark:hover:bg-primary/90 md:flex"
                 aria-label="Shopping bag"
               >
-                <ShoppingBag className="h-5 w-5 text-[#64748B]" />
+                <ShoppingBag className="h-5 w-5 text-muted" />
                 {items.length > 0 && (
-                  <span className="absolute -right-1 -top-1 inline-flex h-5 min-w-[1.25rem] items-center justify-center rounded-full bg-[#0EA5E9] px-1 text-xs text-white">
+                  <span className="absolute -right-1 -top-1 inline-flex h-5 min-w-[1.25rem] items-center justify-center rounded-full bg-primary px-1 text-xs text-secondary">
                     {items.length}
                   </span>
                 )}
@@ -150,79 +150,79 @@ const Header = (): JSX.Element => {
                   <button
                     type="button"
                     onClick={() => setIsAccountMenuOpen(!isAccountMenuOpen)}
-                    className="flex items-center gap-2 rounded-full border border-[#E2E8F0] bg-white px-3 py-2 text-sm font-medium transition hover:bg-[#F8FAFC] dark:border-gray-700 dark:bg-gray-900 dark:hover:bg-gray-800"
+                    className="flex items-center gap-2 rounded-full border border-border bg-white px-3 py-2 text-sm font-medium transition hover:bg-accent dark:border-border dark:bg-primary dark:hover:bg-primary/90"
                     aria-label="Account menu"
                   >
-                    <div className="h-8 w-8 rounded-full bg-[#0EA5E9] flex items-center justify-center text-white text-xs font-semibold">
+                    <div className="h-8 w-8 rounded-full bg-primary flex items-center justify-center text-secondary text-xs font-semibold">
                       {(user.name || user.email || 'U').charAt(0).toUpperCase()}
                     </div>
-                    <ChevronDown className={`h-4 w-4 text-[#64748B] transition-transform ${isAccountMenuOpen ? 'rotate-180' : ''}`} />
+                    <ChevronDown className={`h-4 w-4 text-muted transition-transform ${isAccountMenuOpen ? 'rotate-180' : ''}`} />
                   </button>
 
                   {isAccountMenuOpen && (
-                    <div className="absolute right-0 mt-2 w-56 rounded-lg border border-[#E2E8F0] bg-white shadow-lg dark:border-gray-700 dark:bg-gray-900">
+                    <div className="absolute right-0 mt-2 w-56 rounded-lg border border-border bg-white shadow-lg dark:border-border dark:bg-primary">
                       <div className="p-2">
-                        <div className="px-3 py-2 border-b border-[#E2E8F0] dark:border-gray-700">
-                          <p className="text-sm font-semibold text-[#1E293B] dark:text-white">{user.name || user.email || 'User'}</p>
-                          <p className="text-xs text-[#64748B] dark:text-gray-400">{user.email}</p>
+                        <div className="px-3 py-2 border-b border-border dark:border-border">
+                          <p className="text-sm font-semibold text-black dark:text-secondary">{user.name || user.email || 'User'}</p>
+                          <p className="text-xs text-muted dark:text-muted">{user.email}</p>
                         </div>
 
                         <Link
                           to="/account/profile"
-                          className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-[#1E293B] transition hover:bg-[#F8FAFC] dark:text-gray-300 dark:hover:bg-gray-800"
+                          className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-black transition hover:bg-accent dark:text-secondary dark:hover:bg-primary/90"
                           onClick={() => setIsAccountMenuOpen(false)}
                         >
-                          <User className="h-4 w-4 text-[#0EA5E9]" />
+                          <User className="h-4 w-4 text-primary" />
                           {t('header.account')}
                         </Link>
 
                         <Link
                           to="/account/orders"
-                          className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-[#1E293B] transition hover:bg-[#F8FAFC] dark:text-gray-300 dark:hover:bg-gray-800"
+                          className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-black transition hover:bg-accent dark:text-secondary dark:hover:bg-primary/90"
                           onClick={() => setIsAccountMenuOpen(false)}
                         >
-                          <Package className="h-4 w-4 text-[#0EA5E9]" />
+                          <Package className="h-4 w-4 text-primary" />
                           {t('header.orders')}
                         </Link>
 
                         <Link
                           to="/account/sizes"
-                          className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-[#1E293B] transition hover:bg-[#F8FAFC] dark:text-gray-300 dark:hover:bg-gray-800"
+                          className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-black transition hover:bg-accent dark:text-secondary dark:hover:bg-primary/90"
                           onClick={() => setIsAccountMenuOpen(false)}
                         >
-                          <Ruler className="h-4 w-4 text-[#0EA5E9]" />
+                          <Ruler className="h-4 w-4 text-primary" />
                           {t('header.sizes')}
                         </Link>
 
                         <Link
                           to="/help"
-                          className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-[#1E293B] transition hover:bg-[#F8FAFC] dark:text-gray-300 dark:hover:bg-gray-800"
+                          className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-black transition hover:bg-accent dark:text-secondary dark:hover:bg-primary/90"
                           onClick={() => setIsAccountMenuOpen(false)}
                         >
-                          <HelpCircle className="h-4 w-4 text-[#0EA5E9]" />
+                          <HelpCircle className="h-4 w-4 text-primary" />
                           {t('header.help')}
                         </Link>
 
                         {(user.role === 'host' || user.role === 'creator') && (
                           <>
-                            <div className="my-1 border-t border-[#E2E8F0] dark:border-gray-700" />
+                            <div className="my-1 border-t border-border dark:border-border" />
                             <Link
                               to="/creator"
-                              className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-[#1E293B] transition hover:bg-[#F8FAFC] dark:text-gray-300 dark:hover:bg-gray-800"
+                              className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-black transition hover:bg-accent dark:text-secondary dark:hover:bg-primary/90"
                               onClick={() => setIsAccountMenuOpen(false)}
                             >
-                              <Store className="h-4 w-4 text-[#0EA5E9]" />
+                              <Store className="h-4 w-4 text-primary" />
                               {t('header.creatorStudio')}
                             </Link>
                           </>
                         )}
 
-                        <div className="my-1 border-t border-[#E2E8F0] dark:border-gray-700" />
+                        <div className="my-1 border-t border-border dark:border-border" />
 
                         <button
                           type="button"
                           onClick={handleLogout}
-                          className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-[#64748B] transition hover:bg-[#F8FAFC] hover:text-[#1E293B] dark:text-gray-400 dark:hover:bg-gray-800"
+                          className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-muted transition hover:bg-accent hover:text-black dark:text-muted dark:hover:bg-primary/90"
                         >
                           <LogOut className="h-4 w-4" />
                           {t('header.logout')}
@@ -235,13 +235,13 @@ const Header = (): JSX.Element => {
                 <div className="hidden items-center gap-3 md:flex">
                   <Link
                     to="/auth/login"
-                    className="text-sm font-medium text-[#64748B] transition-colors hover:text-[#0EA5E9]"
+                    className="text-sm font-medium text-muted transition-colors hover:text-primary"
                   >
                     Log in
                   </Link>
                   <Link
                     to="/auth/register"
-                    className="rounded-full bg-[#0EA5E9] px-4 py-2 text-sm font-semibold text-white hover:bg-[#0284C7]"
+                    className="rounded-full bg-primary px-4 py-2 text-sm font-semibold text-secondary hover:bg-primary"
                   >
                     Registreren
                   </Link>
@@ -251,7 +251,7 @@ const Header = (): JSX.Element => {
               {/* Mobile menu button */}
               <button
                 type="button"
-                className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[#E2E8F0] md:hidden"
+                className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-border md:hidden"
                 onClick={() => setIsOpen((prev) => !prev)}
                 aria-label="Toggle navigation"
               >
@@ -263,25 +263,25 @@ const Header = (): JSX.Element => {
 
         {/* Mobile menu */}
         {isOpen && (
-          <div className="border-t border-[#E2E8F0] bg-white px-4 py-6 dark:border-gray-800 dark:bg-gray-900 md:hidden">
+          <div className="border-t border-border bg-white px-4 py-6 dark:border-border dark:bg-primary md:hidden">
             <nav className="flex flex-col gap-4">
               <NavLink
                 to="/dames"
-                className="text-lg font-extrabold text-[#1E293B]"
+                className="text-lg font-extrabold text-black"
                 onClick={() => setIsOpen(false)}
               >
                 {t('nav.dames')}
               </NavLink>
               <NavLink
                 to="/heren"
-                className="text-lg font-extrabold text-[#1E293B]"
+                className="text-lg font-extrabold text-black"
                 onClick={() => setIsOpen(false)}
               >
                 {t('nav.heren')}
               </NavLink>
               <NavLink
                 to="/kinderen"
-                className="text-lg font-extrabold text-[#1E293B]"
+                className="text-lg font-extrabold text-black"
                 onClick={() => setIsOpen(false)}
               >
                 {t('nav.kinderen')}

@@ -15,6 +15,12 @@ export interface OrderTotals {
   total: number;
 }
 
+export interface HostSplit {
+  creatorId: Types.ObjectId; // Reference to User (creator/host)
+  items: OrderItem[];
+  subtotal: number;
+}
+
 export interface Order {
   userId: Types.ObjectId; // Reference to User (customer)
   items: OrderItem[];
@@ -25,6 +31,7 @@ export interface Order {
   notes?: string;
   market: string; // Market code (e.g., 'NL', 'BE')
   discountCode?: string; // Applied discount code
+  hostSplit?: HostSplit[]; // Multi-vendor order split by host/creator
   createdAt: Date;
 }
 
@@ -54,6 +61,15 @@ const orderTotalsSchema = new Schema<OrderTotals>(
   { _id: false }
 );
 
+const hostSplitSchema = new Schema<HostSplit>(
+  {
+    creatorId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+    items: { type: [orderItemSchema], required: true },
+    subtotal: { type: Number, required: true, min: 0 }
+  },
+  { _id: false }
+);
+
 const orderSchema = new Schema<OrderDocument, OrderModel>(
   {
     userId: { type: Schema.Types.ObjectId, ref: 'User', required: true, index: true },
@@ -69,7 +85,8 @@ const orderSchema = new Schema<OrderDocument, OrderModel>(
     tags: [{ type: String, trim: true }],
     notes: { type: String, trim: true },
     market: { type: String, default: 'NL', uppercase: true },
-    discountCode: { type: String, trim: true, uppercase: true }
+    discountCode: { type: String, trim: true, uppercase: true },
+    hostSplit: { type: [hostSplitSchema], default: [] }
   },
   {
     timestamps: true
