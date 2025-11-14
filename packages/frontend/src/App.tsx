@@ -6,7 +6,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 import { useAuth } from './context/AuthContext';
 import CartPage from './pages/Customer/Cart';
 import HomePage from './pages/Customer/Home';
-import LookDetail from './pages/Customer/LookDetail';
+import LookDetail from './pages/LookDetail';
 import ProductDetailPage from './pages/Customer/ProductDetail';
 import ShopPage from './pages/Customer/Shop';
 import AccountProfilePage from './pages/Account/Profile';
@@ -26,6 +26,7 @@ import SettingsPage from './pages/Creator/Settings';
 import UploadProductPage from './pages/Creator/UploadProduct';
 import LoginPage from './pages/Auth/Login';
 import RegisterPage from './pages/Auth/Register';
+import CreatorLooksList from './pages/Creator/Looks';
 
 const App = (): JSX.Element => {
   const { user } = useAuth();

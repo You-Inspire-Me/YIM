@@ -1,7 +1,7 @@
 // packages/backend/src/routes/looks.ts
 import express from 'express';
 import { LookModel } from '../models/Look';
-import authMiddleware from '../middleware/auth';
+import { authMiddleware } from '../middleware/auth';
 
 const router = express.Router();
 

@@ -14,13 +14,14 @@ export default function LookEditor() {
   const navigate = useNavigate();
 
   const mutation = useMutation({
-    mutationFn: (data) => fetch('/api/looks', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data)
-    }),
+    mutationFn: (data: { title: string; images: string[]; products: any[]; published: boolean }) => 
+      fetch('/api/looks', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      }),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['looks'] });
+      void queryClient.invalidateQueries({ queryKey: ['looks'] });
       navigate('/host/looks');
     }
   });
