@@ -1,0 +1,51 @@
+{
+  "nav": {
+    "discover": "Discover",
+    "new": "New",
+    "dames": "Dames",
+    "heren": "Heren",
+    "kinderen": "Kinderen"
+  },
+  "header": {
+    "search": "Zoek outfits, stijlen, merken… bijv. halloween in blauw",
+    "account": "Account",
+    "orders": "Bestellingen",
+    "sizes": "Maten",
+    "help": "Hulp",
+    "logout": "Uitloggen",
+    "creatorStudio": "Creator Studio",
+    "backToShopping": "Terug naar winkelen",
+    "wishlist": "Verlanglijst"
+  },
+  "home": {
+    "title": "You Inspire Me",
+    "subtitle": "Discover styled looks. Shop the pieces. Create your own.",
+    "getTheLook": "Get the look",
+    "discoverLooks": "Discover Looks",
+    "viewAll": "View all →",
+    "createLook": "Maak je look"
+  },
+  "account": {
+    "profile": "Profiel",
+    "orders": "Bestellingen",
+    "sizes": "Mijn maten",
+    "wishlist": "Verlanglijst",
+    "return": "Retourneren",
+    "createReturn": "Retour aanmaken",
+    "brand": "Merk",
+    "size": "Maat",
+    "save": "Opslaan"
+  },
+  "common": {
+    "loading": "Laden...",
+    "error": "Er is een fout opgetreden",
+    "save": "Opslaan",
+    "cancel": "Annuleren",
+    "delete": "Verwijderen",
+    "edit": "Bewerken",
+    "add": "Toevoegen",
+    "remove": "Verwijderen",
+    "close": "Sluiten"
+  }
+}
+

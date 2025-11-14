@@ -1,0 +1,51 @@
+{
+  "nav": {
+    "discover": "Discover",
+    "new": "New",
+    "dames": "Women",
+    "heren": "Men",
+    "kinderen": "Kids"
+  },
+  "header": {
+    "search": "Search outfits, styles, brands… e.g. halloween in blue",
+    "account": "Account",
+    "orders": "Orders",
+    "sizes": "Sizes",
+    "help": "Help",
+    "logout": "Log out",
+    "creatorStudio": "Creator Studio",
+    "backToShopping": "Back to shopping",
+    "wishlist": "Wishlist"
+  },
+  "home": {
+    "title": "You Inspire Me",
+    "subtitle": "Discover styled looks. Shop the pieces. Create your own.",
+    "getTheLook": "Get the look",
+    "discoverLooks": "Discover Looks",
+    "viewAll": "View all →",
+    "createLook": "Create your look"
+  },
+  "account": {
+    "profile": "Profile",
+    "orders": "Orders",
+    "sizes": "My Sizes",
+    "wishlist": "Wishlist",
+    "return": "Return",
+    "createReturn": "Create Return",
+    "brand": "Brand",
+    "size": "Size",
+    "save": "Save"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "add": "Add",
+    "remove": "Remove",
+    "close": "Close"
+  }
+}
+
