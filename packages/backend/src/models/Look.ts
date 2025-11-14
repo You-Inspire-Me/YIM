@@ -20,7 +20,8 @@ export interface Look {
   tags: string[];
   category: 'dames' | 'heren' | 'kinderen' | 'all';
   published: boolean;
-  likes: number; // Count of likes
+  likes: Types.ObjectId[]; // Array of user IDs who liked
+  likesCount: number; // Count of likes (computed)
 }
 
 export interface LookDocument extends Look, Document {}
@@ -54,7 +55,8 @@ const lookSchema = new Schema<LookDocument, LookModel>(
       index: true
     },
     published: { type: Boolean, default: false, index: true },
-    likes: { type: Number, default: 0, min: 0 }
+    likes: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+    likesCount: { type: Number, default: 0, min: 0 }
   },
   {
     timestamps: true

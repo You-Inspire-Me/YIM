@@ -24,7 +24,8 @@ interface Look {
   tags: string[];
   category: 'dames' | 'heren' | 'kinderen' | 'all';
   published: boolean;
-  likes: number;
+  likes?: string[]; // Array of user IDs who liked
+  likesCount?: number; // Count of likes
   createdAt: string;
 }
 
@@ -89,10 +90,10 @@ const LooksPage = (): JSX.Element => {
                     </div>
                   )}
                   {/* Likes badge */}
-                  {look.likes > 0 && (
+                  {(look.likesCount || 0) > 0 && (
                     <div className="absolute right-3 top-3 flex items-center gap-1 rounded-full bg-primary/50 px-2 py-1 text-sm text-secondary backdrop-blur-sm">
                       <Heart className="h-4 w-4 fill-current" />
-                      <span>{look.likes}</span>
+                      <span>{look.likesCount}</span>
                     </div>
                   )}
                 </div>

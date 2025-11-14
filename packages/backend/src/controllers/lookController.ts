@@ -157,7 +157,14 @@ export const getPublicLooks = async (req: Request, res: Response): Promise<void>
       .limit(50)
       .lean();
 
-    res.status(StatusCodes.OK).json({ looks });
+    // Calculate likesCount from likes array length and convert likes to string array
+    const looksWithCount = looks.map((look: any) => ({
+      ...look,
+      likes: look.likes?.map((id: any) => id.toString()) || [],
+      likesCount: look.likes?.length || 0
+    }));
+
+    res.status(StatusCodes.OK).json({ looks: looksWithCount });
   } catch (error) {
     console.error('Get public looks error:', error);
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ 
@@ -174,15 +181,24 @@ export const getHostLooks = async (req: AuthRequest, res: Response): Promise<voi
   }
 
   const { published } = req.query;
-  const filters: Record<string, unknown> = { host: req.user._id };
+  const filters: Record<string, unknown> = { creatorId: req.user._id };
 
   if (published !== undefined) {
     filters.published = published === 'true';
   }
 
-  const looks = await LookModel.find(filters).sort({ createdAt: -1 }).lean();
+  const looks = await LookModel.find(filters)
+    .populate('creatorId', 'name avatar')
+    .sort({ createdAt: -1 })
+    .lean();
 
-  res.status(StatusCodes.OK).json({ looks });
+  // Calculate likesCount from likes array length
+  const looksWithCount = looks.map((look: any) => ({
+    ...look,
+    likesCount: look.likes?.length || 0
+  }));
+
+  res.status(StatusCodes.OK).json({ looks: looksWithCount });
 };
 
 export const getLook = async (req: AuthRequest, res: Response): Promise<void> => {
@@ -301,9 +317,63 @@ export const getPublicLook = async (req: Request, res: Response): Promise<void> 
       products: populatedProducts.filter(Boolean)
     };
 
-    res.status(StatusCodes.OK).json({ look: lookWithProducts });
+    const lookWithProductsAndCount = {
+      ...lookWithProducts,
+      likes: look.likes?.map((id: any) => id.toString()) || [],
+      likesCount: look.likes?.length || 0
+    };
+
+    res.status(StatusCodes.OK).json({ look: lookWithProductsAndCount });
   } catch (error) {
     console.error('Get public look error:', error);
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: 'Failed to get look' });
+  }
+};
+
+// Like/Unlike a look
+export const likeLook = async (req: AuthRequest, res: Response): Promise<void> => {
+  if (!req.user) {
+    res.status(StatusCodes.UNAUTHORIZED).json({ message: 'Not authenticated' });
+    return;
+  }
+
+  try {
+    const { id } = req.params;
+    const userId = req.user._id as any;
+
+    const look = await LookModel.findById(id);
+
+    if (!look) {
+      res.status(StatusCodes.NOT_FOUND).json({ message: 'Look not found' });
+      return;
+    }
+
+    // Check if user already liked
+    const likedIndex = look.likes.findIndex(
+      (likeId: any) => likeId.toString() === userId.toString()
+    );
+
+    if (likedIndex >= 0) {
+      // Unlike: remove from array
+      look.likes.splice(likedIndex, 1);
+    } else {
+      // Like: add to array
+      look.likes.push(userId as any);
+    }
+
+    // Update likesCount
+    look.likesCount = look.likes.length;
+    await look.save();
+
+    res.status(StatusCodes.OK).json({
+      liked: likedIndex < 0,
+      likesCount: look.likesCount
+    });
+  } catch (error) {
+    console.error('Like look error:', error);
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      message: 'Failed to like look',
+      error: error instanceof Error ? error.message : 'Unknown error'
+    });
   }
 };

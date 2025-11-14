@@ -92,7 +92,8 @@ export const endpoints = {
   },
       public: {
         looks: (params?: { category?: string }) => api.get('/public/looks', { params }),
-        look: (id: string) => api.get(`/public/looks/${id}`)
+        look: (id: string) => api.get(`/public/looks/${id}`),
+        likeLook: (id: string) => api.post(`/public/looks/${id}/like`)
       },
   products: {
     list: (params?: Record<string, unknown>) => api.get('/products', { params }),
@@ -286,10 +287,11 @@ export const endpoints = {
       }
     }
   },
-  looks: {
-    list: (params?: { category?: string }) => api.get('/public/looks', { params }),
-    detail: (id: string) => api.get(`/public/looks/${id}`)
-  },
+    looks: {
+      list: (params?: { category?: string }) => api.get('/public/looks', { params }),
+      detail: (id: string) => api.get(`/public/looks/${id}`),
+      like: (id: string) => api.post(`/public/looks/${id}/like`)
+    },
   user: {
     wishlist: {
       get: () => api.get('/user/wishlist'),

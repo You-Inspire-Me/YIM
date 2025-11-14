@@ -11,45 +11,70 @@ interface LikeButtonProps {
   id: string;
   className?: string;
   size?: 'sm' | 'md' | 'lg';
+  initialLiked?: boolean; // For Looks, pass initial liked state
+  likesCount?: number; // For Looks, pass likes count
 }
 
-const LikeButton = ({ type, id, className = '', size = 'md' }: LikeButtonProps): JSX.Element => {
+const LikeButton = ({ type, id, className = '', size = 'md', initialLiked, likesCount: initialLikesCount }: LikeButtonProps): JSX.Element => {
   const { user } = useAuth();
   const queryClient = useQueryClient();
-  const [isLiked, setIsLiked] = useState(false);
+  const [isLiked, setIsLiked] = useState(initialLiked || false);
+  const [likesCount, setLikesCount] = useState(initialLikesCount || 0);
 
-  // Check initial like status
+  // Check initial like status for non-Look types
   const { data: wishlistData } = useQuery({
     queryKey: ['user-wishlist'],
     queryFn: async () => {
       const response = await endpoints.user.wishlist.get();
       return response.data.items || [];
     },
-    enabled: !!user
+    enabled: !!user && type !== 'Look'
   });
 
   useEffect(() => {
-    if (wishlistData) {
+    if (type === 'Look') {
+      setIsLiked(initialLiked || false);
+      setLikesCount(initialLikesCount || 0);
+    } else if (wishlistData) {
       const liked = wishlistData.some(
         (item: any) => item.type === type && item._id === id
       );
       setIsLiked(liked);
     }
-  }, [wishlistData, type, id]);
+  }, [wishlistData, type, id, initialLiked, initialLikesCount]);
 
   const likeMutation = useMutation({
     mutationFn: async () => {
+      // Use direct like endpoint for Looks, wishlist for others
+      if (type === 'Look') {
+        return endpoints.public.likeLook(id);
+      }
       return endpoints.user.wishlist.toggle({ type, id });
     },
     onSuccess: (response) => {
-      setIsLiked(response.data.isLiked);
-      toast.success(
-        response.data.isLiked
-          ? 'Toegevoegd aan verlanglijst'
-          : 'Verwijderd uit verlanglijst',
-        { duration: 2000 }
-      );
-      void queryClient.invalidateQueries({ queryKey: ['user-wishlist'] });
+      if (type === 'Look') {
+        setIsLiked(response.data.liked);
+        setLikesCount(response.data.likesCount || 0);
+        // Invalidate look queries to update likes count
+        void queryClient.invalidateQueries({ queryKey: ['public-look', id] });
+        void queryClient.invalidateQueries({ queryKey: ['public-looks'] });
+        void queryClient.invalidateQueries({ queryKey: ['host-looks'] });
+        toast.success(
+          response.data.liked
+            ? 'Look geliked'
+            : 'Like verwijderd',
+          { duration: 2000 }
+        );
+      } else {
+        setIsLiked(response.data.isLiked);
+        toast.success(
+          response.data.isLiked
+            ? 'Toegevoegd aan verlanglijst'
+            : 'Verwijderd uit verlanglijst',
+          { duration: 2000 }
+        );
+        void queryClient.invalidateQueries({ queryKey: ['user-wishlist'] });
+      }
     },
     onError: () => {
       toast.error('Kon niet liken');
@@ -90,6 +115,9 @@ const LikeButton = ({ type, id, className = '', size = 'md' }: LikeButtonProps):
       <Heart
         className={`${sizeClasses[size]} ${isLiked ? 'fill-current' : ''}`}
       />
+      {type === 'Look' && likesCount > 0 && (
+        <span className="ml-1 text-xs">{likesCount}</span>
+      )}
     </button>
   );
 };

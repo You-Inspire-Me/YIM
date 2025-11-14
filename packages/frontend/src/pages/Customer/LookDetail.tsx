@@ -64,7 +64,13 @@ const RelatedLooksSection = ({
               <p className="text-sm opacity-90">{look.products?.length || 0} items</p>
             </div>
             <div className="absolute right-2 top-2 opacity-0 transition-opacity group-hover:opacity-100">
-              <LikeButton type="Look" id={look._id} size="md" />
+              <LikeButton 
+                type="Look" 
+                id={look._id} 
+                size="md"
+                initialLiked={false}
+                likesCount={look.likes || 0}
+              />
             </div>
           </Link>
         ))}
@@ -110,6 +116,8 @@ interface Look {
     name: string;
     avatarUrl?: string;
   };
+  likes?: string[]; // Array of user IDs who liked
+  likesCount?: number; // Count of likes
   createdAt: string;
 }
 
@@ -158,9 +166,10 @@ const LookDetail = (): JSX.Element => {
       setSelectedProduct(product);
       setIsVariantModalOpen(true);
     } else {
-      // Fallback: add directly to cart
+      // Fallback: add directly to cart with variantId if available
       addItem({
         productId: product.productId,
+        variantId: product.variantId,
         title: product.title,
         price: product.price,
         image: product.image,
@@ -180,6 +189,7 @@ const LookDetail = (): JSX.Element => {
     data.look.products.forEach((product) => {
       addItem({
         productId: product.productId,
+        variantId: product.variantId,
         title: product.title,
         price: product.price,
         image: product.image,
@@ -245,7 +255,13 @@ const LookDetail = (): JSX.Element => {
                 
                 {/* Like & Share Buttons */}
                 <div className="absolute right-4 top-4 flex gap-2">
-                  <LikeButton type="Look" id={look._id} size="lg" />
+                  <LikeButton 
+                    type="Look" 
+                    id={look._id} 
+                    size="lg" 
+                    initialLiked={user ? look.likes?.includes(user._id) : false}
+                    likesCount={look.likesCount || 0}
+                  />
                   <button
                     type="button"
                     onClick={handleShare}

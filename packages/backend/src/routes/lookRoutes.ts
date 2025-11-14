@@ -5,6 +5,7 @@ import {
   deleteLook,
   getHostLooks,
   getLook,
+  likeLook,
   togglePublished,
   updateLook
 } from '../controllers/lookController.js';
@@ -20,6 +21,7 @@ router.post('/', createLook);
 router.put('/:id', updateLook);
 router.delete('/:id', deleteLook);
 router.patch('/:id/toggle-published', togglePublished);
+router.post('/:id/like', likeLook);
 
 export default router;
 
