@@ -1,30 +1,37 @@
-// packages/frontend/src/pages/LookDetail.tsx
 'use client';
 
 import { useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
+import { endpoints } from '../lib/api';
 
 export default function LookDetail() {
   const { id } = useParams();
-  const { data: look } = useQuery({
-    queryKey: ['look', id],
-    queryFn: () => fetch(`/api/looks/${id}`).then(r => r.json())
+  const { data: look, isLoading } = useQuery({
+    queryKey: ['public-look', id],
+    queryFn: () => endpoints.public.looks.detail(id),
+    enabled: !!id
   });
 
-  if (!look) return <p>Loading...</p>;
+  if (isLoading) return <p className="p-6 text-center">Laden...</p>;
+  if (!look) return <p className="p-6 text-center">Look niet gevonden</p>;
 
   return (
     <div className="container mx-auto p-6">
-      <img src={look.images[0]} className="w-full h-96 object-cover rounded mb-6" />
-      <h1 className="text-3xl font-bold">{look.title}</h1>
-      <div className="grid grid-cols-4 gap-4 mt-6">
+      <img
+        src={look.images[0]}
+        alt={look.title}
+        className="w-full h-96 object-cover rounded-lg mb-6"
+      />
+      <h1 className="text-3xl font-bold mb-2">{look.title}</h1>
+      <p className="text-gray-600 mb-6">{look.description}</p>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {look.products.map((p: any) => (
-          <div key={p._id} className="border p-4 rounded">
-            <img src={p.images[0]} className="w-full h-40 object-cover" />
-            <h3 className="font-bold text-sm mt-2">{p.title}</h3>
-            <p className="text-gray-600">€{p.price}</p>
-            <button className="mt-2 w-full bg-black text-white py-1 text-sm">
-              Add to Cart
+          <div key={p.productId} className="border rounded-lg p-4">
+            <img src={p.image} className="w-full h-48 object-cover rounded" />
+            <h3 className="font-semibold">{p.title}</h3>
+            <p className="text-sm text-gray-600">€{p.price}</p>
+            <button className="mt-2 w-full bg-black text-white py-2 rounded">
+              In winkelwagen
             </button>
           </div>
         ))}
