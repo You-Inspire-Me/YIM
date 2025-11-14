@@ -23,6 +23,7 @@ interface Look {
   createdAt: string;
 }
 
+
 const LooksPage = (): JSX.Element => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
@@ -90,7 +91,7 @@ const LooksPage = (): JSX.Element => {
             <div
               key={look._id}
               className="group relative overflow-hidden rounded-xl border border-border bg-white shadow-sm transition hover:shadow-lg dark:border-border dark:bg-primary cursor-pointer"
-              onClick={() => navigate(`/looks/${look._id}`)}
+              onClick={() => navigate(`/creator/looks/edit/${look._id}`)}
             >
               <div className="relative aspect-[4/5] overflow-hidden">
                 <img

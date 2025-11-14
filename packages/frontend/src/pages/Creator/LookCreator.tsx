@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { ArrowLeft, ArrowRight, Save } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
@@ -57,7 +58,37 @@ const LookCreator = (): JSX.Element => {
       const response = await endpoints.creator.looks.detail(id);
       return response.data.look;
     },
-    enabled: !!id
+    enabled: !!id,
+    onSuccess: (data) => {
+      if (data) {
+        setValue('title', data.title || '');
+        setValue('description', data.description || '');
+        setValue('published', data.published || false);
+        setValue('category', data.category || 'all');
+        setImages(data.images || []);
+        setTags(data.tags || []);
+
+        // Reset imageProducts
+        const productsByImage: Record<number, TaggedProduct[]> = {};
+        if (data.products && data.products.length > 0) {
+          data.products.forEach((p: any, index: number) => {
+            const imgIndex = p.imageIndex || 0;
+            if (!productsByImage[imgIndex]) productsByImage[imgIndex] = [];
+            productsByImage[imgIndex].push({
+              productId: p.productId,
+              variantId: p.variantId,
+              sku: p.variantId || p.productId,
+              title: p.title || 'Product',
+              price: p.price || 0,
+              image: p.image || '',
+              positionX: p.positionX,
+              positionY: p.positionY
+            });
+          });
+        }
+        setImageProducts(productsByImage);
+      }
+    }
   });
 
   useEffect(() => {
