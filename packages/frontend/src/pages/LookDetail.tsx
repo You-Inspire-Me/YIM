@@ -3,16 +3,23 @@
 import { useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 
+import { useCart } from '../context/CartContext';
+import { endpoints } from '../lib/api';
+
 export default function LookDetail() {
   const { id } = useParams();
-  const { data: look, isLoading } = useQuery({
+  const { addItem } = useCart();
+  const { data: response, isLoading, error } = useQuery({
     queryKey: ['public-look', id],
-    queryFn: () => fetch(`/api/looks/${id}`).then(r => r.json()),
+    queryFn: () => endpoints.looks.detail(id!).then(r => r.data),
     enabled: !!id
   });
 
+  const look = response?.look;
+
   if (isLoading) return <p className="p-6 text-center">Laden...</p>;
-  if (!look) return <p className="p-6 text-center">Look niet gevonden</p>;
+  if (error) return <p className="p-6 text-center text-red-500">Error: {error.message}</p>;
+  if (!look) return <p className="p-6 text-center">Look niet gevonden (geen response)</p>;
 
   return (
     <div className="container mx-auto p-6">
@@ -29,7 +36,17 @@ export default function LookDetail() {
             <img src={p.image || 'https://via.placeholder.com/200'} className="w-full h-48 object-cover rounded" />
             <h3 className="font-semibold">{p.title}</h3>
             <p className="text-sm text-gray-600">€{p.price}</p>
-            <button className="mt-2 w-full bg-black text-white py-2 rounded">
+            <button
+              onClick={() => addItem({
+                productId: p._id || p.productId,
+                variantId: p.variantId,
+                title: p.title,
+                price: p.price,
+                image: p.image || 'https://via.placeholder.com/200',
+                quantity: 1
+              })}
+              className="mt-2 w-full bg-black text-white py-2 rounded hover:bg-gray-800"
+            >
               In winkelwagen
             </button>
           </div>

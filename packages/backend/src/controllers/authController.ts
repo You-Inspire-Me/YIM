@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import jwt, { SignOptions } from 'jsonwebtoken';
+import { ZodError } from 'zod';
 import { env } from '../config/env.js';
 import { AuthRequest, clearAuthCookie, setAuthCookie } from '../middleware/authMiddleware.js';
 import { UserModel } from '../models/User.js';
@@ -65,32 +66,55 @@ export const register = async (req: Request, res: Response): Promise<void> => {
 };
 
 export const login = async (req: Request, res: Response): Promise<void> => {
-  const data = loginSchema.parse(req.body);
+  try {
+    console.log('Login attempt:', { email: req.body.email });
+    const data = loginSchema.parse(req.body);
+    console.log('Login validation passed');
 
-  const user = await UserModel.findOne({ email: data.email });
+    const user = await UserModel.findOne({ email: data.email });
 
-  if (!user) {
-    res.status(StatusCodes.UNAUTHORIZED).json({ message: 'Invalid credentials' });
-    return;
+    if (!user) {
+      console.log('User not found:', data.email);
+      res.status(StatusCodes.UNAUTHORIZED).json({ message: 'Invalid credentials' });
+      return;
+    }
+
+    console.log('User found, comparing password...');
+    const isValid = await user.comparePassword(data.password);
+
+    if (!isValid) {
+      console.log('Invalid password for user:', data.email);
+      res.status(StatusCodes.UNAUTHORIZED).json({ message: 'Invalid credentials' });
+      return;
+    }
+
+    console.log('Password valid, creating token...');
+    const token = createToken(user.id, user.role);
+    setAuthCookie(res, token);
+
+    // Return user without password, with name from profile
+    const userResponse = user.toJSON();
+    const userWithName = {
+      ...userResponse,
+      name: (userResponse as any).profile?.name || userResponse.email.split('@')[0]
+    };
+    console.log('Login successful for user:', user.email);
+    res.status(StatusCodes.OK).json({ user: userWithName });
+  } catch (error) {
+    console.error('Login error:', error);
+    if (error instanceof Error) {
+      console.error('Error name:', error.name);
+      console.error('Error message:', error.message);
+      console.error('Error stack:', error.stack);
+    }
+    // If it's a Zod validation error, return a proper error response
+    if (error instanceof ZodError) {
+      res.status(StatusCodes.BAD_REQUEST).json({ message: 'Invalid input', errors: error.errors });
+      return;
+    }
+    // For other errors, return a generic error
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: 'Login failed' });
   }
-
-  const isValid = await user.comparePassword(data.password);
-
-  if (!isValid) {
-    res.status(StatusCodes.UNAUTHORIZED).json({ message: 'Invalid credentials' });
-    return;
-  }
-
-  const token = createToken(user.id, user.role);
-  setAuthCookie(res, token);
-
-  // Return user without password, with name from profile
-  const userResponse = user.toJSON();
-  const userWithName = {
-    ...userResponse,
-    name: (userResponse as any).profile?.name || userResponse.email.split('@')[0]
-  };
-  res.status(StatusCodes.OK).json({ user: userWithName });
 };
 
 export const logout = async (_req: Request, res: Response): Promise<void> => {

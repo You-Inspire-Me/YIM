@@ -1,7 +1,7 @@
 import bcrypt from 'bcryptjs';
 import { Document, Model, Schema, Types, model } from 'mongoose';
 
-export type UserRole = 'customer' | 'creator';
+export type UserRole = 'customer' | 'creator' | 'host';
 
 export interface User {
   email: string;
@@ -43,7 +43,7 @@ const userSchema = new Schema<UserDocument, UserModel>(
     password: { type: String, required: true },
     role: {
       type: String,
-      enum: ['customer', 'creator'],
+      enum: ['customer', 'creator', 'host'],
       default: 'customer',
       index: true
     },

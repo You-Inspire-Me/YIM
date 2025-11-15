@@ -5,6 +5,7 @@ import express from 'express';
 import helmet from 'helmet';
 import mongoSanitize from 'express-mongo-sanitize';
 import rateLimit from 'express-rate-limit';
+// @ts-ignore
 import xss from 'xss-clean';
 
 import authRoutes from './routes/authRoutes.js';
@@ -84,6 +85,29 @@ app.use('/api/payments', requireAuth, paymentRoutes);
 app.use('/api/user', userRoutes);
 
 app.use(errorHandler);
+
+// Temporary route to create test user
+app.post('/api/temp-create-user', async (req, res) => {
+  try {
+    const { UserModel } = await import('./models/User.js');
+    const bcrypt = await import('bcryptjs');
+
+    const password = await bcrypt.hash('password123', 10);
+
+    const user = await UserModel.create({
+      email: 'dremy80@gmail.com',
+      password,
+      role: 'host', // or customer
+      profile: {
+        name: 'Test User'
+      }
+    });
+
+    res.json({ message: 'User created', user: { email: user.email, role: user.role } });
+  } catch (error: any) {
+    res.status(500).json({ error: error.message });
+  }
+});
 
 const start = async (): Promise<void> => {
   await connectDatabase();

@@ -35,7 +35,7 @@ const LooksPage = (): JSX.Element => {
   const { data, isLoading } = useQuery<{ looks: Look[] }>({
     queryKey: ['public-looks'],
     queryFn: async () => {
-      const response = await endpoints.looks.list();
+      const response = await endpoints.public.looks();
       return response.data;
     }
   });

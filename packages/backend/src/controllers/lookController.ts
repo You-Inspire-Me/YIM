@@ -291,23 +291,26 @@ export const getPublicLook = async (req: Request, res: Response): Promise<void> 
       look.products.map(async (product: any) => {
         const fullProduct = await ProductModel.findById(product.productId).lean();
         if (!fullProduct) return null;
-        
+
+        // Flatten the product data to match frontend expectations
         return {
-          ...product,
-          product: {
-            _id: fullProduct._id,
-            title: fullProduct.title,
-            brand: (fullProduct as any).brand || '',
-            description: fullProduct.description,
-            images: fullProduct.images || [],
-            price: (fullProduct as any).price,
-            originalPrice: (fullProduct as any).originalPrice,
-            discount: (fullProduct as any).discount,
-            sizes: (fullProduct as any).sizes || [],
-            colors: (fullProduct as any).colors || [],
-            inventory: (fullProduct as any).inventory || 0,
-            sku: fullProduct.sku
-          }
+          productId: product.productId,
+          variantId: product.variantId,
+          positionX: product.positionX,
+          positionY: product.positionY,
+          _id: product.productId, // Add for compatibility
+          title: fullProduct.title,
+          brand: (fullProduct as any).brand || '',
+          description: fullProduct.description,
+          images: fullProduct.images || [],
+          price: (fullProduct as any).price,
+          originalPrice: (fullProduct as any).originalPrice,
+          discount: (fullProduct as any).discount,
+          sizes: (fullProduct as any).sizes || [],
+          colors: (fullProduct as any).colors || [],
+          inventory: (fullProduct as any).inventory || 0,
+          sku: fullProduct.sku,
+          image: fullProduct.images?.[0] || 'https://via.placeholder.com/200' // Main image for display
         };
       })
     );
